@@ -12,12 +12,27 @@ const profileSchema = new Schema(
 			required: [true, 'Last name is required'],
 			trim: true,
 		},
-		profilePic: {
-			type: String,
-			default: 'http://localhost:3005/assets/avatars/avatar_26.jpg',
+		dob: {
+			day: {
+				type: Number,
+				required: [true, 'DOB is required'],
+			},
+			month: {
+				type: Number,
+				required: [true, 'DOB is required'],
+			},
+			year: {
+				type: Number,
+				required: [true, 'DOB is required'],
+			},
 		},
-		coverPhoto: {
+		genderIdentity: {
 			type: String,
+			required: [true, 'Gender identity is required'],
+		},
+		genderInterest: {
+			type: String,
+			required: [true, 'Gender interest is required'],
 		},
 		location: {
 			city: {
@@ -32,6 +47,12 @@ const profileSchema = new Schema(
 				type: String,
 				required: [true, 'Postal Code is required.'],
 			},
+		},
+		distancePreference: {
+			type: String,
+		},
+		about: {
+			type: String,
 		},
 		dietType: {
 			type: String,
@@ -53,7 +74,17 @@ const profileSchema = new Schema(
 				ref: 'User',
 			},
 		],
-		distancePreference: {
+		avatar: {
+			type: String,
+			default: 'http://localhost:3005/assets/avatars/avatar_26.jpg',
+		},
+		imageUrl1: {
+			type: String,
+		},
+		imageUrl2: {
+			type: String,
+		},
+		coverPhoto: {
 			type: String,
 		},
 		user: {
