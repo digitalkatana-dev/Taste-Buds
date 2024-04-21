@@ -14,7 +14,7 @@ config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Register
-router.post('/users/register', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
 	const { valid, errors } = validateRegistration(req?.body);
 
 	if (!valid) return res.status(400).json(errors);
@@ -34,7 +34,24 @@ router.post('/users/register', async (req, res) => {
 	}
 
 	try {
-	} catch (err) {}
+		const newUserData = {
+			handle,
+			email,
+			password,
+			role: email === 'brandon@digitalkatana.dev' ? 'admin' : 'user',
+		};
+
+		const newUser = new User(newUserData);
+		await newUser?.save();
+		const token = sign({ userId: newUser?._id }, process.env.DB_SECRET_KEY, {
+			expiresIn: '10d',
+		});
+
+		res.status(201).json({ success: 'Account created successfully!', token });
+	} catch (err) {
+		errors.registration = 'Error creating account, please try again.';
+		return res.status(400).json(errors);
+	}
 });
 // Login
 
