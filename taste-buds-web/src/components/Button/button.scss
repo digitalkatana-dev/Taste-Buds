@@ -1,0 +1,40 @@
+.primary-btn {
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 15px;
+	background: linear-gradient(45deg, #fe3072, #ff5940);
+	padding: 12px 30px;
+	border-radius: 30px;
+	border: none;
+
+	&:hover {
+		background: linear-gradient(260deg, #fe3072, #ff5940);
+	}
+}
+
+.secondary-btn {
+	color: #797777;
+	background-color: #fff;
+	font-weight: 500;
+	font-size: 15px;
+	text-transform: uppercase;
+	padding: 12px 30px;
+	border-radius: 30px;
+	border: 2px solid #797777;
+	margin: 6px;
+
+	&:hover {
+		color: #303030;
+		border: 2px solid #303030;
+	}
+}
+
+.nav-btn {
+	color: #fe3072;
+	background-color: #ffff;
+	font-size: 20px;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: none;
+	margin: 10px;
+}
