@@ -30,6 +30,9 @@ const profileSchema = new Schema(
 			type: String,
 			required: [true, 'Gender identity is required'],
 		},
+		showGender: {
+			type: Boolean,
+		},
 		genderInterest: {
 			type: String,
 			required: [true, 'Gender interest is required'],
@@ -48,7 +51,7 @@ const profileSchema = new Schema(
 				required: [true, 'Postal Code is required.'],
 			},
 		},
-		distancePreference: {
+		distancePref: {
 			type: String,
 		},
 		about: {

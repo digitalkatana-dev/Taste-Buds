@@ -52,7 +52,7 @@ userSchema.virtual('profile', {
 	foreignField: 'user',
 });
 
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function (next) {
 	const user = this;
 	if (!user.isModified('password')) {
 		return next();

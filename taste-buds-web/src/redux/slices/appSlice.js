@@ -4,7 +4,7 @@ export const appAdapter = createEntityAdapter();
 const initialState = appAdapter.getInitialState({
 	loading: false,
 	theme: 'light',
-	authType: 'login',
+	authType: 'signin',
 	isMobile: false,
 	deleteDialog: false,
 	deleteData: null,
