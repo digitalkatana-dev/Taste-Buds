@@ -47,14 +47,49 @@ router.post('/users/signup', async (req, res) => {
 			expiresIn: '10d',
 		});
 
-		res.status(201).json({ success: 'Account created successfully!', token });
+		res
+			.status(201)
+			.json({ success: 'Account created successfully!', user: newUser, token });
 	} catch (err) {
+		console.log('Signup error', err);
 		errors.registration = 'Error creating account, please try again.';
 		return res.status(400).json(errors);
 	}
 });
 // Login
+router.post('/users/signin', async (req, res) => {
+	const { valid, errors } = validateLogin(req?.body);
 
+	if (!valid) return res.status(400).json(errors);
+
+	const { login, password } = req?.body;
+
+	const user = await User.findOne({
+		$or: [{ handle: login }, { email: login }],
+	}).populate('profile');
+
+	if (!user) {
+		errors.login = 'Error, user not found!';
+		return res.status(404).json(errors);
+	}
+
+	try {
+		await user?.comparePassword(password);
+
+		const token = sign({ userId: user?._id }, process.env.DB_SECRET_KEY, {
+			expiresIn: '10d',
+		});
+
+		res.json({
+			success: 'Login successful!',
+			userProfile: user.profile,
+			token,
+		});
+	} catch (err) {
+		errors.login = 'Something went wrong! Please try again.';
+		return res.status(400).json(errors);
+	}
+});
 // Generate Password Token
 
 // Password Reset
@@ -62,3 +97,5 @@ router.post('/users/signup', async (req, res) => {
 // Update User
 
 // Delete User
+
+module.exports = router;

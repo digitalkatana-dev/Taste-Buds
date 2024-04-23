@@ -8,8 +8,12 @@ const TextInput = ({
 	disabled,
 	type,
 	label,
+	placeholder,
 	size,
 	margin,
+	multiline,
+	rows,
+	maxRows,
 	value,
 	onFocus,
 	onChange,
@@ -24,8 +28,12 @@ const TextInput = ({
 				disabled={disabled}
 				type={type}
 				label={label}
+				placeholder={placeholder}
 				size={size}
 				margin={margin}
+				multiline={multiline}
+				rows={rows}
+				maxRows={maxRows}
 				value={value}
 				onFocus={onFocus}
 				onChange={onChange}
