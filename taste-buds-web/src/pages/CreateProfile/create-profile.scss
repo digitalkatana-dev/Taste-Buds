@@ -1,0 +1,27 @@
+.profile-data {
+	form {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+
+		section {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			padding: 20px;
+			gap: 45px;
+			// text-align: start;
+
+			.profile-row {
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				gap: 5px;
+
+				&.alt {
+					justify-content: center;
+				}
+			}
+		}
+	}
+}

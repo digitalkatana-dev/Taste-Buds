@@ -52,7 +52,7 @@ userSchema.virtual('profile', {
 	foreignField: 'user',
 });
 
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function (next) {
 	const user = this;
 	if (!user.isModified('password')) {
 		return next();
@@ -73,7 +73,7 @@ userSchema.pre('save', (next) => {
 	});
 });
 
-userSchema.methods.comparePassword = (candidatePassword) => {
+userSchema.methods.comparePassword = function (candidatePassword) {
 	const user = this;
 
 	return new Promise((resolve, reject) => {
@@ -91,7 +91,7 @@ userSchema.methods.comparePassword = (candidatePassword) => {
 	});
 };
 
-userSchema.methods.createPasswordResetToken = () => {
+userSchema.methods.createPasswordResetToken = function () {
 	const resetToken = randomBytes(32).toString('hex');
 	this.passwordResetToken = createHash('sha256')
 		.update(resetToken)

@@ -1,7 +1,22 @@
-.MuiInputBase-root {
-	border-radius: 40px !important;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
 
-	// input {
-	// 	text-align: center;
-	// }
+.auth-input {
+	.MuiInputBase-root {
+		border-radius: 40px !important;
+	}
+}
+
+.profile-input {
+	.MuiInputBase-root {
+		border-radius: 10px !important;
+
+		// input:hover {
+		// 	border-radius: 10px !important;
+		// 	border: 3px solid black;
+		// }
+	}
 }
