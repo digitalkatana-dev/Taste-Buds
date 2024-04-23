@@ -8,6 +8,7 @@ const TextInput = ({
 	disabled,
 	type,
 	label,
+	variant,
 	placeholder,
 	size,
 	margin,
@@ -28,6 +29,7 @@ const TextInput = ({
 				disabled={disabled}
 				type={type}
 				label={label}
+				variant={variant}
 				placeholder={placeholder}
 				size={size}
 				margin={margin}

@@ -51,7 +51,7 @@ router.post('/users/signup', async (req, res) => {
 			.status(201)
 			.json({ success: 'Account created successfully!', user: newUser, token });
 	} catch (err) {
-		console.log('Signup error', err);
+		console.log('Signup error: ', err);
 		errors.registration = 'Error creating account, please try again.';
 		return res.status(400).json(errors);
 	}
@@ -86,6 +86,7 @@ router.post('/users/signin', async (req, res) => {
 			token,
 		});
 	} catch (err) {
+		console.log('Signin Error: ', err);
 		errors.login = 'Something went wrong! Please try again.';
 		return res.status(400).json(errors);
 	}

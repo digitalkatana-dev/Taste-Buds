@@ -44,3 +44,25 @@ exports.validateLogin = (data) => {
 		valid: Object.keys(errors).length === 0 ? true : false,
 	};
 };
+
+exports.validateProfile = (data) => {
+	let errors = {};
+
+	if (isEmpty(data?.firstName)) errors.firstName = 'Must not be empty!';
+	if (isEmpty(data?.lastName)) errors.lastName = 'Must not be empty!';
+	if (isEmpty(data?.dob?.day)) errors.day = 'Must not be empty!';
+	if (isEmpty(data?.dob?.month)) errors.month = 'Must not be empty!';
+	if (isEmpty(data?.dob?.year)) errors.year = 'Must not be empty!';
+	if (isEmpty(data?.genderIdentity)) errors.identity = 'Must not be empty!';
+	if (isEmpty(data?.genderInterest)) errors.interest = 'Must not be empty!';
+	if (isEmpty(data?.location?.city)) errors.city = 'Must not be empty!';
+	if (isEmpty(data?.location?.state)) errors.stats = 'Must not be empty!';
+	if (isEmpty(data?.location?.postalCode))
+		errors.postalCode = 'Must not be empty!';
+	if (isEmpty(data?.dietType)) errors.diet = 'Must not be empty!';
+
+	return {
+		errors,
+		valid: Object.keys(errors).length === 0 ? true : false,
+	};
+};

@@ -31,7 +31,7 @@ connection.on('error', (err) => {
 
 // app.use(assetRoutes);
 app.use(userRoutes);
-// app.use(profileRoutes);
+app.use(profileRoutes);
 
 const server = http.createServer(app);
 

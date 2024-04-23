@@ -33,6 +33,18 @@ export const signin = createAsyncThunk(
 	}
 );
 
+export const createProfile = createAsyncThunk(
+	'user/create_profile',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.post('/profile/create', data);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
 	loading: false,
@@ -44,9 +56,9 @@ const initialState = userAdapter.getInitialState({
 	firstName: '',
 	lastName: '',
 	dob: {
-		day: null,
-		month: null,
-		year: null,
+		day: '',
+		month: '',
+		year: '',
 	},
 	genderIdentity: '',
 	showGender: false,
@@ -227,6 +239,42 @@ export const userSlice = createSlice({
 				state.errors = null;
 			})
 			.addCase(signin.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(createProfile.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(createProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.user = action.payload.profile;
+				state.errors = null;
+				state.firstName = '';
+				state.lastName = '';
+				state.dob = {
+					day: null,
+					month: null,
+					year: null,
+				};
+				state.genderIdentity = '';
+				state.showGender = false;
+				state.genderInterest = '';
+				state.about = '';
+				state.location = {
+					city: '',
+					state: '',
+					postalCode: '',
+				};
+				state.distancePref = '';
+				state.dietType = '';
+				state.favorites = {
+					foodTypes: [],
+					dish: '',
+				};
+			})
+			.addCase(createProfile.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			});

@@ -5,6 +5,16 @@ const initialState = appAdapter.getInitialState({
 	loading: false,
 	theme: 'light',
 	authType: 'signin',
+	foodTypeOptions: [
+		'Italian',
+		'Thai',
+		'Greek',
+		'American',
+		'Indian',
+		'German',
+		'French',
+		'Mexican',
+	],
 	isMobile: false,
 	deleteDialog: false,
 	deleteData: null,
@@ -21,6 +31,9 @@ export const appSlice = createSlice({
 		},
 		setAuthType: (state, action) => {
 			state.authType = action.payload;
+		},
+		setFoodTypeOptions: (state, action) => {
+			state.foodTypeOptions = action.payload;
 		},
 		setIsMobile: (state, action) => {
 			state.isMobile = action.payload;
@@ -40,6 +53,7 @@ export const appSlice = createSlice({
 export const {
 	setTheme,
 	setAuthType,
+	setFoodTypeOptions,
 	setIsMobile,
 	openDelete,
 	setDeleteData,
