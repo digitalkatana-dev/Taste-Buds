@@ -7,7 +7,8 @@ import {
 	Radio,
 	RadioGroup,
 } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { MuiFileInput } from 'mui-file-input';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -31,6 +32,7 @@ import {
 	clearSuccess,
 } from '../../redux/slices/userSlice';
 import './create-profile.scss';
+import Cropper from 'react-cropper';
 import Nav from '../../components/Nav';
 import TextInput from '../../components/TextInput';
 import TransferList from '../../components/TransferList';
@@ -52,6 +54,10 @@ const CreateProfile = () => {
 		success,
 		errors,
 	} = useSelector((state) => state.user);
+	const [file, setFile] = useState(null);
+	const [preview, setPreview] = useState(null);
+	const [cropped, setCropped] = useState(null);
+	const cropperRef = useRef(null);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -84,6 +90,34 @@ const CreateProfile = () => {
 			dispatch(action(input === 'showGen' ? e.target.checked : e.target.value));
 	};
 
+	const onCrop = () => {
+		const cropper = cropperRef.current?.cropper;
+		setCropped(cropper.getCroppedCanvas());
+	};
+
+	const handleFileChange = (selectedFile) => {
+		setFile(selectedFile);
+
+		if (selectedFile) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				setPreview(reader.result);
+			};
+			reader.readAsDataURL(selectedFile);
+		} else {
+			setPreview(null);
+			setCropped(null);
+		}
+	};
+
+	const handleUploadProfilePic = () => {
+		cropped.toBlob((blob) => {
+			let profilePic = new FormData();
+			profilePic.append('file', blob, file.name);
+			dispatch();
+		});
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const data = {
@@ -107,6 +141,9 @@ const CreateProfile = () => {
 			navigate('/dashboard');
 			setTimeout(() => {
 				dispatch(clearSuccess());
+				setFile(null);
+				setPreview(null);
+				setCropped(null);
 			}, 2000);
 		}
 	}, [success, navigate, dispatch]);
@@ -417,7 +454,26 @@ const CreateProfile = () => {
 						<section>
 							<FormControl>
 								<FormLabel>Profile Picture</FormLabel>
-								<TextInput />
+								<MuiFileInput
+									placeholder='Click to choose profile photo'
+									size='small'
+									margin='dense'
+									value={file}
+									onChange={handleFileChange}
+									fullWidth
+								/>
+								<div className='image-preview-container'>
+									{preview && (
+										<Cropper
+											src={preview}
+											initialAspectRatio={16 / 9}
+											guides={false}
+											background={false}
+											crop={onCrop}
+											ref={cropperRef}
+										/>
+									)}
+								</div>
 							</FormControl>
 						</section>
 					</form>
