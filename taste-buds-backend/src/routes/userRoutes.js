@@ -82,7 +82,7 @@ router.post('/users/signin', async (req, res) => {
 
 		res.json({
 			success: 'Login successful!',
-			userProfile: user.profile,
+			userProfile: user.profile[0],
 			token,
 		});
 	} catch (err) {

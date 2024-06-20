@@ -18,6 +18,7 @@ import {
 	setEmail,
 	setPassword,
 	setConfirmPassword,
+	clearAuthData,
 	clearSuccess,
 	clearErrors,
 } from '../../redux/slices/userSlice';
@@ -40,6 +41,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	const handleClose = () => {
 		setShowDialog(false);
 		dispatch(setAuthType('signin'));
+		dispatch(clearAuthData());
 	};
 
 	const handleFocus = () => {
@@ -63,13 +65,23 @@ const AuthDialog = ({ open, setShowDialog }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = {
-			handle: email,
-			email,
-			password,
-		};
+		let data;
+		if (authType === 'signup') {
+			data = {
+				handle: email,
+				email,
+				password,
+			};
 
-		dispatch(signup(data));
+			dispatch(signup(data));
+		} else if (authType === 'signin') {
+			data = {
+				login,
+				password,
+			};
+
+			dispatch(signin(data));
+		}
 	};
 
 	// const handleDisable = () => {
@@ -117,8 +129,9 @@ const AuthDialog = ({ open, setShowDialog }) => {
 			</DialogTitle>
 			<DialogContent sx={{ padding: '35px' }}>
 				<p>
-					By clicking Log In, you agree to our terms. Learn how we process your
-					data in our Privacy Policy and Cookie Policy.
+					By clicking {authType === 'signin' ? 'Log In' : 'Create Account'}, you
+					agree to our terms. Learn how we process your data in our Privacy
+					Policy and Cookie Policy.
 				</p>
 				<form onSubmit={handleSubmit}>
 					{authType === 'signup' && (

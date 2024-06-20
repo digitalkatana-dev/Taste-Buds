@@ -4,11 +4,11 @@ import {
 	FormControl,
 	FormControlLabel,
 	FormLabel,
+	IconButton,
 	Radio,
 	RadioGroup,
 } from '@mui/material';
-import { MuiFileInput } from 'mui-file-input';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -27,16 +27,18 @@ import {
 	setDistancePref,
 	setDietType,
 	setFavDish,
+	setProfilePhotoPreview,
 	createProfile,
 	clearErrors,
 	clearSuccess,
 } from '../../redux/slices/userSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './create-profile.scss';
-import Cropper from 'react-cropper';
 import Nav from '../../components/Nav';
 import TextInput from '../../components/TextInput';
 import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
+import PhotoUploadDialog from '../../components/PhotoUploadDialog';
 
 const CreateProfile = () => {
 	const {
@@ -51,13 +53,11 @@ const CreateProfile = () => {
 		distancePref,
 		dietType,
 		favorites,
+		profilePhotoPreview,
 		success,
 		errors,
 	} = useSelector((state) => state.user);
-	const [file, setFile] = useState(null);
-	const [preview, setPreview] = useState(null);
-	const [cropped, setCropped] = useState(null);
-	const cropperRef = useRef(null);
+	const [showDialog, setShowDialog] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -90,32 +90,13 @@ const CreateProfile = () => {
 			dispatch(action(input === 'showGen' ? e.target.checked : e.target.value));
 	};
 
-	const onCrop = () => {
-		const cropper = cropperRef.current?.cropper;
-		setCropped(cropper.getCroppedCanvas());
+	const handleChooseProfilePhoto = (e) => {
+		e.preventDefault();
+		setShowDialog(true);
 	};
 
-	const handleFileChange = (selectedFile) => {
-		setFile(selectedFile);
-
-		if (selectedFile) {
-			const reader = new FileReader();
-			reader.onload = () => {
-				setPreview(reader.result);
-			};
-			reader.readAsDataURL(selectedFile);
-		} else {
-			setPreview(null);
-			setCropped(null);
-		}
-	};
-
-	const handleUploadProfilePic = () => {
-		cropped.toBlob((blob) => {
-			let profilePic = new FormData();
-			profilePic.append('file', blob, file.name);
-			dispatch();
-		});
+	const handleClearPhotoPreview = () => {
+		dispatch(setProfilePhotoPreview(null));
 	};
 
 	const handleSubmit = (e) => {
@@ -141,9 +122,6 @@ const CreateProfile = () => {
 			navigate('/dashboard');
 			setTimeout(() => {
 				dispatch(clearSuccess());
-				setFile(null);
-				setPreview(null);
-				setCropped(null);
 			}, 2000);
 		}
 	}, [success, navigate, dispatch]);
@@ -452,26 +430,26 @@ const CreateProfile = () => {
 							</Button>
 						</section>
 						<section>
+							<Button onClick={handleChooseProfilePhoto}>
+								Choose Profile Photo
+							</Button>
+							<PhotoUploadDialog
+								open={showDialog}
+								setShowDialog={setShowDialog}
+							/>
 							<FormControl>
-								<FormLabel>Profile Picture</FormLabel>
-								<MuiFileInput
-									placeholder='Click to choose profile photo'
-									size='small'
-									margin='dense'
-									value={file}
-									onChange={handleFileChange}
-									fullWidth
-								/>
-								<div className='image-preview-container'>
-									{preview && (
-										<Cropper
-											src={preview}
-											initialAspectRatio={16 / 9}
-											guides={false}
-											background={false}
-											crop={onCrop}
-											ref={cropperRef}
-										/>
+								<div id='image-preview-container'>
+									{profilePhotoPreview && (
+										<>
+											<IconButton
+												sx={{ position: 'absolute', top: 10, right: 10 }}
+												className='del-photo-btn'
+												onClick={handleClearPhotoPreview}
+											>
+												<DeleteIcon className='delete-icon' />
+											</IconButton>
+											<img src={profilePhotoPreview} alt='' />
+										</>
 									)}
 								</div>
 							</FormControl>

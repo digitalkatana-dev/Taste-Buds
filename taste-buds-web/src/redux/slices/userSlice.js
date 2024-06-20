@@ -75,6 +75,7 @@ const initialState = userAdapter.getInitialState({
 		foodTypes: [],
 		dish: '',
 	},
+	profilePhotoPreview: null,
 	communication: {
 		email: true,
 		sms: false,
@@ -151,6 +152,16 @@ export const userSlice = createSlice({
 		setFavDish: (state, action) => {
 			state.favorites.dish = action.payload;
 		},
+		setProfilePhotoPreview: (state, action) => {
+			state.profilePhotoPreview = action.payload;
+		},
+		clearAuthData: (state) => {
+			state.login = '';
+			state.username = '';
+			state.email = '';
+			state.password = '';
+			state.confirmPassword = '';
+		},
 		clearUser: (state) => {
 			state.firstName = '';
 			state.lastName = '';
@@ -194,6 +205,7 @@ export const userSlice = createSlice({
 				home: '',
 				work: '',
 			};
+			state.profilePhotoPreview = null;
 			state.communication = {
 				email: true,
 				sms: false,
@@ -273,6 +285,7 @@ export const userSlice = createSlice({
 					foodTypes: [],
 					dish: '',
 				};
+				state.profilePhotoPreview = null;
 			})
 			.addCase(createProfile.rejected, (state, action) => {
 				state.loading = false;
@@ -302,6 +315,8 @@ export const {
 	setDietType,
 	setFavFoodTypes,
 	setFavDish,
+	setProfilePhotoPreview,
+	clearAuthData,
 	clearUser,
 	clearSuccess,
 	clearErrors,

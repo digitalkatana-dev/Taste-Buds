@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthType } from '../../redux/slices/appSlice';
+import { logout } from '../../redux/slices/userSlice';
 import './home.scss';
 import Nav from '../../components/Nav';
 import Button from '../../components/Button';
@@ -12,8 +13,12 @@ const Home = () => {
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
-		dispatch(setAuthType('signup'));
-		setShowDialog(true);
+		if (user) {
+			dispatch(logout());
+		} else {
+			dispatch(setAuthType('signup'));
+			setShowDialog(true);
+		}
 	};
 
 	return (

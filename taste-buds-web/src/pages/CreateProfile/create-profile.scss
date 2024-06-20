@@ -26,12 +26,22 @@
 				}
 			}
 
-			.image-preview-container {
+			#image-preview-container {
 				width: 100%;
-				// max-width: 480px;
-				height: 75vh;
-				// display: block;
-				border: 2px solid purple;
+				display: block;
+				position: relative;
+
+				.del-photo-btn {
+					background-color: rgba($color: #000000, $alpha: 0.8);
+
+					.delete-icon {
+						color: red;
+					}
+				}
+
+				img {
+					width: 100%;
+				}
 			}
 		}
 	}
