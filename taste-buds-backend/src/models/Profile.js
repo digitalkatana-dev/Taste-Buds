@@ -88,7 +88,10 @@ const profileSchema = new Schema(
 		imageUrl2: {
 			type: String,
 		},
-		coverPhoto: {
+		imageUrl3: {
+			type: String,
+		},
+		profilePhoto: {
 			type: String,
 		},
 		user: {

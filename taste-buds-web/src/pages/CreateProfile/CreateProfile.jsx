@@ -101,19 +101,36 @@ const CreateProfile = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = {
-			firstName,
-			lastName,
-			dob,
-			genderIdentity,
-			showGender,
-			genderInterest,
-			location,
-			distancePref,
-			about,
-			dietType,
-			favorites,
-		};
+		let data;
+		if (profilePhotoPreview) {
+			data = new FormData();
+			data.append('firstName', firstName);
+			data.append('lastName', lastName);
+			data.append('dob', JSON.stringify(dob));
+			data.append('genderIdentity', genderIdentity);
+			data.append('showGender', showGender);
+			data.append('genderInterest', genderInterest);
+			data.append('location', JSON.stringify(location));
+			data.append('distancePref', distancePref);
+			data.append('about', about);
+			data.append('dietType', dietType);
+			data.append('favorites', JSON.stringify(favorites));
+			data.append('b64str', profilePhotoPreview);
+		} else {
+			data = {
+				firstName,
+				lastName,
+				dob,
+				genderIdentity,
+				showGender,
+				genderInterest,
+				location,
+				distancePref,
+				about,
+				dietType,
+				favorites,
+			};
+		}
 		dispatch(createProfile(data));
 	};
 
