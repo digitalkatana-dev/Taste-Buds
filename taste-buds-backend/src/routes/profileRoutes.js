@@ -45,7 +45,7 @@ const cloudinaryUpload = async (fileToUpload) => {
 
 // Create
 router.post(
-	'/profile/create',
+	'/profiles/create',
 	requireAuth,
 	upload.single('file'),
 	async (req, res) => {
@@ -95,5 +95,18 @@ router.post(
 		}
 	}
 );
+
+// Read
+router.get('/profiles', requireAuth, async (req, res) => {
+	let errors = {};
+
+	try {
+		const profiles = await Profile.find();
+		res.status(201).json(profiles);
+	} catch (err) {
+		errors.profiles = 'Error getting profiles';
+		return res.status(400).json(errors);
+	}
+});
 
 module.exports = router;

@@ -15,7 +15,7 @@ const App = () => {
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route
-						path='/create-profile'
+						path='/onboarding'
 						element={<ProtectedRoute element={<CreateProfile />} />}
 					/>
 					<Route

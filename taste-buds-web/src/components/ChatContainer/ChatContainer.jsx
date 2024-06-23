@@ -1,8 +1,8 @@
 import React from 'react';
-import './chatContainer.scss';
 import ChatHeader from '../ChatHeader';
 import MatchDisplay from '../MatchDisplay';
 import ChatDisplay from '../ChatDisplay';
+import './container.scss';
 
 const ChatContainer = () => {
 	return (

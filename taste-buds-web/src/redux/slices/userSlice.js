@@ -37,7 +37,7 @@ export const createProfile = createAsyncThunk(
 	'user/create_profile',
 	async (data, { rejectWithValue }) => {
 		try {
-			const res = await budsApi.post('/profile/create', data);
+			const res = await budsApi.post('/profiles/create', data);
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);

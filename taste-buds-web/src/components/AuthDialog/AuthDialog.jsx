@@ -105,13 +105,16 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	// };
 
 	const handleNavigation = useCallback(() => {
-		if (success && success === 'Account created successfully!') {
-			navigate('/create-profile');
-			setTimeout(() => {
-				dispatch(clearSuccess());
-			}, 2000);
+		if (success && authType === 'signup') {
+			navigate('/onboarding');
+		} else if (success && authType === 'signin') {
+			navigate('/dashboard');
 		}
-	}, [success, navigate, dispatch]);
+		setTimeout(() => {
+			dispatch(clearSuccess());
+			dispatch(setAuthType('signin'));
+		}, 2000);
+	}, [success, authType, navigate, dispatch]);
 
 	useEffect(() => {
 		handleNavigation();

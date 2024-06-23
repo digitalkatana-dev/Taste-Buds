@@ -1,7 +1,16 @@
-import React from 'react';
-import './chatHeader.scss';
+import { IconButton } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/userSlice';
+import LogoutIcon from '@mui/icons-material/Logout';
+import './header.scss';
 
 const ChatHeader = () => {
+	const dispatch = useDispatch();
+
+	const handleLogout = () => {
+		dispatch(logout());
+	};
+
 	return (
 		<div id='chat-header'>
 			<div className='profile'>
@@ -10,7 +19,9 @@ const ChatHeader = () => {
 				</div>
 				<h3>UserName</h3>
 			</div>
-			<i className='log-out'>⬅️</i>
+			<IconButton className='log-out' onClick={handleLogout}>
+				<LogoutIcon fontSize='small' />
+			</IconButton>
 		</div>
 	);
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './chatInput.scss';
+import './input.scss';
 
 const ChatInput = () => {
 	const [textArea, setTextArea] = useState(null);
