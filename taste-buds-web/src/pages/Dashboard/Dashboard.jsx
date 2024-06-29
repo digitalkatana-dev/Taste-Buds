@@ -1,35 +1,17 @@
 import { Container } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGenderedBuds } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import ChatContainer from '../../components/ChatContainer';
 
-const db = [
-	{
-		name: 'Richard Hendricks',
-		url: './img/richard.jpg',
-	},
-	{
-		name: 'Erlich Bachman',
-		url: 'https://res.cloudinary.com/dk9gbz4ag/image/upload/v1712357804/file_vikl2k.png',
-	},
-	{
-		name: 'Monica Hall',
-		url: './img/monica.jpg',
-	},
-	{
-		name: 'Jared Dunn',
-		url: './img/jared.jpg',
-	},
-	{
-		name: 'Dinesh Chugtai',
-		url: './img/dinesh.jpg',
-	},
-];
-
 const Dashboard = () => {
-	const characters = db;
 	const [lastDirection, setLastDirection] = useState();
+	const { user, allUsers } = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+
+	// const sanitizedUsers = allUsers?.filter((bud) => bud.user !== user.user);
 
 	const swiped = (direction, nameToDelete) => {
 		console.log('removing: ' + nameToDelete);
@@ -40,23 +22,37 @@ const Dashboard = () => {
 		console.log(name + ' left the screen!');
 	};
 
+	const handleGetUsers = useCallback(() => {
+		dispatch(getGenderedBuds(user?.genderInterest));
+	}, [dispatch, user]);
+
+	useEffect(() => {
+		handleGetUsers();
+	}, [user, handleGetUsers]);
+
+	// console.log('Sanitized', sanitizedUsers);
+
 	return (
 		<Container id='dashboard' maxWidth='lg'>
 			<ChatContainer />
 			<div className='swipe-container'>
 				<div className='card-container'>
-					{characters.map((character) => (
+					{allUsers?.map((bud) => (
 						<TinderCard
 							className='swipe'
-							key={character.name}
-							onSwipe={(dir) => swiped(dir, character.name)}
-							onCardLeftScreen={() => outOfFrame(character.name)}
+							key={bud._id}
+							onSwipe={(dir) =>
+								swiped(dir, `${bud.firstName + ' ' + bud.lastName}`)
+							}
+							onCardLeftScreen={() =>
+								outOfFrame(`${bud.firstName + ' ' + bud.lastName}`)
+							}
 						>
 							<div
-								style={{ backgroundImage: 'url(' + character.url + ')' }}
+								style={{ backgroundImage: 'url(' + bud.profilePhoto + ')' }}
 								className='card'
 							>
-								<h3>{character.name}</h3>
+								<h3>{bud.firstName + ' ' + bud.lastName}</h3>
 							</div>
 						</TinderCard>
 					))}

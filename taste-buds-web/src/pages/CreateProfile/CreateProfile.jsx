@@ -11,6 +11,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { resetOptions } from '../../redux/slices/appSlice';
 import {
 	setFirstName,
 	setLastName,
@@ -139,6 +140,7 @@ const CreateProfile = () => {
 			navigate('/dashboard');
 			setTimeout(() => {
 				dispatch(clearSuccess());
+				dispatch(resetOptions());
 			}, 2000);
 		}
 	}, [success, navigate, dispatch]);

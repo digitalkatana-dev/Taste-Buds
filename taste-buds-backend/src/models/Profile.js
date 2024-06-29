@@ -12,6 +12,10 @@ const profileSchema = new Schema(
 			required: [true, 'Last name is required'],
 			trim: true,
 		},
+		handle: {
+			type: String,
+			required: [true, 'Handle is required'],
+		},
 		dob: {
 			day: {
 				type: Number,

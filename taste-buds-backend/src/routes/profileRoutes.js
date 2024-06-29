@@ -68,6 +68,7 @@ router.post(
 				const uploadedImage = await cloudinaryUpload(b64str);
 				newProfileData = {
 					...others,
+					handle: req?.user?.handle,
 					dob: JSON.parse(dob),
 					location: JSON.parse(location),
 					favorites: JSON.parse(favorites),
@@ -99,9 +100,28 @@ router.post(
 // Read
 router.get('/profiles', requireAuth, async (req, res) => {
 	let errors = {};
+	const hasGender = req?.query?.gender;
+	const hasFood = req?.query?.food;
+	const hasHandle = req?.query?.handle;
+	const hasId = req?.query?.id;
 
 	try {
-		const profiles = await Profile.find();
+		let profiles;
+
+		if (hasGender) {
+			if (hasGender === 'everyone') {
+				profiles = await Profile.find({});
+			} else {
+				profiles = await Profile.find({ genderIdentity: hasGender });
+			}
+		} else if (hasFood) {
+			profiles = await Profile.find({ favorites: hasFood });
+		} else if (hasId) {
+			profiles = await Profile.findById(hasId);
+		} else {
+			profiles = await Profile.find({});
+		}
+
 		res.status(201).json(profiles);
 	} catch (err) {
 		errors.profiles = 'Error getting profiles';

@@ -15,6 +15,7 @@ import {
 	signup,
 	signin,
 	setLogin,
+	setHandle,
 	setEmail,
 	setPassword,
 	setConfirmPassword,
@@ -31,7 +32,7 @@ import TextInput from '../TextInput';
 
 const AuthDialog = ({ open, setShowDialog }) => {
 	const { authType } = useSelector((state) => state.app);
-	const { login, email, password, confirmPassword, success, errors } =
+	const { login, handle, email, password, confirmPassword, success, errors } =
 		useSelector((state) => state.user);
 	const [show, setShow] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -51,6 +52,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	const handleChange = (e, input) => {
 		const action_map = {
 			email: setEmail,
+			handle: setHandle,
 			login: setLogin,
 			password: setPassword,
 			confirm: setConfirmPassword,
@@ -68,7 +70,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 		let data;
 		if (authType === 'signup') {
 			data = {
-				handle: email,
+				handle,
 				email,
 				password,
 			};
@@ -105,15 +107,17 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	// };
 
 	const handleNavigation = useCallback(() => {
-		if (success && authType === 'signup') {
-			navigate('/onboarding');
-		} else if (success && authType === 'signin') {
-			navigate('/dashboard');
+		if (success) {
+			if (authType === 'signup') {
+				navigate('/onboarding');
+			} else if (authType === 'signin') {
+				navigate('/dashboard');
+			}
+			setTimeout(() => {
+				dispatch(clearSuccess());
+				dispatch(setAuthType('signin'));
+			}, 2000);
 		}
-		setTimeout(() => {
-			dispatch(clearSuccess());
-			dispatch(setAuthType('signin'));
-		}, 2000);
 	}, [success, authType, navigate, dispatch]);
 
 	useEffect(() => {
@@ -138,18 +142,31 @@ const AuthDialog = ({ open, setShowDialog }) => {
 				</p>
 				<form onSubmit={handleSubmit}>
 					{authType === 'signup' && (
-						<TextInput
-							fullWidth
-							className='auth-input'
-							type='email'
-							label='Email'
-							size='small'
-							margin='dense'
-							value={email}
-							onFocus={handleFocus}
-							onChange={(e) => handleChange(e, 'email')}
-							error={errors?.email}
-						/>
+						<>
+							<TextInput
+								fullWidth
+								className='auth-input'
+								type='email'
+								label='Email'
+								size='small'
+								margin='dense'
+								value={email}
+								onFocus={handleFocus}
+								onChange={(e) => handleChange(e, 'email')}
+								error={errors?.email}
+							/>
+							<TextInput
+								fullWidth
+								className='auth-input'
+								label='Handle'
+								size='small'
+								margin='dense'
+								value={handle}
+								onFocus={handleFocus}
+								onChange={(e) => handleChange(e, 'handle')}
+								error={errors?.handle}
+							/>
+						</>
 					)}
 					{authType === 'signin' && (
 						<TextInput

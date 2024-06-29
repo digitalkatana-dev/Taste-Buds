@@ -6,7 +6,7 @@ import {
 import budsApi from '../../api/budsApi';
 
 export const signup = createAsyncThunk(
-	'user/signup',
+	'users/signup',
 	async (data, { rejectWithValue }) => {
 		try {
 			const res = await budsApi.post('/users/signup', data);
@@ -20,7 +20,7 @@ export const signup = createAsyncThunk(
 );
 
 export const signin = createAsyncThunk(
-	'user/signin',
+	'users/signin',
 	async (data, { rejectWithValue }) => {
 		try {
 			const res = await budsApi.post('/users/signin', data);
@@ -34,10 +34,34 @@ export const signin = createAsyncThunk(
 );
 
 export const createProfile = createAsyncThunk(
-	'user/create_profile',
+	'users/create_profile',
 	async (data, { rejectWithValue }) => {
 		try {
 			const res = await budsApi.post('/profiles/create', data);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const getBuds = createAsyncThunk(
+	'users/get_all',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get('/profiles');
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const getGenderedBuds = createAsyncThunk(
+	'users/get_gendered',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get(`/profiles/?gender=${data}`);
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
@@ -49,7 +73,7 @@ export const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
 	loading: false,
 	login: '',
-	username: '',
+	handle: '',
 	email: '',
 	password: '',
 	confirmPassword: '',
@@ -94,6 +118,9 @@ export const userSlice = createSlice({
 	reducers: {
 		setLogin: (state, action) => {
 			state.login = action.payload;
+		},
+		setHandle: (state, action) => {
+			state.handle = action.payload;
 		},
 		setEmail: (state, action) => {
 			state.email = action.payload;
@@ -157,7 +184,7 @@ export const userSlice = createSlice({
 		},
 		clearAuthData: (state) => {
 			state.login = '';
-			state.username = '';
+			state.handle = '';
 			state.email = '';
 			state.password = '';
 			state.confirmPassword = '';
@@ -165,7 +192,7 @@ export const userSlice = createSlice({
 		clearUser: (state) => {
 			state.firstName = '';
 			state.lastName = '';
-			state.username = '';
+			state.handle = '';
 			state.email = '';
 			state.phone = {
 				mobile: '',
@@ -196,7 +223,7 @@ export const userSlice = createSlice({
 			state.login = '';
 			state.firstName = '';
 			state.lastName = '';
-			state.username = '';
+			state.handle = '';
 			state.email = '';
 			state.password = '';
 			state.confirmPassword = '';
@@ -229,6 +256,7 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.success = action.payload.success;
 				state.user = action.payload.user;
+				state.handle = '';
 				state.email = '';
 				state.password = '';
 				state.confirmPassword = '';
@@ -290,12 +318,37 @@ export const userSlice = createSlice({
 			.addCase(createProfile.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
+			})
+			.addCase(getBuds.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getBuds.fulfilled, (state, action) => {
+				state.loading = false;
+				state.allUsers = action.payload;
+			})
+			.addCase(getBuds.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(getGenderedBuds.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getGenderedBuds.fulfilled, (state, action) => {
+				state.loading = false;
+				state.allUsers = action.payload;
+			})
+			.addCase(getGenderedBuds.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
 			});
 	},
 });
 
 export const {
 	setLogin,
+	setHandle,
 	setEmail,
 	setPassword,
 	setConfirmPassword,
