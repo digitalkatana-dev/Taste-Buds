@@ -122,7 +122,13 @@ router.get('/profiles', requireAuth, async (req, res) => {
 			profiles = await Profile.find({});
 		}
 
-		res.status(201).json(profiles);
+		const active = req?.user._id;
+
+		const sanitizedProfiles = profiles.filter(
+			(item) => item.user.toString() !== active.toString()
+		);
+
+		res.status(201).json(sanitizedProfiles);
 	} catch (err) {
 		errors.profiles = 'Error getting profiles';
 		return res.status(400).json(errors);

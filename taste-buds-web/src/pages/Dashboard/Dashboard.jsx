@@ -11,8 +11,6 @@ const Dashboard = () => {
 	const { user, allUsers } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
-	// const sanitizedUsers = allUsers?.filter((bud) => bud.user !== user.user);
-
 	const swiped = (direction, nameToDelete) => {
 		console.log('removing: ' + nameToDelete);
 		setLastDirection(direction);
@@ -30,32 +28,38 @@ const Dashboard = () => {
 		handleGetUsers();
 	}, [user, handleGetUsers]);
 
-	// console.log('Sanitized', sanitizedUsers);
-
 	return (
 		<Container id='dashboard' maxWidth='lg'>
 			<ChatContainer />
 			<div className='swipe-container'>
 				<div className='card-container'>
-					{allUsers?.map((bud) => (
-						<TinderCard
-							className='swipe'
-							key={bud._id}
-							onSwipe={(dir) =>
-								swiped(dir, `${bud.firstName + ' ' + bud.lastName}`)
-							}
-							onCardLeftScreen={() =>
-								outOfFrame(`${bud.firstName + ' ' + bud.lastName}`)
-							}
-						>
-							<div
-								style={{ backgroundImage: 'url(' + bud.profilePhoto + ')' }}
-								className='card'
+					{allUsers?.map((item) => {
+						const name = `${item.firstName} ${item.lastName}`;
+						const favFoodTypes = item.favorites.foodTypes;
+						const favDish = item.favorites.dish;
+
+						return (
+							<TinderCard
+								className='swipe'
+								key={item._id}
+								onSwipe={(dir) => swiped(dir, name)}
+								onCardLeftScreen={() => outOfFrame(name)}
 							>
-								<h3>{bud.firstName + ' ' + bud.lastName}</h3>
-							</div>
-						</TinderCard>
-					))}
+								<div className='card'>
+									<img src={item.profilePhoto} alt={name} />
+									<div className='card-overlay'>
+										<h3>{name}</h3>
+										<div className='food-type-block'>
+											{favFoodTypes.map((type) => (
+												<h3 key={favFoodTypes.indexOf(type)}>{type}</h3>
+											))}
+										</div>
+										<h3>Favorite Dish: {favDish}</h3>
+									</div>
+								</div>
+							</TinderCard>
+						);
+					})}
 				</div>
 				{lastDirection && (
 					<h2 className='info-text'>You swiped {lastDirection}</h2>
