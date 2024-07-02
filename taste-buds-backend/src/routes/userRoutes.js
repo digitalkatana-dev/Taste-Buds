@@ -74,7 +74,9 @@ router.post('/users/signin', async (req, res) => {
 
 	const user = await User.findOne({
 		$or: [{ handle: login }, { email: login }],
-	}).populate('profile');
+	})
+		.populate('profile')
+		.populate({ path: 'profile', populate: { path: 'matches' } });
 
 	if (!user) {
 		errors.login = 'Error, user not found!';

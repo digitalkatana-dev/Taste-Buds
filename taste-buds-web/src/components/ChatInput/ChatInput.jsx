@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './input.scss';
 
 const ChatInput = () => {
-	const [textArea, setTextArea] = useState(null);
+	const [textArea, setTextArea] = useState('');
 
 	return (
 		<div id='chat-input'>

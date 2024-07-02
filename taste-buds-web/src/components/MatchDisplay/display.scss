@@ -1,0 +1,24 @@
+#match-display {
+	display: flex;
+	gap: 10px;
+	padding: 0 5px;
+
+	.match-card {
+		width: fit-content;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.img-container {
+			width: 30px;
+			height: 30px;
+			border-radius: 15px;
+			overflow: hidden;
+			margin: 10px;
+
+			img {
+				width: 100%;
+			}
+		}
+	}
+}

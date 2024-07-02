@@ -79,7 +79,7 @@ const profileSchema = new Schema(
 		matches: [
 			{
 				type: Schema.Types.ObjectId,
-				ref: 'User',
+				ref: 'Profile',
 			},
 		],
 		avatar: {

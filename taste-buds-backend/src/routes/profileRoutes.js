@@ -110,16 +110,18 @@ router.get('/profiles', requireAuth, async (req, res) => {
 
 		if (hasGender) {
 			if (hasGender === 'everyone') {
-				profiles = await Profile.find({});
+				profiles = await Profile.find({}).populate('matches');
 			} else {
-				profiles = await Profile.find({ genderIdentity: hasGender });
+				profiles = await Profile.find({ genderIdentity: hasGender }).populate(
+					'matches'
+				);
 			}
 		} else if (hasFood) {
-			profiles = await Profile.find({ favorites: hasFood });
+			profiles = await Profile.find({ favorites: hasFood }).populate('matches');
 		} else if (hasId) {
-			profiles = await Profile.findById(hasId);
+			profiles = await Profile.findById(hasId).populate('matches');
 		} else {
-			profiles = await Profile.find({});
+			profiles = await Profile.find({}).populate('matches');
 		}
 
 		const active = req?.user._id;
@@ -156,7 +158,7 @@ router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 			{
 				new: true,
 			}
-		);
+		).populate('matches');
 
 		if (!updatedProfile) {
 			errors.profiles = 'Error, profile not found!';
