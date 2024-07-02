@@ -15,9 +15,11 @@ import {
 	signup,
 	signin,
 	setLogin,
+	setHandle,
 	setEmail,
 	setPassword,
 	setConfirmPassword,
+	clearAuthData,
 	clearSuccess,
 	clearErrors,
 } from '../../redux/slices/userSlice';
@@ -30,7 +32,7 @@ import TextInput from '../TextInput';
 
 const AuthDialog = ({ open, setShowDialog }) => {
 	const { authType } = useSelector((state) => state.app);
-	const { login, email, password, confirmPassword, success, errors } =
+	const { login, handle, email, password, confirmPassword, success, errors } =
 		useSelector((state) => state.user);
 	const [show, setShow] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -40,6 +42,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	const handleClose = () => {
 		setShowDialog(false);
 		dispatch(setAuthType('signin'));
+		dispatch(clearAuthData());
 	};
 
 	const handleFocus = () => {
@@ -49,6 +52,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	const handleChange = (e, input) => {
 		const action_map = {
 			email: setEmail,
+			handle: setHandle,
 			login: setLogin,
 			password: setPassword,
 			confirm: setConfirmPassword,
@@ -63,13 +67,23 @@ const AuthDialog = ({ open, setShowDialog }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = {
-			handle: email,
-			email,
-			password,
-		};
+		let data;
+		if (authType === 'signup') {
+			data = {
+				handle,
+				email,
+				password,
+			};
 
-		dispatch(signup(data));
+			dispatch(signup(data));
+		} else if (authType === 'signin') {
+			data = {
+				login,
+				password,
+			};
+
+			dispatch(signin(data));
+		}
 	};
 
 	// const handleDisable = () => {
@@ -93,13 +107,18 @@ const AuthDialog = ({ open, setShowDialog }) => {
 	// };
 
 	const handleNavigation = useCallback(() => {
-		if (success && success === 'Account created successfully!') {
-			navigate('/create-profile');
+		if (success) {
+			if (authType === 'signup') {
+				navigate('/onboarding');
+			} else if (authType === 'signin') {
+				navigate('/dashboard');
+			}
 			setTimeout(() => {
 				dispatch(clearSuccess());
+				dispatch(setAuthType('signin'));
 			}, 2000);
 		}
-	}, [success, navigate, dispatch]);
+	}, [success, authType, navigate, dispatch]);
 
 	useEffect(() => {
 		handleNavigation();
@@ -117,23 +136,37 @@ const AuthDialog = ({ open, setShowDialog }) => {
 			</DialogTitle>
 			<DialogContent sx={{ padding: '35px' }}>
 				<p>
-					By clicking Log In, you agree to our terms. Learn how we process your
-					data in our Privacy Policy and Cookie Policy.
+					By clicking {authType === 'signin' ? 'Log In' : 'Create Account'}, you
+					agree to our terms. Learn how we process your data in our Privacy
+					Policy and Cookie Policy.
 				</p>
 				<form onSubmit={handleSubmit}>
 					{authType === 'signup' && (
-						<TextInput
-							fullWidth
-							className='auth-input'
-							type='email'
-							label='Email'
-							size='small'
-							margin='dense'
-							value={email}
-							onFocus={handleFocus}
-							onChange={(e) => handleChange(e, 'email')}
-							error={errors?.email}
-						/>
+						<>
+							<TextInput
+								fullWidth
+								className='auth-input'
+								type='email'
+								label='Email'
+								size='small'
+								margin='dense'
+								value={email}
+								onFocus={handleFocus}
+								onChange={(e) => handleChange(e, 'email')}
+								error={errors?.email}
+							/>
+							<TextInput
+								fullWidth
+								className='auth-input'
+								label='Handle'
+								size='small'
+								margin='dense'
+								value={handle}
+								onFocus={handleFocus}
+								onChange={(e) => handleChange(e, 'handle')}
+								error={errors?.handle}
+							/>
+						</>
 					)}
 					{authType === 'signin' && (
 						<TextInput

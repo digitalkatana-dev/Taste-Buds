@@ -47,6 +47,18 @@ export const appSlice = createSlice({
 		setContentDialog: (state, action) => {
 			state.contentDialog = action.payload;
 		},
+		resetOptions: (state) => {
+			state.foodTypeOptions = [
+				'Italian',
+				'Thai',
+				'Greek',
+				'American',
+				'Indian',
+				'German',
+				'French',
+				'Mexican',
+			];
+		},
 	},
 });
 
@@ -58,6 +70,7 @@ export const {
 	openDelete,
 	setDeleteData,
 	setContentDialog,
+	resetOptions,
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -47,9 +47,17 @@ router.post('/users/signup', async (req, res) => {
 			expiresIn: '10d',
 		});
 
-		res
-			.status(201)
-			.json({ success: 'Account created successfully!', user: newUser, token });
+		const sanitizedUser = {
+			handle: newUser.handle,
+			email: newUser.email,
+			role: newUser.role,
+		};
+
+		res.status(201).json({
+			success: 'Account created successfully!',
+			user: sanitizedUser,
+			token,
+		});
 	} catch (err) {
 		console.log('Signup error: ', err);
 		errors.registration = 'Error creating account, please try again.';

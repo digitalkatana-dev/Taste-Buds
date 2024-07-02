@@ -4,12 +4,14 @@ import {
 	FormControl,
 	FormControlLabel,
 	FormLabel,
+	IconButton,
 	Radio,
 	RadioGroup,
 } from '@mui/material';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { resetOptions } from '../../redux/slices/appSlice';
 import {
 	setFirstName,
 	setLastName,
@@ -26,15 +28,18 @@ import {
 	setDistancePref,
 	setDietType,
 	setFavDish,
+	setProfilePhotoPreview,
 	createProfile,
 	clearErrors,
 	clearSuccess,
 } from '../../redux/slices/userSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './create-profile.scss';
 import Nav from '../../components/Nav';
 import TextInput from '../../components/TextInput';
 import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
+import PhotoUploadDialog from '../../components/PhotoUploadDialog';
 
 const CreateProfile = () => {
 	const {
@@ -49,9 +54,11 @@ const CreateProfile = () => {
 		distancePref,
 		dietType,
 		favorites,
+		profilePhotoPreview,
 		success,
 		errors,
 	} = useSelector((state) => state.user);
+	const [showDialog, setShowDialog] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -84,21 +91,47 @@ const CreateProfile = () => {
 			dispatch(action(input === 'showGen' ? e.target.checked : e.target.value));
 	};
 
+	const handleChooseProfilePhoto = (e) => {
+		e.preventDefault();
+		setShowDialog(true);
+	};
+
+	const handleClearPhotoPreview = () => {
+		dispatch(setProfilePhotoPreview(null));
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const data = {
-			firstName,
-			lastName,
-			dob,
-			genderIdentity,
-			showGender,
-			genderInterest,
-			location,
-			distancePref,
-			about,
-			dietType,
-			favorites,
-		};
+		let data;
+		if (profilePhotoPreview) {
+			data = new FormData();
+			data.append('firstName', firstName);
+			data.append('lastName', lastName);
+			data.append('dob', JSON.stringify(dob));
+			data.append('genderIdentity', genderIdentity);
+			data.append('showGender', showGender);
+			data.append('genderInterest', genderInterest);
+			data.append('location', JSON.stringify(location));
+			data.append('distancePref', distancePref);
+			data.append('about', about);
+			data.append('dietType', dietType);
+			data.append('favorites', JSON.stringify(favorites));
+			data.append('b64str', profilePhotoPreview);
+		} else {
+			data = {
+				firstName,
+				lastName,
+				dob,
+				genderIdentity,
+				showGender,
+				genderInterest,
+				location,
+				distancePref,
+				about,
+				dietType,
+				favorites,
+			};
+		}
 		dispatch(createProfile(data));
 	};
 
@@ -107,6 +140,7 @@ const CreateProfile = () => {
 			navigate('/dashboard');
 			setTimeout(() => {
 				dispatch(clearSuccess());
+				dispatch(resetOptions());
 			}, 2000);
 		}
 	}, [success, navigate, dispatch]);
@@ -415,9 +449,28 @@ const CreateProfile = () => {
 							</Button>
 						</section>
 						<section>
+							<Button onClick={handleChooseProfilePhoto}>
+								Choose Profile Photo
+							</Button>
+							<PhotoUploadDialog
+								open={showDialog}
+								setShowDialog={setShowDialog}
+							/>
 							<FormControl>
-								<FormLabel>Profile Picture</FormLabel>
-								<TextInput />
+								<div id='image-preview-container'>
+									{profilePhotoPreview && (
+										<>
+											<IconButton
+												sx={{ position: 'absolute', top: 10, right: 10 }}
+												className='del-photo-btn'
+												onClick={handleClearPhotoPreview}
+											>
+												<DeleteIcon className='delete-icon' />
+											</IconButton>
+											<img src={profilePhotoPreview} alt='' />
+										</>
+									)}
+								</div>
 							</FormControl>
 						</section>
 					</form>

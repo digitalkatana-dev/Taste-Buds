@@ -12,6 +12,10 @@ const profileSchema = new Schema(
 			required: [true, 'Last name is required'],
 			trim: true,
 		},
+		handle: {
+			type: String,
+			required: [true, 'Handle is required'],
+		},
 		dob: {
 			day: {
 				type: Number,
@@ -72,7 +76,7 @@ const profileSchema = new Schema(
 				type: String,
 			},
 		},
-		buds: [
+		matches: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: 'User',
@@ -88,7 +92,10 @@ const profileSchema = new Schema(
 		imageUrl2: {
 			type: String,
 		},
-		coverPhoto: {
+		imageUrl3: {
+			type: String,
+		},
+		profilePhoto: {
 			type: String,
 		},
 		user: {
