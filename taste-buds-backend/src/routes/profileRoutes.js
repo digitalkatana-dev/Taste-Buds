@@ -123,14 +123,49 @@ router.get('/profiles', requireAuth, async (req, res) => {
 		}
 
 		const active = req?.user._id;
+		const activeProfile = await Profile.findOne({ user: req?.user?._id });
+		const apMatches = activeProfile?.matches;
+		const matchedIds = apMatches.map((profileId) => profileId.toString());
 
 		const sanitizedProfiles = profiles.filter(
-			(item) => item.user.toString() !== active.toString()
+			(item) =>
+				item.user.toString() !== active.toString() &&
+				!matchedIds.includes(item._id.toString())
 		);
 
 		res.status(201).json(sanitizedProfiles);
 	} catch (err) {
+		console.log(err);
 		errors.profiles = 'Error getting profiles';
+		return res.status(400).json(errors);
+	}
+});
+
+// Update
+router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
+	let errors = {};
+
+	const profileId = req?.params?.profileId;
+
+	try {
+		const updatedProfile = await Profile.findByIdAndUpdate(
+			profileId,
+			{
+				$set: req?.body,
+			},
+			{
+				new: true,
+			}
+		);
+
+		if (!updatedProfile) {
+			errors.profiles = 'Error, profile not found!';
+			return res.status(404).json(errors);
+		}
+
+		res.json({ updatedProfile, success: 'Profile updated successfully!' });
+	} catch (err) {
+		errors.profiles = 'Error updating profiles!';
 		return res.status(400).json(errors);
 	}
 });

@@ -53,13 +53,11 @@ router.post('/users/signup', async (req, res) => {
 			role: newUser.role,
 		};
 
-		res
-			.status(201)
-			.json({
-				success: 'Account created successfully!',
-				user: sanitizedUser,
-				token,
-			});
+		res.status(201).json({
+			success: 'Account created successfully!',
+			user: sanitizedUser,
+			token,
+		});
 	} catch (err) {
 		console.log('Signup error: ', err);
 		errors.registration = 'Error creating account, please try again.';
@@ -92,7 +90,7 @@ router.post('/users/signin', async (req, res) => {
 
 		res.json({
 			success: 'Login successful!',
-			userProfile: user.profile[0],
+			userProfile: user.profile,
 			token,
 		});
 	} catch (err) {

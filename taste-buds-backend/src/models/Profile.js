@@ -76,7 +76,7 @@ const profileSchema = new Schema(
 				type: String,
 			},
 		},
-		buds: [
+		matches: [
 			{
 				type: Schema.Types.ObjectId,
 				ref: 'User',

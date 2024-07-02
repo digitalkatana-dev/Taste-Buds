@@ -50,6 +50,7 @@ userSchema.virtual('profile', {
 	ref: 'Profile',
 	localField: '_id',
 	foreignField: 'user',
+	justOne: true,
 });
 
 userSchema.pre('save', function (next) {

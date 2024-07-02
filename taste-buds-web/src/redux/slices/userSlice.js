@@ -69,6 +69,19 @@ export const getGenderedBuds = createAsyncThunk(
 	}
 );
 
+export const updateMatches = createAsyncThunk(
+	'users/update_matches',
+	async (data, { rejectWithValue }) => {
+		const { profileId, ...others } = data;
+		try {
+			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
 	loading: false,
@@ -340,6 +353,19 @@ export const userSlice = createSlice({
 				state.allUsers = action.payload;
 			})
 			.addCase(getGenderedBuds.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(updateMatches.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(updateMatches.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.user = action.payload.updatedProfile;
+			})
+			.addCase(updateMatches.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			});

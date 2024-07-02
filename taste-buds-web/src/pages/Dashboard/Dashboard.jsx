@@ -1,7 +1,7 @@
 import { Container } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGenderedBuds } from '../../redux/slices/userSlice';
+import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import ChatContainer from '../../components/ChatContainer';
@@ -11,8 +11,23 @@ const Dashboard = () => {
 	const { user, allUsers } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
-	const swiped = (direction, nameToDelete) => {
-		console.log('removing: ' + nameToDelete);
+	const swiped = (direction, swippedProfileId) => {
+		const matches = user?.matches;
+		const areMatched = matches.includes(swippedProfileId);
+
+		if (direction === 'right') {
+			if (!areMatched) {
+				const updatedMatches = [swippedProfileId, ...matches];
+				const data = {
+					profileId: user._id,
+					matches: updatedMatches,
+				};
+
+				dispatch(updateMatches(data));
+			} else {
+				return;
+			}
+		}
 		setLastDirection(direction);
 	};
 
@@ -42,8 +57,8 @@ const Dashboard = () => {
 							<TinderCard
 								className='swipe'
 								key={item._id}
-								onSwipe={(dir) => swiped(dir, name)}
-								onCardLeftScreen={() => outOfFrame(name)}
+								onSwipe={(dir) => swiped(dir, item._id)}
+								onCardLeftScreen={() => outOfFrame(item.firstName)}
 							>
 								<div className='card'>
 									<img src={item.profilePhoto} alt={name} />
