@@ -22,4 +22,29 @@ router.post('/messages', requireAuth, async (req, res) => {
 	}
 });
 
+// Read
+router.get('/messages/conversation/:id', requireAuth, async (req, res) => {
+	let errors = {};
+
+	const convoInfo = req?.params?.id;
+
+	const sender = convoInfo.split('-&-')[0];
+	const recipient = convoInfo.split('-&-')[1];
+
+	try {
+		const conversation = await Message.find({
+			$or: [
+				{ sender, recipient },
+				{ sender: recipient, recipient: sender },
+			],
+		}).sort({ createdAt: 'desc' });
+
+		res.status(201).json(conversation);
+	} catch (err) {
+		console.log('Conversation Error:', err);
+		errors.conversation = 'Error getting conversation!';
+		return res.status(400).json(errors);
+	}
+});
+
 module.exports = router;

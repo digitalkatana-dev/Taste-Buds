@@ -1,19 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
+import { getConversation } from '../../redux/slices/messageSlice';
 import './display.scss';
 
 const MatchDisplay = () => {
 	const { user } = useSelector((state) => state.user);
-	const { selectedProfile } = useSelector((state) => state.app);
 	const matches = user?.matches;
 	const dispatch = useDispatch();
 
 	const handleMatchClick = (profile) => {
-		if (selectedProfile && profile._id === selectedProfile._id) {
-			dispatch(setSelectedProfile(null));
-		} else {
-			dispatch(setSelectedProfile(profile));
-		}
+		const data = {
+			sender: user?._id,
+			recipient: profile?._id,
+		};
+		dispatch(setSelectedProfile(profile));
+		dispatch(getConversation(data));
 	};
 
 	return (
