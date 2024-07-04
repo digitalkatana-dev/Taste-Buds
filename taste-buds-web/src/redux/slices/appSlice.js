@@ -15,6 +15,7 @@ const initialState = appAdapter.getInitialState({
 		'French',
 		'Mexican',
 	],
+	selectedProfile: null,
 	isMobile: false,
 	deleteDialog: false,
 	deleteData: null,
@@ -34,6 +35,9 @@ export const appSlice = createSlice({
 		},
 		setFoodTypeOptions: (state, action) => {
 			state.foodTypeOptions = action.payload;
+		},
+		setSelectedProfile: (state, action) => {
+			state.selectedProfile = action.payload;
 		},
 		setIsMobile: (state, action) => {
 			state.isMobile = action.payload;
@@ -66,6 +70,7 @@ export const {
 	setTheme,
 	setAuthType,
 	setFoodTypeOptions,
+	setSelectedProfile,
 	setIsMobile,
 	openDelete,
 	setDeleteData,

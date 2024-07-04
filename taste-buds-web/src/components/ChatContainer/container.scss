@@ -1,10 +1,13 @@
 #chat-container {
+	display: flex;
+	flex-direction: column;
 	width: 30%;
 	background-color: whitesmoke;
 	box-shadow: rgba($color: #000000, $alpha: 0.05) 0px 6px 24px 0px,
 		rgba($color: #000000, $alpha: 0.08) 0px 0px 0px 1px;
 	text-align: left;
 	z-index: 1;
+	// border: 2px solid dodgerblue;
 
 	.option {
 		background-color: whitesmoke;
@@ -17,5 +20,10 @@
 		&:disabled {
 			border-bottom: 4px solid rgb(187, 187, 187);
 		}
+	}
+
+	.display-container {
+		flex: 1;
+		border: 2px solid orangered;
 	}
 }

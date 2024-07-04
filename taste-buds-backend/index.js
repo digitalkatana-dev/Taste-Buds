@@ -1,5 +1,6 @@
 require('./src/models/User');
 require('./src/models/Profile');
+require('./src/models/Message');
 const { config } = require('dotenv');
 const { set, connect, connection } = require('mongoose');
 const { Server } = require('socket.io');
@@ -10,6 +11,7 @@ const http = require('http');
 const assetRoutes = require('./src/routes/assetRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
+const messageRoutes = require('./src/routes/messageRoutes');
 config();
 
 const app = express();
@@ -32,6 +34,7 @@ connection.on('error', (err) => {
 // app.use(assetRoutes);
 app.use(userRoutes);
 app.use(profileRoutes);
+app.use(messageRoutes);
 
 const server = http.createServer(app);
 
