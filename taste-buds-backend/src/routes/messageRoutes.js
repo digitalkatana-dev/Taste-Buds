@@ -37,7 +37,10 @@ router.get('/messages/conversation/:id', requireAuth, async (req, res) => {
 				{ sender, recipient },
 				{ sender: recipient, recipient: sender },
 			],
-		}).sort({ createdAt: 'desc' });
+		})
+			.populate('sender')
+			.populate('recipient')
+			.sort({ createdAt: 'desc' });
 
 		res.status(201).json(conversation);
 	} catch (err) {

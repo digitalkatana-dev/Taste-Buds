@@ -20,10 +20,31 @@
 		&:disabled {
 			border-bottom: 4px solid rgb(187, 187, 187);
 		}
+
+		&.mockDisabled {
+			color: rgb(187, 187, 187);
+			border-bottom: 4px solid rgb(187, 187, 187);
+
+			&:hover {
+				color: initial;
+				border-bottom: 4px solid rgb(243, 33, 33);
+			}
+		}
+	}
+
+	.img-container {
+		width: 30px;
+		height: 30px;
+		border-radius: 15px;
+		overflow: hidden;
+
+		img {
+			width: 100%;
+		}
 	}
 
 	.display-container {
 		flex: 1;
-		border: 2px solid orangered;
+		// border: 2px solid orangered;
 	}
 }

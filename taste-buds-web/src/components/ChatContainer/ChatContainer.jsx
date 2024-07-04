@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import { clearConversation } from '../../redux/slices/messageSlice';
@@ -25,10 +26,28 @@ const ChatContainer = () => {
 		<div id='chat-container'>
 			<ChatHeader />
 
-			<div>
-				<button className='option' onClick={handleMatches}>
+			<Stack
+				direction='row'
+				justifyContent={selectedProfile ? 'space-between' : 'unset'}
+				alignItems={selectedProfile ? 'center' : 'unset'}
+			>
+				<button
+					className={selectedProfile ? 'option mockDisabled' : 'option'}
+					onClick={handleMatches}
+				>
 					Matches
 				</button>
+				{selectedProfile && (
+					<Stack direction='row' gap='5px' alignItems='center' margin='0 10px'>
+						<div className='img-container'>
+							<img
+								src={selectedProfile?.profilePhoto}
+								alt={selectedProfile.handle}
+							/>
+						</div>
+						<h4>@{selectedProfile?.handle}</h4>
+					</Stack>
+				)}
 				<button
 					className='option'
 					disabled={!selectedProfile}
@@ -36,7 +55,7 @@ const ChatContainer = () => {
 				>
 					Chat
 				</button>
-			</div>
+			</Stack>
 			<div className='display-container'>
 				{!selectedProfile && <MatchDisplay />}
 				{selectedProfile && <ChatDisplay />}
