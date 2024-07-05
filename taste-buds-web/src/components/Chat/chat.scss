@@ -1,6 +1,9 @@
 #chat {
 	height: 64vh;
-	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	padding: 15px;
 	overflow-y: auto;
 	// border: 1px solid dodgerblue;
 }

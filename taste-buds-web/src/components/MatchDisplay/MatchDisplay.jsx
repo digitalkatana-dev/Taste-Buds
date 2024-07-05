@@ -8,6 +8,13 @@ const MatchDisplay = () => {
 	const matches = user?.matches;
 	const dispatch = useDispatch();
 
+	const mutualMatches = matches?.filter(
+		(matchedProfile) =>
+			matchedProfile.matches.filter(
+				(profile) => profile?._id?.toString() === user?._id?.toString()
+			).length > 0
+	);
+
 	const handleMatchClick = (profile) => {
 		const data = {
 			sender: user?._id,
@@ -16,6 +23,8 @@ const MatchDisplay = () => {
 		dispatch(setSelectedProfile(profile));
 		dispatch(getConversation(data));
 	};
+
+	console.log('Mutual', mutualMatches);
 
 	return (
 		<div id='match-display'>

@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import './chat.scss';
+import ChatBubble from '../ChatBubble';
 
 const Chat = () => {
 	const { conversation } = useSelector((state) => state.message);
@@ -7,9 +8,7 @@ const Chat = () => {
 	return (
 		<div id='chat'>
 			{conversation?.map((item) => (
-				<div key={item._id}>
-					<h3>{item.message}</h3>
-				</div>
+				<ChatBubble key={item._id} data={item} />
 			))}
 		</div>
 	);
