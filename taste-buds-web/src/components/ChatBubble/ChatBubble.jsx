@@ -1,6 +1,6 @@
 import { Avatar, Chip } from '@mui/material';
 import { useSelector } from 'react-redux';
-import './bubble.scss';
+import './chatBubble.scss';
 
 const ChatBubble = ({ data }) => {
 	const { user } = useSelector((state) => state.user);

@@ -1,9 +1,9 @@
-#chat-container {
+#profile-container {
 	display: none;
 }
 
 @media only screen and (min-width: 896px) {
-	#chat-container {
+	#profile-container {
 		width: 30%;
 		height: 100vh;
 		display: flex;

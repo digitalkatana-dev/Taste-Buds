@@ -1,0 +1,18 @@
+.chat-bubble {
+	width: fit-content !important;
+	align-self: flex-start !important;
+	max-width: 45% !important;
+	padding: 3px 5px !important;
+	margin-bottom: 10px !important;
+	color: whitesmoke !important;
+	background-color: orangered !important;
+
+	span {
+		font-size: 0.8rem !important;
+	}
+
+	&.mine {
+		align-self: flex-end !important;
+		background-color: dodgerblue !important;
+	}
+}

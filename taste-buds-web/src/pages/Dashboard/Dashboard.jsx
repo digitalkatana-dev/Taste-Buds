@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
-import ChatContainer from '../../components/ChatContainer';
+import ProfileContainer from '../../components/ProfileContainer';
 import ButtonRow from '../../components/ButtonRow';
 import BottomNav from '../../components/BottomNav';
 
@@ -47,7 +47,7 @@ const Dashboard = () => {
 
 	return (
 		<Container id='dashboard' maxWidth='lg'>
-			<ChatContainer />
+			<ProfileContainer />
 			<div className='swipe-container'>
 				<div className='card-container'>
 					{allUsers?.map((item) => {

@@ -1,11 +1,13 @@
-import React from 'react';
+import { Container } from '@mui/material';
+import './matches.scss';
 import BottomNav from '../../components/BottomNav';
 
 const Matches = () => {
 	return (
-		<div>
+		<Container id='matches' maxWidth='lg'>
+			<div className='content-container'></div>
 			<BottomNav />
-		</div>
+		</Container>
 	);
 };
 

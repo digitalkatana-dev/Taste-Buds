@@ -1,11 +1,13 @@
-import React from 'react';
+import { Container } from '@mui/material';
+import './profile.scss';
 import BottomNav from '../../components/BottomNav';
 
 const Profile = () => {
 	return (
-		<div>
+		<Container id='profile' maxWidth='lg'>
+			<div className='content-container'></div>
 			<BottomNav />
-		</div>
+		</Container>
 	);
 };
 

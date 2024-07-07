@@ -1,17 +1,16 @@
 import { useSelector } from 'react-redux';
-import Chat from '../Chat';
-import ChatInput from '../ChatInput';
-import './display.scss';
+import './chatDisplay.scss';
+import ChatBubble from '../ChatBubble';
 
 const ChatDisplay = () => {
-	const { selectedProfile } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const { conversation } = useSelector((state) => state.message);
 
 	return (
-		<>
-			<Chat />
-			<ChatInput />
-		</>
+		<div id='chat-display'>
+			{conversation?.map((item) => (
+				<ChatBubble key={item._id} data={item} />
+			))}
+		</div>
 	);
 };
 

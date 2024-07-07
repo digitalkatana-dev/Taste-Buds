@@ -1,11 +1,13 @@
-import React from 'react';
+import { Container } from '@mui/material';
+import './chatPage.scss';
 import BottomNav from '../../components/BottomNav';
 
 const Chat = () => {
 	return (
-		<div>
+		<Container id='chat-page' maxWidth='lg'>
+			<div className='content-container'></div>
 			<BottomNav />
-		</div>
+		</Container>
 	);
 };
 

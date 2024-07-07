@@ -1,15 +1,10 @@
 import { IconButton } from '@mui/material';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { updateActiveRoute } from '../../redux/slices/appSlice';
-import ReplayIcon from '@mui/icons-material/Replay';
-import CloseIcon from '@mui/icons-material/Close';
-import StarRateIcon from '@mui/icons-material/StarRate';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import BoltIcon from '@mui/icons-material/Bolt';
 import './btmNav.scss';
 
 const BottomNav = () => {
+	const { user } = useSelector((state) => state.user);
 	const location = useLocation();
 	const navigate = useNavigate();
 	const currentLocation = location.pathname.split('/')[1];
@@ -22,47 +17,47 @@ const BottomNav = () => {
 		<div id='btm-nav'>
 			<IconButton
 				className={
-					currentLocation === 'dashboard'
-						? 'nav-btn reply active'
-						: 'nav-btn reply'
+					currentLocation === 'dashboard' ? 'nav-btn active' : 'nav-btn'
 				}
 				onClick={() => handleClick('dashboard')}
 			>
-				<ReplayIcon />
+				<p className='noto-color-emoji-regular'>🪟</p>
 			</IconButton>
 			<IconButton
-				className={
-					currentLocation === 'search'
-						? 'nav-btn close active'
-						: 'nav-btn close'
-				}
+				className={currentLocation === 'search' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('search')}
 			>
-				<CloseIcon />
+				<p className='noto-color-emoji-regular'>👀</p>
 			</IconButton>
 			<IconButton
-				className={
-					currentLocation === 'matches' ? 'nav-btn star active' : 'nav-btn star'
-				}
+				className={currentLocation === 'matches' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('matches')}
 			>
-				<StarRateIcon />
+				{user?.genderIdentity === 'male' ? (
+					<p className='noto-color-emoji-regular'>🍻</p>
+				) : (
+					<p className='noto-color-emoji-regular'>🥂</p>
+				)}
 			</IconButton>
 			<IconButton
-				className={
-					currentLocation === 'chat' ? 'nav-btn fav active' : 'nav-btn fav'
-				}
+				className={currentLocation === 'chat' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('chat')}
 			>
-				<FavoriteIcon />
+				<p className='noto-color-emoji-regular'>💬</p>
 			</IconButton>
 			<IconButton
-				className={
-					currentLocation === 'profile' ? 'nav-btn bolt active' : 'nav-btn bolt'
-				}
+				className={currentLocation === 'profile' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('profile')}
 			>
-				<BoltIcon />
+				{user?.genderIdentity === 'male' && (
+					<p className='noto-color-emoji-regular'>🙋🏽‍♂️</p>
+				)}
+				{user?.genderIdentity === 'female' && (
+					<p className='noto-color-emoji-regular'>🙋🏽‍♀️</p>
+				)}
+				{user?.genderIdentity === 'non-binary' && (
+					<p className='noto-color-emoji-regular'>🙋🏽</p>
+				)}
 			</IconButton>
 		</div>
 	);
