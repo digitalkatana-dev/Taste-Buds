@@ -6,15 +6,12 @@
 	padding: 0;
 	padding-top: 51px;
 	align-items: center;
-	background-color: var(--background);
 
 	.content-container {
-		width: 100%;
+		width: 99%;
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
 		flex: 1;
-		// border: 3px solid dodgerblue;
+		// border: 1px solid dodgerblue;
 	}
 }
 
