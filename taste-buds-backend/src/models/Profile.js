@@ -17,11 +17,11 @@ const profileSchema = new Schema(
 			required: [true, 'Handle is required'],
 		},
 		dob: {
-			day: {
+			month: {
 				type: Number,
 				required: [true, 'DOB is required'],
 			},
-			month: {
+			day: {
 				type: Number,
 				required: [true, 'DOB is required'],
 			},
@@ -86,18 +86,14 @@ const profileSchema = new Schema(
 			type: String,
 			default: 'http://localhost:3005/assets/avatars/avatar_26.jpg',
 		},
-		imageUrl1: {
-			type: String,
-		},
-		imageUrl2: {
-			type: String,
-		},
-		imageUrl3: {
-			type: String,
-		},
 		profilePhoto: {
 			type: String,
 		},
+		images: [
+			{
+				type: String,
+			},
+		],
 		user: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',

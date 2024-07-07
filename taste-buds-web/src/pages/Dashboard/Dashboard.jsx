@@ -5,6 +5,8 @@ import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import ChatContainer from '../../components/ChatContainer';
+import ButtonRow from '../../components/ButtonRow';
+import BottomNav from '../../components/BottomNav';
 
 const Dashboard = () => {
 	const [lastDirection, setLastDirection] = useState();
@@ -80,6 +82,8 @@ const Dashboard = () => {
 					<h2 className='info-text'>You swiped {lastDirection}</h2>
 				)}
 			</div>
+			<ButtonRow />
+			<BottomNav />
 		</Container>
 	);
 };

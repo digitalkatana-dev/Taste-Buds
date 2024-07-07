@@ -1,0 +1,44 @@
+#btn-row {
+	width: 100%;
+	height: 84px;
+	background-color: black;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+	.option-btn {
+		border-width: 2px;
+		border-style: ridge;
+
+		&.reply {
+			border-color: gold;
+			color: gold;
+		}
+
+		&.close {
+			border-color: magenta;
+			color: magenta;
+		}
+
+		&.star {
+			border-color: dodgerblue;
+			color: dodgerblue;
+		}
+
+		&.fav {
+			border-color: turquoise;
+			color: turquoise;
+		}
+
+		&.bolt {
+			border-color: rebeccapurple;
+			color: rebeccapurple;
+		}
+	}
+}
+
+@media only screen and (min-width: 896px) {
+	#btn-row {
+		display: none;
+	}
+}

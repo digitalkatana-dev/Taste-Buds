@@ -5,6 +5,10 @@ import Home from './pages/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 import CreateProfile from './pages/CreateProfile';
 import Dashboard from './pages/Dashboard';
+import Search from './pages/Search';
+import Matches from './pages/Matches';
+import Chat from './pages/Chat';
+import Profile from './pages/Profile';
 
 const App = () => {
 	const { theme } = useSelector((state) => state.app);
@@ -21,6 +25,19 @@ const App = () => {
 					<Route
 						path='/dashboard'
 						element={<ProtectedRoute element={<Dashboard />} />}
+					/>
+					<Route
+						path='/search'
+						element={<ProtectedRoute element={<Search />} />}
+					/>
+					<Route
+						path='/matches'
+						element={<ProtectedRoute element={<Matches />} />}
+					/>
+					<Route path='/chat' element={<ProtectedRoute element={<Chat />} />} />
+					<Route
+						path='/profile'
+						element={<ProtectedRoute element={<Profile />} />}
 					/>
 				</Routes>
 			</Router>
