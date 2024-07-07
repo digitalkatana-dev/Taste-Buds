@@ -14,8 +14,6 @@ const BottomNav = () => {
 	const navigate = useNavigate();
 	const currentLocation = location.pathname.split('/')[1];
 
-	console.log('Location', location.pathname.split('/')[1]);
-
 	const handleClick = (route) => {
 		navigate(`/${route}`);
 	};
