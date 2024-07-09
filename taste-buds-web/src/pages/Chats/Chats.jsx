@@ -1,11 +1,11 @@
 import { Container } from '@mui/material';
-import './messages.scss';
+import './chats.scss';
 import Inbox from './views/Inbox';
 import BottomNav from '../../components/BottomNav';
 
-const Messages = () => {
+const Chats = () => {
 	return (
-		<Container id='messages' maxWidth='lg'>
+		<Container id='chats' maxWidth='lg'>
 			<div className='content-container'>
 				<Inbox />
 			</div>
@@ -14,4 +14,4 @@ const Messages = () => {
 	);
 };
 
-export default Messages;
+export default Chats;

@@ -40,10 +40,8 @@ const BottomNav = () => {
 				)}
 			</IconButton>
 			<IconButton
-				className={
-					currentLocation === 'messages' ? 'nav-btn active' : 'nav-btn'
-				}
-				onClick={() => handleClick('messages')}
+				className={currentLocation === 'chats' ? 'nav-btn active' : 'nav-btn'}
+				onClick={() => handleClick('chats')}
 			>
 				<p className='noto-color-emoji-regular'>💬</p>
 			</IconButton>

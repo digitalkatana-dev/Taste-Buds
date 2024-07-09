@@ -1,4 +1,4 @@
-#messages {
+#chats {
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -17,7 +17,7 @@
 }
 
 @media only screen and (min-width: 896px) {
-	#messages {
+	#chats {
 		padding: 0 24px;
 	}
 }
