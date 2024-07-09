@@ -7,7 +7,7 @@ import CreateProfile from './pages/CreateProfile';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Matches from './pages/Matches';
-import Chat from './pages/Chat';
+import Messages from './pages/Messages';
 import Profile from './pages/Profile';
 
 const App = () => {
@@ -34,7 +34,10 @@ const App = () => {
 						path='/matches'
 						element={<ProtectedRoute element={<Matches />} />}
 					/>
-					<Route path='/chat' element={<ProtectedRoute element={<Chat />} />} />
+					<Route
+						path='/messages'
+						element={<ProtectedRoute element={<Messages />} />}
+					/>
 					<Route
 						path='/profile'
 						element={<ProtectedRoute element={<Profile />} />}

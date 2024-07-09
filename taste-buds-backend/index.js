@@ -1,5 +1,6 @@
 require('./src/models/User');
 require('./src/models/Profile');
+require('./src/models/Chat');
 require('./src/models/Message');
 const { config } = require('dotenv');
 const { set, connect, connection } = require('mongoose');

@@ -1,4 +1,5 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import { logout } from './userSlice';
 
 export const appAdapter = createEntityAdapter();
 const initialState = appAdapter.getInitialState({
@@ -63,6 +64,30 @@ export const appSlice = createSlice({
 				'Mexican',
 			];
 		},
+	},
+	extraReducers: (builder) => {
+		builder.addCase(logout, (state) => {
+			state.loading = false;
+			state.theme = 'light';
+			state.authType = 'signin';
+			state.foodTypeOptions = [
+				'Italian',
+				'Thai',
+				'Greek',
+				'American',
+				'Indian',
+				'German',
+				'French',
+				'Mexican',
+			];
+			state.selectedProfile = null;
+			state.isMobile = false;
+			state.deleteDialog = false;
+			state.deleteData = null;
+			state.contentDialog = false;
+			state.errors = null;
+			appAdapter.removeAll(state);
+		});
 	},
 });
 

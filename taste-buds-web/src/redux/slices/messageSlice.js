@@ -3,6 +3,7 @@ import {
 	createEntityAdapter,
 	createSlice,
 } from '@reduxjs/toolkit';
+import { logout } from './userSlice';
 import budsApi from '../../api/budsApi';
 
 export const sendMessage = createAsyncThunk(
@@ -83,6 +84,14 @@ export const messageSlice = createSlice({
 			.addCase(getConversation.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
+			})
+			.addCase(logout, (state) => {
+				state.loading = false;
+				state.message = '';
+				state.conversation = null;
+				state.success = null;
+				state.errors = null;
+				messageAdapter.removeAll(state);
 			});
 	},
 });

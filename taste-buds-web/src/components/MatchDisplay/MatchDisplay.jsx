@@ -8,12 +8,10 @@ const MatchDisplay = () => {
 	const matches = user?.matches;
 	const dispatch = useDispatch();
 
-	// const mutualMatches = matches?.filter(
-	// 	(matchedProfile) =>
-	// 		matchedProfile.matches.filter(
-	// 			(profile) => profile?._id?.toString() === user?._id?.toString()
-	// 		).length > 0
-	// );
+	const mutualMatches = matches?.filter(
+		(match) =>
+			match.matches.filter((profile) => profile === user?._id).length > 0
+	);
 
 	const handleMatchClick = (profile) => {
 		const data = {
@@ -24,11 +22,11 @@ const MatchDisplay = () => {
 		dispatch(getConversation(data));
 	};
 
-	// console.log('Mutual', mutualMatches);
+	// console.log('Mutual', matches);
 
 	return (
 		<div id='match-display'>
-			{matches?.map((match) => (
+			{mutualMatches?.map((match) => (
 				<div
 					key={match?._id}
 					className='match-card'
