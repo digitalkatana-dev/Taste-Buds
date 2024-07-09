@@ -10,7 +10,11 @@ const BottomNav = () => {
 	const currentLocation = location.pathname.split('/')[1];
 
 	const handleClick = (route) => {
-		navigate(`/${route}`);
+		if (route === 'chats') {
+			navigate(`/${route}/inbox`);
+		} else {
+			navigate(`/${route}`);
+		}
 	};
 
 	return (

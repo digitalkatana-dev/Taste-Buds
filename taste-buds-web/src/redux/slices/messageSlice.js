@@ -41,6 +41,7 @@ export const messageAdapter = createEntityAdapter();
 const initialState = messageAdapter.getInitialState({
 	loading: false,
 	message: '',
+	chatList: null,
 	conversation: null,
 	success: null,
 	errors: null,
@@ -88,6 +89,7 @@ export const messageSlice = createSlice({
 			.addCase(logout, (state) => {
 				state.loading = false;
 				state.message = '';
+				state.chatList = null;
 				state.conversation = null;
 				state.success = null;
 				state.errors = null;

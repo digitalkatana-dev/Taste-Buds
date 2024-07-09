@@ -1,16 +1,15 @@
-import { Container } from '@mui/material';
 import './chats.scss';
 import Inbox from './views/Inbox';
-import BottomNav from '../../components/BottomNav';
+import NewMessage from './views/NewMessage';
+import Conversation from './views/Conversation';
 
-const Chats = () => {
+const Chats = ({ type }) => {
 	return (
-		<Container id='chats' maxWidth='lg'>
-			<div className='content-container'>
-				<Inbox />
-			</div>
-			<BottomNav />
-		</Container>
+		<div id='chats'>
+			{type === 'inbox' && <Inbox />}
+			{type === 'new' && <NewMessage />}
+			{type === 'convo' && <Conversation />}
+		</div>
 	);
 };
 
