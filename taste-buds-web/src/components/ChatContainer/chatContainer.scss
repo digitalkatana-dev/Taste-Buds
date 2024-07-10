@@ -1,0 +1,10 @@
+#chat-container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: whitesmoke;
+	box-shadow: rgba($color: #000000, $alpha: 0.05) 0px 6px 24px 0px,
+		rgba($color: #000000, $alpha: 0.08) 0px 0px 0px 1px;
+	text-align: left;
+	z-index: 1;
+}

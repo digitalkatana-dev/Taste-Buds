@@ -1,10 +1,10 @@
-import { Container } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
-import ChatContainer from '../../components/ChatContainer';
+import ProfileContainer from '../../components/ProfileContainer';
+import ButtonRow from '../../components/ButtonRow';
 
 const Dashboard = () => {
 	const [lastDirection, setLastDirection] = useState();
@@ -44,8 +44,8 @@ const Dashboard = () => {
 	}, [user, handleGetUsers]);
 
 	return (
-		<Container id='dashboard' maxWidth='lg'>
-			<ChatContainer />
+		<div id='dashboard'>
+			<ProfileContainer />
 			<div className='swipe-container'>
 				<div className='card-container'>
 					{allUsers?.map((item) => {
@@ -80,7 +80,8 @@ const Dashboard = () => {
 					<h2 className='info-text'>You swiped {lastDirection}</h2>
 				)}
 			</div>
-		</Container>
+			<ButtonRow />
+		</div>
 	);
 };
 

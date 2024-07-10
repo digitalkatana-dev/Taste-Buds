@@ -66,3 +66,16 @@ exports.validateProfile = (data) => {
 		valid: Object.keys(errors).length === 0 ? true : false,
 	};
 };
+
+exports.validateMessage = (data) => {
+	let errors = {};
+
+	if (isEmpty(data?.to)) errors.recipient = 'Must not be empty!';
+	if (isEmpty(data?.sender)) errors.sender = 'Must not be empty!';
+	if (isEmpty(data?.message)) errors.message = 'Must not be empty!';
+
+	return {
+		errors,
+		valid: Object.keys(errors).length === 0 ? true : false,
+	};
+};

@@ -5,12 +5,12 @@
 	align-items: center;
 	background: linear-gradient(45deg, rgb(254, 48, 114), rgb(255, 89, 64));
 
-	.profile,
-	.log-out {
+	.profile {
 		display: flex;
 		align-items: center;
-		padding: 20px;
+		padding-left: 20px;
 		color: whitesmoke;
+		cursor: pointer;
 
 		.img-container {
 			width: 30px;
@@ -23,5 +23,10 @@
 				width: 100%;
 			}
 		}
+	}
+
+	.log-out {
+		padding-right: 20px;
+		color: whitesmoke;
 	}
 }

@@ -1,0 +1,25 @@
+#btm-nav {
+	width: 100%;
+	height: 44px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+	.nav-btn {
+		.noto-color-emoji-regular {
+			font-family: 'Noto Color Emoji', sans-serif;
+			font-weight: 400;
+			font-style: normal;
+		}
+
+		&.active {
+			color: gold;
+		}
+	}
+}
+
+@media only screen and (min-width: 896px) {
+	#btm-nav {
+		display: none;
+	}
+}

@@ -228,22 +228,32 @@ export const userSlice = createSlice({
 		logout: (state) => {
 			localStorage.removeItem('token');
 			state.loading = false;
-			state.acctOpen = false;
-			state.notificationOpen = false;
-			state.languageOpen = false;
-			state.drawerOpen = false;
-			state.authType = 'login';
 			state.login = '';
-			state.firstName = '';
-			state.lastName = '';
 			state.handle = '';
 			state.email = '';
 			state.password = '';
 			state.confirmPassword = '';
-			state.phone = {
-				mobile: '',
-				home: '',
-				work: '',
+			state.firstName = '';
+			state.lastName = '';
+			state.dob = {
+				day: '',
+				month: '',
+				year: '',
+			};
+			state.genderIdentity = '';
+			state.showGender = false;
+			state.genderInterest = '';
+			state.about = '';
+			state.location = {
+				city: '',
+				state: '',
+				postalCode: '',
+			};
+			state.distancePref = '';
+			state.dietType = '';
+			state.favorites = {
+				foodTypes: [],
+				dish: '',
 			};
 			state.profilePhotoPreview = null;
 			state.communication = {

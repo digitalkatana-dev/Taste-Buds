@@ -1,7 +1,9 @@
 #match-display {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 10px;
 	padding: 0 5px;
+	// border: 2px solid orange;
 
 	.match-card {
 		width: fit-content;
