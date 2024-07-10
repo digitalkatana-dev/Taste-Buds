@@ -1,11 +1,13 @@
 import { Container, IconButton } from '@mui/material';
 import AddCommentOutlinedIcon from '@mui/icons-material/AddCommentOutlined';
 import './layout.scss';
+import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 
 const Layout = ({ heading, children }) => {
 	return (
 		<Container id='layout' maxWidth='xl'>
+			<TopBar />
 			<div className='content-container'>
 				{heading && (
 					<div className='heading-container'>
