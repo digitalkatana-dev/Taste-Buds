@@ -56,10 +56,7 @@ const App = () => {
 						element={
 							<ProtectedRoute
 								element={
-									<Layout
-										heading='New Message'
-										children={<Chats type='new' />}
-									/>
+									<Layout heading='New Chat' children={<Chats type='new' />} />
 								}
 							/>
 						}

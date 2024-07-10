@@ -14,12 +14,8 @@ const MatchDisplay = () => {
 	);
 
 	const handleMatchClick = (profile) => {
-		const data = {
-			sender: user?._id,
-			recipient: profile?._id,
-		};
 		dispatch(setSelectedProfile(profile));
-		dispatch(getConversation(data));
+		dispatch(getConversation(profile?._id));
 	};
 
 	// console.log('Mutual', matches);

@@ -1,4 +1,35 @@
 #convo {
 	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 	overflow: auto;
+
+	.title-bar-container {
+		display: flex;
+		align-items: center;
+		padding: 15px;
+		border-bottom: 1px ridge black;
+
+		.chat-images-container {
+			height: 100%;
+			margin-right: 10px;
+
+			.MuiAvatarGroup-avatar:first-of-type {
+				border: none !important;
+				background-color: transparent;
+			}
+		}
+
+		#chat-name {
+			width: 100%;
+			padding: 0 5px;
+			border: 1px ridge transparent;
+
+			&:hover {
+				border: 1px ridge var(--border);
+				cursor: text;
+			}
+		}
+	}
 }
