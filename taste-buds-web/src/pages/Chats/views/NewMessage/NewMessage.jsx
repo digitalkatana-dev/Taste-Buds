@@ -2,7 +2,7 @@ import { Button, FormControl, TextField } from '@mui/material';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	clearSelectableUsers,
+	// clearSelectableUsers,
 	// clearRecipients,
 	findUsers,
 	addRecipient,
@@ -14,31 +14,35 @@ import './new-message.scss';
 
 const NewMessage = () => {
 	const { user } = useSelector((state) => state.user);
-	const { selectableUsers, recipients } = useSelector((state) => state.message);
+	const { recipients } = useSelector((state) => state.message);
 	const inputRef = useRef(null);
+	const matches = user?.matches;
 	const dispatch = useDispatch();
-	let timer;
+
+	const mutualMatches = matches?.filter(
+		(match) =>
+			match.matches.filter((profile) => profile === user?._id).length > 0
+	);
+
+	// let timer;
 
 	const handleKeyDown = (e) => {
-		clearTimeout(timer);
-
-		if (e.target.value === '' && e.keyCode === 8) {
-			dispatch(popRecipient());
-		}
-
-		timer = setTimeout(() => {
-			const data = {
-				user,
-				recipients,
-				value: e.target.value.trim(),
-			};
-
-			if (e.target.value.trim() === '') {
-				dispatch(clearSelectableUsers());
-			} else {
-				dispatch(findUsers(data));
-			}
-		}, 1000);
+		// clearTimeout(timer);
+		// if (e.target.value === '' && e.keyCode === 8) {
+		// 	dispatch(popRecipient());
+		// }
+		// timer = setTimeout(() => {
+		// 	const data = {
+		// 		user,
+		// 		recipients,
+		// 		value: e.target.value.trim(),
+		// 	};
+		// 	if (e.target.value.trim() === '') {
+		// 		dispatch(clearSelectableUsers());
+		// 	} else {
+		// 		dispatch(findUsers(data));
+		// 	}
+		// }, 1000);
 	};
 
 	const handleAddRecipient = (item) => {
@@ -84,7 +88,7 @@ const NewMessage = () => {
 				</div>
 			</div>
 			<div className='results-container'>
-				{selectableUsers?.map((item) => (
+				{mutualMatches?.map((item) => (
 					<div
 						className='add-user-btn'
 						key={item._id}

@@ -36,35 +36,6 @@ export const createChat = createAsyncThunk(
 	}
 );
 
-export const sendMessage = createAsyncThunk(
-	'messages/send_message',
-	async (data, { rejectWithValue, dispatch }) => {
-		try {
-			const res = await budsApi.post('/messages', data);
-			const { success } = res.data;
-			success &&
-				dispatch(
-					getConversation({ sender: data.sender, recipient: data.recipient })
-				);
-			return res.data;
-		} catch (err) {
-			return rejectWithValue(err.response.data);
-		}
-	}
-);
-
-export const getConversation = createAsyncThunk(
-	'messages/get_conversation',
-	async (data, { rejectWithValue }) => {
-		try {
-			const res = await budsApi.get(`/chats/?id=${data}`);
-			return res.data;
-		} catch (err) {
-			return rejectWithValue(err.response.data);
-		}
-	}
-);
-
 export const getChatList = createAsyncThunk(
 	'messages/get_chat_list',
 	async (data, { rejectWithValue }) => {
@@ -77,14 +48,101 @@ export const getChatList = createAsyncThunk(
 	}
 );
 
+export const getChat = createAsyncThunk(
+	'messages/get_chat',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.get(`/chats/?id=${data}`);
+			return res.data;
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const updateChat = createAsyncThunk(
+	'messages/update_chat',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.put(`/chats/${data._id}`, data);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.resposne.data);
+		}
+	}
+);
+
+export const sendMessage = createAsyncThunk(
+	'messages/send_message',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.post('/messages', data);
+			const { success } = res.data;
+			if (success) {
+				dispatch(getChat(data.chatId));
+				dispatch(getChatList());
+			}
+			return res.data;
+		} catch (err) {
+			console.log('Send error', err);
+			return rejectWithValue(err.resposne.data);
+		}
+	}
+);
+
+export const getUnread = createAsyncThunk(
+	'messages/get_unread',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get('/chats/?unread=true');
+			return res.data;
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const getNewest = createAsyncThunk(
+	'messages/get_newest',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get('/chats/?newest=true');
+			return res.data;
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const markAllRead = createAsyncThunk(
+	'messages/mark_all_read',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.put(`/messages/${data}/markRead`);
+			const { success } = res.data;
+			if (success) {
+				dispatch(getUnread());
+			}
+			return success;
+		} catch (err) {
+			console.log(err);
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const messageAdapter = createEntityAdapter();
 const initialState = messageAdapter.getInitialState({
 	loading: false,
-	selectableUsers: null,
 	recipients: [],
 	message: '',
 	chatList: null,
-	conversation: null,
+	unread: [],
+	newest: null,
+	activeChat: null,
 	success: null,
 	errors: null,
 });
@@ -98,15 +156,12 @@ export const messageSlice = createSlice({
 		},
 		addRecipient: (state, action) => {
 			state.recipients = [...state.recipients, action.payload];
-			state.selectableUsers = state.selectableUsers.filter(
-				(item) => item._id !== action.payload._id
-			);
-			// state.selectableUsers = null;
 		},
 		popRecipient: (state) => {
-			state.recipients.pop();
-			let updated = [...state.recipients];
-			state.recipients = updated;
+			// state.recipients.pop();
+			// let updated = [...state.recipients];
+			// state.recipients = updated;
+			state.recipients = state.recipients.pop();
 		},
 		removeRecipient: (state, action) => {
 			state.recipients = state.recipients.filter(
@@ -116,18 +171,38 @@ export const messageSlice = createSlice({
 			// 	? [...state.selectableUsers, action.payload]
 			// 	: [action.payload];
 		},
-		clearSelectableUsers: (state) => {
-			state.selectableUsers = null;
-		},
 		clearRecipients: (state) => {
 			state.recipients = [];
 		},
-		clearConversation: (state) => {
-			state.conversation = null;
+		clearActiveChat: (state) => {
+			state.activeChat = null;
+		},
+		clearNewest: (state) => {
+			state.newest = null;
+		},
+		clearSuccess: (state) => {
+			state.success = null;
+		},
+		clearErrors: (state) => {
+			state.errors = null;
 		},
 	},
 	extraReducers: (builder) => {
 		builder
+			.addCase(createChat.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(createChat.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.recipients = [];
+				window.location.href = `/messages/${action.payload.newChat._id}`;
+			})
+			.addCase(createChat.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
 			.addCase(sendMessage.pending, (state) => {
 				state.loading = true;
 				state.errors = null;
@@ -135,22 +210,9 @@ export const messageSlice = createSlice({
 			.addCase(sendMessage.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.conversation = action.payload.conversation;
 				state.message = '';
 			})
 			.addCase(sendMessage.rejected, (state, action) => {
-				state.loading = false;
-				state.errors = action.payload;
-			})
-			.addCase(getConversation.pending, (state) => {
-				state.loading = true;
-				state.errors = null;
-			})
-			.addCase(getConversation.fulfilled, (state, action) => {
-				state.loading = false;
-				state.conversation = action.payload;
-			})
-			.addCase(getConversation.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})
@@ -163,6 +225,67 @@ export const messageSlice = createSlice({
 				state.chatList = action.payload;
 			})
 			.addCase(getChatList.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(getChat.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getChat.fulfilled, (state, action) => {
+				state.loading = false;
+				state.activeChat = action.payload;
+			})
+			.addCase(getChat.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(updateChat.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(updateChat.fulfilled, (state, action) => {
+				state.loading = false;
+				state.activeChat = action.payload.updated;
+				state.success = action.payload.success;
+			})
+			.addCase(updateChat.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(getUnread.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getUnread.fulfilled, (state, action) => {
+				state.loading = false;
+				state.unread = action.payload;
+			})
+			.addCase(getUnread.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(getNewest.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getNewest.fulfilled, (state, action) => {
+				state.loading = false;
+				state.newest = action.payload;
+			})
+			.addCase(getNewest.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(markAllRead.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(markAllRead.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload;
+			})
+			.addCase(markAllRead.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})
@@ -183,9 +306,11 @@ export const {
 	addRecipient,
 	popRecipient,
 	removeRecipient,
-	clearSelectableUsers,
 	clearRecipients,
-	clearConversation,
+	clearActiveChat,
+	clearNewest,
+	clearSuccess,
+	clearErrors,
 } = messageSlice.actions;
 
 export default messageSlice.reducer;

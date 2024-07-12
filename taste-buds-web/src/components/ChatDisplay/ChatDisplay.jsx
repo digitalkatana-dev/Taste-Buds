@@ -3,7 +3,8 @@ import './chatDisplay.scss';
 import ChatBubble from '../ChatBubble';
 
 const ChatDisplay = () => {
-	const { conversation } = useSelector((state) => state.message);
+	const { activeChat } = useSelector((state) => state.message);
+	const conversation = activeChat?.messages;
 
 	return (
 		<div id='chat-display'>

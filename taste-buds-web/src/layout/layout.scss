@@ -26,6 +26,14 @@
 
 			.heading {
 				flex: 1;
+
+				.chat-btn {
+					color: var(--highlight);
+
+					&:hover {
+						background-color: var(--highlight-shadow);
+					}
+				}
 			}
 		}
 

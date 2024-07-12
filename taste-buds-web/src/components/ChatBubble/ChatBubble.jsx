@@ -17,7 +17,7 @@ const ChatBubble = ({ data }) => {
 						whiteSpace: 'normal',
 					},
 				}}
-				label={data.message}
+				label={data.content}
 				className='chat-bubble mine'
 			/>
 		);
@@ -35,7 +35,7 @@ const ChatBubble = ({ data }) => {
 			avatar={
 				<Avatar src={data?.sender?.profilePhoto} alt={data?.sender?.handle} />
 			}
-			label={data?.message}
+			label={data?.content}
 			className='chat-bubble'
 		/>
 	);

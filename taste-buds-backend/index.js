@@ -12,6 +12,7 @@ const http = require('http');
 const assetRoutes = require('./src/routes/assetRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
+const chatRoutes = require('./src/routes/chatRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
 config();
 
@@ -35,6 +36,7 @@ connection.on('error', (err) => {
 // app.use(assetRoutes);
 app.use(userRoutes);
 app.use(profileRoutes);
+app.use(chatRoutes);
 app.use(messageRoutes);
 
 const server = http.createServer(app);

@@ -1,11 +1,12 @@
+import { IconButton, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessage, sendMessage } from '../../redux/slices/messageSlice';
-import './input.scss';
+import SendIcon from '@mui/icons-material/Send';
+import './chat-input.scss';
+import TextInput from '../TextInput';
 
 const ChatInput = () => {
-	const { message } = useSelector((state) => state.message);
-	const { user } = useSelector((state) => state.user);
-	const { selectedProfile } = useSelector((state) => state.app);
+	const { activeChat, message } = useSelector((state) => state.message);
 	const dispatch = useDispatch();
 
 	const handleChange = (e) => {
@@ -13,23 +14,39 @@ const ChatInput = () => {
 	};
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
-
+		// e.preventDefault();
 		const data = {
-			sender: user?._id,
-			recipient: selectedProfile?._id,
-			message,
+			chatId: activeChat?._id,
+			content: message,
 		};
-
 		dispatch(sendMessage(data));
 	};
 
 	return (
 		<div id='chat-input'>
-			<textarea value={message} onChange={handleChange} />
-			<button type='submit' className='secondary-btn' onClick={handleSubmit}>
-				Submit
-			</button>
+			<Stack
+				direction='row'
+				justifyContent='center'
+				alignItems='center'
+				gap={1}
+			>
+				<TextInput
+					fullWidth
+					className='message-input'
+					placeholder='Type a message...'
+					size='small'
+					margin='dense'
+					value={message}
+					onChange={handleChange}
+				/>
+				<IconButton
+					className='send-btn'
+					onClick={handleSubmit}
+					disabled={!message}
+				>
+					<SendIcon className='send-icon' />
+				</IconButton>
+			</Stack>
 		</div>
 	);
 };

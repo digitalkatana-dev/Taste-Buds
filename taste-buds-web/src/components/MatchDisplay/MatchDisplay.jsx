@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
-import { getConversation } from '../../redux/slices/messageSlice';
+import { getChat } from '../../redux/slices/messageSlice';
 import './display.scss';
 
 const MatchDisplay = () => {
@@ -15,10 +15,8 @@ const MatchDisplay = () => {
 
 	const handleMatchClick = (profile) => {
 		dispatch(setSelectedProfile(profile));
-		dispatch(getConversation(profile?._id));
+		dispatch(getChat(profile._id));
 	};
-
-	// console.log('Mutual', matches);
 
 	return (
 		<div id='match-display'>
