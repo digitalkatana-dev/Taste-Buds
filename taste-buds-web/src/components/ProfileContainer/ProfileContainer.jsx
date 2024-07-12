@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
-import { clearConversation } from '../../redux/slices/messageSlice';
+import { clearActiveChat } from '../../redux/slices/messageSlice';
 import ChatHeader from '../ChatHeader';
 import MatchDisplay from '../MatchDisplay';
 import ChatContainer from '../ChatContainer';
@@ -14,7 +14,7 @@ const ProfileContainer = () => {
 	const handleMatches = () => {
 		if (selectedProfile) {
 			dispatch(setSelectedProfile(null));
-			dispatch(clearConversation());
+			dispatch(clearActiveChat());
 		} else {
 			return;
 		}

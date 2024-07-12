@@ -7,19 +7,21 @@ const messageSchema = new Schema(
 			ref: 'Profile',
 			required: true,
 		},
-		recipient: {
-			type: Schema.Types.ObjectId,
-			ref: 'Profile',
-			required: true,
-		},
-		message: {
+		content: {
 			type: String,
 			required: true,
+			trim: true,
 		},
 		chat: {
 			type: Schema.Types.ObjectId,
 			ref: 'Chat',
 		},
+		readBy: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Profile',
+			},
+		],
 	},
 	{
 		toJSON: {

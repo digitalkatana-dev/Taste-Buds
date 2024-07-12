@@ -1,10 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './inbox.scss';
 import ChatItem from '../../../../components/ChatItem';
 
 const Inbox = () => {
 	const { chatList } = useSelector((state) => state.message);
-	const dispatch = useDispatch();
 
 	return (
 		<div id='inbox'>

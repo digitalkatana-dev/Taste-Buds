@@ -67,12 +67,24 @@ exports.validateProfile = (data) => {
 	};
 };
 
+exports.validateCreateChat = (data) => {
+	let errors = {};
+
+	if (!data.users || data.users.length === 0)
+		errors.users = "Can't start a chat without recipients!";
+
+	return {
+		errors,
+		valid: Object.keys(errors).length === 0 ? true : false,
+	};
+};
+
 exports.validateMessage = (data) => {
 	let errors = {};
 
-	if (isEmpty(data?.to)) errors.recipient = 'Must not be empty!';
-	if (isEmpty(data?.sender)) errors.sender = 'Must not be empty!';
-	if (isEmpty(data?.message)) errors.message = 'Must not be empty!';
+	if (!data.content || !data.chatId)
+		errors.message = 'Invalid data passed to request';
+	if (isEmpty(data?.content)) errors.content = 'Must not be empty!';
 
 	return {
 		errors,

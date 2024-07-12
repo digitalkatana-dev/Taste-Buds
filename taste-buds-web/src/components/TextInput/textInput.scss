@@ -4,7 +4,8 @@ input::-webkit-inner-spin-button {
 	margin: 0;
 }
 
-.auth-input {
+.auth-input,
+.message-input {
 	.MuiInputBase-root {
 		border-radius: 40px !important;
 	}
