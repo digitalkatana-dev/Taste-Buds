@@ -63,7 +63,8 @@ router.get('/chats', requireAuth, async (req, res) => {
 				.populate('users')
 				.populate('messages')
 				.populate({ path: 'messages', populate: { path: 'sender' } })
-				.populate('latestMessage');
+				.populate('latestMessage')
+				.populate({ path: 'latestMessage', populate: { path: 'sender' } });
 
 			if (!chats) {
 				const userFound = await Profile.findById(hasId);
@@ -98,7 +99,8 @@ router.get('/chats', requireAuth, async (req, res) => {
 						.populate('users')
 						.populate('messages')
 						.populate({ path: 'messages', populate: { path: 'sender' } })
-						.populate('latestMessage');
+						.populate('latestMessage')
+						.populate({ path: 'latestMessage', populate: { path: 'sender' } });
 				}
 			}
 		} else if (unreadOnly) {
@@ -107,6 +109,7 @@ router.get('/chats', requireAuth, async (req, res) => {
 				.populate('messages')
 				.populate({ path: 'messages', populate: { path: 'sender' } })
 				.populate('latestMessage')
+				.populate({ path: 'latestMessage', populate: { path: 'sender' } })
 				.sort('-updatedAt');
 
 			chats = chats.filter(
@@ -122,6 +125,7 @@ router.get('/chats', requireAuth, async (req, res) => {
 				.populate('messages')
 				.populate({ path: 'messages', populate: { path: 'sender' } })
 				.populate('latestMessage')
+				.populate({ path: 'latestMessage', populate: { path: 'sender' } })
 				.sort('-updatedAt');
 
 			const filtered = chats.filter(
@@ -137,6 +141,7 @@ router.get('/chats', requireAuth, async (req, res) => {
 				.populate('messages')
 				.populate({ path: 'messages', populate: { path: 'sender' } })
 				.populate('latestMessage')
+				.populate({ path: 'latestMessage', populate: { path: 'sender' } })
 				.sort('-updatedAt');
 		}
 
@@ -164,7 +169,8 @@ router.put('/chats/:id', requireAuth, async (req, res) => {
 		.populate('users')
 		.populate('messages')
 		.populate({ path: 'messages', populate: { path: 'sender' } })
-		.populate('latestMessage');
+		.populate('latestMessage')
+		.populate({ path: 'latestMessage', populate: { path: 'sender' } });
 
 	try {
 		if (!updated) {

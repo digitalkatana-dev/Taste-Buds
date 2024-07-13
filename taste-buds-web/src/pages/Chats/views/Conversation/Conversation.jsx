@@ -1,20 +1,16 @@
 import { Avatar, AvatarGroup } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './convo.scss';
 import ChatDisplay from '../../../../components/ChatDisplay/ChatDisplay';
 import ChatInput from '../../../../components/ChatInput';
 
 const Conversation = () => {
 	const { user } = useSelector((state) => state.user);
-	const { conversation } = useSelector((state) => state.message);
-	const [chatName, setChatName] = useState('Frank');
+	const { activeChat } = useSelector((state) => state.message);
 
-	const chatUsers = conversation?.users?.filter(
-		(item) => item._id !== user?._id
-	);
+	const chatUsers = activeChat?.users?.filter((item) => item._id !== user?._id);
 
-	const handleChatNameOpen = () => {};
+	// const chatName = chatUsers[0] ? `${chatUsers[0]?.firstName}` : '';
 
 	return (
 		<div id='convo'>
@@ -24,16 +20,14 @@ const Conversation = () => {
 						{chatUsers?.map((item) => (
 							<Avatar
 								key={item._id}
-								alt={item.username}
-								src={item.profilePic}
+								alt={item.handle}
+								src={item.profilePhoto}
 								style={{ border: 'none' }}
 							/>
 						))}
 					</AvatarGroup>
 				</div>
-				<span id='chat-name' onClick={handleChatNameOpen}>
-					{chatName}
-				</span>
+				<span id='chat-name'>{chatUsers[0]?.firstName}</span>
 			</div>
 			<ChatDisplay />
 			<ChatInput />

@@ -52,16 +52,6 @@ const App = () => {
 						}
 					/>
 					<Route
-						path='/chats/new'
-						element={
-							<ProtectedRoute
-								element={
-									<Layout heading='New Chat' children={<Chats type='new' />} />
-								}
-							/>
-						}
-					/>
-					<Route
 						path='/chats/conversation/:id'
 						element={
 							<ProtectedRoute
