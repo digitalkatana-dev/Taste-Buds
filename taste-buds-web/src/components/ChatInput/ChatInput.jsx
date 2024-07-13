@@ -14,7 +14,7 @@ const ChatInput = () => {
 	};
 
 	const handleSubmit = (e) => {
-		// e.preventDefault();
+		e.preventDefault();
 		const data = {
 			chatId: activeChat?._id,
 			content: message,
