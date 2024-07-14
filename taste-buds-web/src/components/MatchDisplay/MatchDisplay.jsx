@@ -1,3 +1,4 @@
+import { Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import { getChat } from '../../redux/slices/messageSlice';
@@ -26,9 +27,9 @@ const MatchDisplay = () => {
 					className='match-card'
 					onClick={() => handleMatchClick(match)}
 				>
-					<div className='img-container'>
+					<Paper className='img-container' elevation={10}>
 						<img src={match.profilePhoto} alt={match.firstName} />
-					</div>
+					</Paper>
 					<h5>{match?.firstName}</h5>
 				</div>
 			))}

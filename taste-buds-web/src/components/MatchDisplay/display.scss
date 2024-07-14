@@ -3,6 +3,7 @@
 	flex-wrap: wrap;
 	gap: 10px;
 	padding: 0 5px;
+	justify-content: center;
 	// border: 2px solid orange;
 
 	.match-card {
@@ -12,14 +13,28 @@
 		align-items: center;
 
 		.img-container {
-			width: 30px;
-			height: 30px;
+			width: 150px;
+			height: 150px;
 			border-radius: 15px;
 			overflow: hidden;
 			margin: 10px;
 
 			img {
 				width: 100%;
+			}
+		}
+	}
+}
+
+@media only screen and (min-width: 896px) {
+	#match-display {
+		justify-content: initial;
+
+		.match-card {
+			.img-container {
+				width: 30px;
+				height: 30px;
+				border-radius: 100%;
 			}
 		}
 	}

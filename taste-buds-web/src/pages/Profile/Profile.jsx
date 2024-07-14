@@ -4,6 +4,7 @@ import { setTheme } from '../../redux/slices/appSlice';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import './profile.scss';
 import ThemeSwitch from '../../components/ThemeSwitch';
+import NavWheel from '../../components/NavWheel';
 
 const Profile = () => {
 	const { theme } = useSelector((state) => state.app);
@@ -64,6 +65,7 @@ const Profile = () => {
 							<Typography>Dark</Typography>
 						</Stack>
 					</div>
+					<NavWheel />
 				</Paper>
 			</section>
 		</div>
