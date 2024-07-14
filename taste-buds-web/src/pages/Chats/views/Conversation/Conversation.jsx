@@ -10,7 +10,7 @@ const Conversation = () => {
 
 	const chatUsers = activeChat?.users?.filter((item) => item._id !== user?._id);
 
-	// const chatName = chatUsers[0] ? `${chatUsers[0]?.firstName}` : '';
+	const chatName = chatUsers[0] ? `${chatUsers[0]?.firstName}` : '';
 
 	return (
 		<div id='convo'>
@@ -27,7 +27,7 @@ const Conversation = () => {
 						))}
 					</AvatarGroup>
 				</div>
-				<span id='chat-name'>{chatUsers[0]?.firstName}</span>
+				<span id='chat-name'>{chatName}</span>
 			</div>
 			<ChatDisplay />
 			<ChatInput />
