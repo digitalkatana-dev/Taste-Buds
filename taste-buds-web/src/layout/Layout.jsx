@@ -1,11 +1,13 @@
 import { Container, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { setDeleteData, setDeleteOpen } from '../redux/slices/appSlice';
 import { deleteChat } from '../redux/slices/messageSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './layout.scss';
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
+import DeleteDialog from '../components/DeleteDialog';
 
 const Layout = ({ heading, children }) => {
 	const { activeChat } = useSelector((state) => state.message);
@@ -18,9 +20,14 @@ const Layout = ({ heading, children }) => {
 
 	const chatId = activeChat?._id;
 
-	const handleDeleteChat = (e) => {
-		e.preventDefault();
-		chatId && dispatch(deleteChat(chatId));
+	const handleDeleteClick = () => {
+		const data = {
+			type: 'chat',
+			action: deleteChat(chatId),
+		};
+
+		dispatch(setDeleteData(data));
+		dispatch(setDeleteOpen(true));
 	};
 
 	return (
@@ -31,7 +38,7 @@ const Layout = ({ heading, children }) => {
 					<div className='heading-container'>
 						<h2 className='heading'>{heading}</h2>
 						{isChat && (
-							<IconButton className='chat-btn' onClick={handleDeleteChat}>
+							<IconButton className='chat-btn' onClick={handleDeleteClick}>
 								<DeleteIcon className='btn-icon' />
 							</IconButton>
 						)}
@@ -40,6 +47,7 @@ const Layout = ({ heading, children }) => {
 				<div className='content'>{children}</div>
 			</div>
 			<BottomNav />
+			<DeleteDialog />
 		</Container>
 	);
 };
