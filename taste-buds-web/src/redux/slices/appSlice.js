@@ -18,7 +18,7 @@ const initialState = appAdapter.getInitialState({
 	],
 	selectedProfile: null,
 	isMobile: false,
-	deleteDialog: false,
+	deleteOpen: false,
 	deleteData: null,
 	contentDialog: false,
 	errors: null,
@@ -43,8 +43,8 @@ export const appSlice = createSlice({
 		setIsMobile: (state, action) => {
 			state.isMobile = action.payload;
 		},
-		openDelete: (state, action) => {
-			state.deleteDialog = action.payload;
+		setDeleteOpen: (state, action) => {
+			state.deleteOpen = action.payload;
 		},
 		setDeleteData: (state, action) => {
 			state.deleteData = action.payload;
@@ -82,7 +82,7 @@ export const appSlice = createSlice({
 			];
 			state.selectedProfile = null;
 			state.isMobile = false;
-			state.deleteDialog = false;
+			state.deleteOpen = false;
 			state.deleteData = null;
 			state.contentDialog = false;
 			state.errors = null;
@@ -97,7 +97,7 @@ export const {
 	setFoodTypeOptions,
 	setSelectedProfile,
 	setIsMobile,
-	openDelete,
+	setDeleteOpen,
 	setDeleteData,
 	setContentDialog,
 	resetOptions,
