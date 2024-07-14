@@ -134,6 +134,20 @@ export const markAllRead = createAsyncThunk(
 	}
 );
 
+export const deleteChat = createAsyncThunk(
+	'messages/delete_chat',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.delete(`/chats/${data}`);
+			const { success } = res.data;
+			success && dispatch(getChatList());
+			return success;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const messageAdapter = createEntityAdapter();
 const initialState = messageAdapter.getInitialState({
 	loading: false,
@@ -286,6 +300,19 @@ export const messageSlice = createSlice({
 				state.success = action.payload;
 			})
 			.addCase(markAllRead.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(deleteChat.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(deleteChat.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload;
+				window.location.href = '/chats/inbox';
+			})
+			.addCase(deleteChat.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})

@@ -1,19 +1,16 @@
 import { IconButton } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getChatList } from '../../redux/slices/messageSlice';
 import './btmNav.scss';
 
 const BottomNav = () => {
 	const { user } = useSelector((state) => state.user);
 	const location = useLocation();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const currentLocation = location.pathname.split('/')[1];
 
 	const handleClick = (route) => {
 		if (route === 'chats') {
-			dispatch(getChatList());
 			navigate(`/${route}/inbox`);
 		} else {
 			navigate(`/${route}`);
