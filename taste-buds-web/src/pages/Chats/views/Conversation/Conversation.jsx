@@ -7,10 +7,11 @@ import ChatInput from '../../../../components/ChatInput';
 const Conversation = () => {
 	const { user } = useSelector((state) => state.user);
 	const { activeChat } = useSelector((state) => state.message);
+	let chatName;
 
 	const chatUsers = activeChat?.users?.filter((item) => item._id !== user?._id);
 
-	const chatName = chatUsers[0] ? `${chatUsers[0]?.firstName}` : '';
+	chatUsers ? (chatName = `${chatUsers[0]?.firstName}`) : (chatName = '');
 
 	return (
 		<div id='convo'>
