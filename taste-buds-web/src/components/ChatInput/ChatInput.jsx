@@ -6,6 +6,7 @@ import './chat-input.scss';
 import TextInput from '../TextInput';
 
 const ChatInput = () => {
+	const { theme } = useSelector((state) => state.app);
 	const { activeChat, message } = useSelector((state) => state.message);
 	const dispatch = useDispatch();
 
@@ -32,7 +33,7 @@ const ChatInput = () => {
 			>
 				<TextInput
 					fullWidth
-					className='message-input'
+					className={theme === 'dark' ? 'message-input dark' : 'message-input'}
 					placeholder='Type a message...'
 					size='small'
 					margin='dense'

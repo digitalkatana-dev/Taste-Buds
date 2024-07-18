@@ -26,12 +26,14 @@ const BottomNav = () => {
 				onClick={() => handleClick('dashboard')}
 			>
 				<p className='noto-color-emoji-regular'>🪟</p>
+				<h6>Dashboard</h6>
 			</IconButton>
 			<IconButton
 				className={currentLocation === 'search' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('search')}
 			>
 				<p className='noto-color-emoji-regular'>👀</p>
+				<h6>Search</h6>
 			</IconButton>
 			<IconButton
 				className={currentLocation === 'matches' ? 'nav-btn active' : 'nav-btn'}
@@ -42,12 +44,14 @@ const BottomNav = () => {
 				) : (
 					<p className='noto-color-emoji-regular'>🥂</p>
 				)}
+				<h6>Matches</h6>
 			</IconButton>
 			<IconButton
 				className={currentLocation === 'chats' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('chats')}
 			>
 				<p className='noto-color-emoji-regular'>💬</p>
+				<h6>Chat</h6>
 			</IconButton>
 			<IconButton
 				className={currentLocation === 'profile' ? 'nav-btn active' : 'nav-btn'}
@@ -62,6 +66,7 @@ const BottomNav = () => {
 				{user?.genderIdentity === 'non-binary' && (
 					<p className='noto-color-emoji-regular'>🙋🏽</p>
 				)}
+				<h6>My Profile</h6>
 			</IconButton>
 		</div>
 	);

@@ -65,7 +65,7 @@ const Profile = () => {
 							<Typography>Dark</Typography>
 						</Stack>
 					</div>
-					<NavWheel />
+					{/* <NavWheel /> */}
 				</Paper>
 			</section>
 		</div>

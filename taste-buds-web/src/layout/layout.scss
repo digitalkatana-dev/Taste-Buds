@@ -1,11 +1,13 @@
 #layout {
 	width: 100vw;
 	height: 100vh;
+	max-height: 100vh !important;
 	display: flex;
 	flex-direction: column;
 	padding: 0;
 	align-items: center;
 	background-color: inherit;
+	overflow: hidden;
 	// border: 3px solid dodgerblue;
 
 	.content-container {

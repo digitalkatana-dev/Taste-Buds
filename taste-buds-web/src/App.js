@@ -1,5 +1,7 @@
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { setIsMobile } from './redux/slices/appSlice';
 import './app.scss';
 import Layout from './layout';
 import Home from './pages/Home';
@@ -14,6 +16,28 @@ import Profile from './pages/Profile';
 
 const App = () => {
 	const { theme } = useSelector((state) => state.app);
+	const dispatch = useDispatch();
+
+	const handleMobile = useCallback(() => {
+		const handleResize = () => {
+			if (window.innerWidth <= 895) {
+				dispatch(setIsMobile(true));
+			} else {
+				dispatch(setIsMobile(false));
+			}
+		};
+
+		window.addEventListener('resize', handleResize);
+		handleResize();
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [dispatch]);
+
+	useEffect(() => {
+		handleMobile();
+	}, [handleMobile]);
 
 	return (
 		<div className='app' data-theme={theme}>
