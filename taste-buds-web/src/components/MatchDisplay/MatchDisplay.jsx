@@ -1,5 +1,6 @@
 import { Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import { getChat } from '../../redux/slices/messageSlice';
 import './display.scss';
@@ -7,6 +8,7 @@ import './display.scss';
 const MatchDisplay = () => {
 	const { user } = useSelector((state) => state.user);
 	const matches = user?.matches;
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const mutualMatches = matches?.filter(
@@ -17,6 +19,7 @@ const MatchDisplay = () => {
 	const handleMatchClick = (profile) => {
 		dispatch(setSelectedProfile(profile));
 		dispatch(getChat(profile._id));
+		// navigate('/selected-profile');
 	};
 
 	return (
