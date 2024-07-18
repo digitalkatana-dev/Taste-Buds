@@ -3,7 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #111418 !important;
+	background-color: #16161a !important;
 	overflow: hidden;
 
 	.swipe-container {
@@ -15,8 +15,9 @@
 
 		.card-container {
 			width: 100%;
-			height: 100%;
+			height: calc(100% - 5px);
 			position: relative;
+			margin-top: 5px;
 			// border: 1px solid dodgerblue;
 
 			.swipe {

@@ -6,6 +6,7 @@ import { getChat } from '../../redux/slices/messageSlice';
 import './display.scss';
 
 const MatchDisplay = () => {
+	const { isMobile, theme } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const matches = user?.matches;
 	const navigate = useNavigate();
@@ -19,7 +20,7 @@ const MatchDisplay = () => {
 	const handleMatchClick = (profile) => {
 		dispatch(setSelectedProfile(profile));
 		dispatch(getChat(profile._id));
-		// navigate('/selected-profile');
+		isMobile && navigate('/selected-profile');
 	};
 
 	return (
@@ -30,10 +31,15 @@ const MatchDisplay = () => {
 					className='match-card'
 					onClick={() => handleMatchClick(match)}
 				>
-					<Paper className='img-container' elevation={10}>
+					<Paper
+						className={
+							theme === 'dark' ? 'img-container dark' : 'img-container'
+						}
+						elevation={10}
+					>
 						<img src={match.profilePhoto} alt={match.firstName} />
 					</Paper>
-					<h5>{match?.firstName}</h5>
+					<h6>{match?.firstName}</h6>
 				</div>
 			))}
 		</div>

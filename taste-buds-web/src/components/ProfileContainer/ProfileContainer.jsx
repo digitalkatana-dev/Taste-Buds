@@ -1,5 +1,6 @@
-import { Stack } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import { clearActiveChat } from '../../redux/slices/messageSlice';
 import ChatHeader from '../ChatHeader';
@@ -9,6 +10,7 @@ import './profileContainer.scss';
 
 const ProfileContainer = () => {
 	const { selectedProfile } = useSelector((state) => state.app);
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const handleMatches = () => {
@@ -20,7 +22,9 @@ const ProfileContainer = () => {
 		}
 	};
 
-	const handleChat = () => {};
+	const handleProfileClick = () => {
+		navigate('/selected-profile');
+	};
 
 	return (
 		<div id='profile-container'>
@@ -38,21 +42,17 @@ const ProfileContainer = () => {
 					Matches
 				</button>
 				{selectedProfile && (
-					<Stack direction='column' alignItems='center'>
+					<IconButton className='profile-btn' onClick={handleProfileClick}>
 						<div className='img-container'>
 							<img
 								src={selectedProfile?.profilePhoto}
-								alt={selectedProfile.handle}
+								alt={selectedProfile?.handle}
 							/>
 						</div>
-						<h5>@{selectedProfile?.handle}</h5>
-					</Stack>
+						<h6>@{selectedProfile?.handle}</h6>
+					</IconButton>
 				)}
-				<button
-					className='option'
-					disabled={!selectedProfile}
-					onClick={handleChat}
-				>
+				<button className='option' disabled={!selectedProfile}>
 					Chat
 				</button>
 			</Stack>

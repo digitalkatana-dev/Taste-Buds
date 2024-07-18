@@ -6,8 +6,18 @@ input::-webkit-inner-spin-button {
 
 .auth-input,
 .message-input {
+	border-radius: 40px;
+
 	.MuiInputBase-root {
-		border-radius: 40px !important;
+		border-radius: 40px;
+	}
+
+	&.dark {
+		background-color: var(--background);
+
+		.MuiInputBase-root {
+			color: var(--txt-primary) !important;
+		}
 	}
 }
 
@@ -15,9 +25,9 @@ input::-webkit-inner-spin-button {
 	.MuiInputBase-root {
 		border-radius: 10px !important;
 
-		// input:hover {
-		// 	border-radius: 10px !important;
-		// 	border: 3px solid black;
-		// }
+		input:hover {
+			border-radius: 10px !important;
+			// border: 3px solid black;
+		}
 	}
 }
