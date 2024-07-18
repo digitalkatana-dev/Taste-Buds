@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Matches from './pages/Matches';
 import Chats from './pages/Chats';
+import SelectedProfile from './pages/SelectedProfile';
 import Profile from './pages/Profile';
 
 const App = () => {
@@ -61,6 +62,14 @@ const App = () => {
 										children={<Chats type='convo' />}
 									/>
 								}
+							/>
+						}
+					/>
+					<Route
+						path='/selected-profile'
+						element={
+							<ProtectedRoute
+								element={<Layout children={<SelectedProfile />} />}
 							/>
 						}
 					/>
