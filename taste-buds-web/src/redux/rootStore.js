@@ -17,7 +17,7 @@ import messageReducer from './slices/messageSlice';
 const appPersistConfig = {
 	key: 'app',
 	storage,
-	whitelist: ['theme'],
+	whitelist: ['theme', 'selectedProfile'],
 };
 
 const userPersistConfig = {

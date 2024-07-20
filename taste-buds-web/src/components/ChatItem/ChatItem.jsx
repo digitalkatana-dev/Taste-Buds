@@ -12,6 +12,7 @@ import { getChatName, getChatImages } from '../../util/helpers';
 import './chat-item.scss';
 
 const ChatItem = ({ data }) => {
+	const { theme } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -35,9 +36,22 @@ const ChatItem = ({ data }) => {
 						<Avatar alt='user' src={item.userImg} />
 					</ListItemAvatar>
 				))}
-				<ListItemText primary={chatName} secondary={latestMessage} />
+				<ListItemText
+					primary={chatName}
+					secondary={latestMessage}
+					secondaryTypographyProps={{ color: 'var(--txt-secondary)' }}
+				/>
 			</ListItem>
-			<Divider variant='inset' component='div' />
+			<Divider
+				variant='inset'
+				component='div'
+				sx={{
+					borderColor:
+						theme === 'dark'
+							? 'rgba(255, 255, 255, 0.12)'
+							: 'rgba(0, 0, 0, 0.12)',
+				}}
+			/>
 		</>
 	);
 };
