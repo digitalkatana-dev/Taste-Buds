@@ -129,11 +129,17 @@ router.get('/profiles', requireAuth, async (req, res) => {
 		const apMatches = activeProfile?.matches;
 		const matchedIds = apMatches.map((profileId) => profileId.toString());
 
-		const sanitizedProfiles = profiles.filter(
-			(item) =>
-				item.user.toString() !== active.toString() &&
-				!matchedIds.includes(item._id.toString())
-		);
+		let sanitizedProfiles;
+
+		if (Array.isArray(profiles)) {
+			sanitizedProfiles = profiles?.filter(
+				(item) =>
+					item.user.toString() !== active.toString() &&
+					!matchedIds.includes(item._id.toString())
+			);
+		} else {
+			sanitizedProfiles = profiles;
+		}
 
 		res.status(201).json(sanitizedProfiles);
 	} catch (err) {
