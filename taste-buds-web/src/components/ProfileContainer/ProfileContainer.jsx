@@ -23,7 +23,7 @@ const ProfileContainer = () => {
 	};
 
 	const handleProfileClick = () => {
-		navigate('/selected-profile');
+		navigate(`/selected-profile/${selectedProfile._id}`);
 	};
 
 	return (
