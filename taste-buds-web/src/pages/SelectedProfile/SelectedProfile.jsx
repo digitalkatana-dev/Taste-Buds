@@ -1,12 +1,42 @@
 import { IconButton, Paper, Stack, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import {
+	getSelectedProfile,
+	setSelectedProfile,
+} from '../../redux/slices/appSlice';
 import './selected.scss';
+import Loading from '../../components/Loading';
 
 const SelectedProfile = () => {
-	const { theme, selectedProfile } = useSelector((state) => state.app);
+	const { loading, theme, selectedProfile } = useSelector((state) => state.app);
+	const location = useLocation();
+	const dispatch = useDispatch();
+
+	const profile = location.pathname.split('/')[2];
+
+	const loadSelectedProfile = useCallback(() => {
+		dispatch(getSelectedProfile(profile));
+	}, [dispatch, profile]);
+
+	const clearSelectedProfile = useCallback(() => {
+		dispatch(setSelectedProfile(null));
+	}, [dispatch]);
+
+	useEffect(() => {
+		loadSelectedProfile();
+
+		return () => {
+			clearSelectedProfile();
+		};
+	}, [loadSelectedProfile, clearSelectedProfile]);
+
+	console.log('URL', profile);
 
 	return (
 		<div id='selected-profile'>
+			{loading && <Loading />}
 			<div className='header-container'>
 				<div className='cover-photo-section'>
 					<div className='cover-photo-container'>

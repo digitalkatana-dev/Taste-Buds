@@ -1,5 +1,22 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
+import {
+	createAsyncThunk,
+	createEntityAdapter,
+	createSlice,
+} from '@reduxjs/toolkit';
 import { logout } from './userSlice';
+import budsApi from '../../api/budsApi';
+
+export const getSelectedProfile = createAsyncThunk(
+	'app/get_selected_profile',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get(`/profiles/?id=${data}`);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
 
 export const appAdapter = createEntityAdapter();
 const initialState = appAdapter.getInitialState({
@@ -66,28 +83,41 @@ export const appSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(logout, (state) => {
-			state.loading = false;
-			state.theme = 'light';
-			state.authType = 'signin';
-			state.foodTypeOptions = [
-				'Italian',
-				'Thai',
-				'Greek',
-				'American',
-				'Indian',
-				'German',
-				'French',
-				'Mexican',
-			];
-			state.selectedProfile = null;
-			state.isMobile = false;
-			state.deleteOpen = false;
-			state.deleteData = null;
-			state.contentDialog = false;
-			state.errors = null;
-			appAdapter.removeAll(state);
-		});
+		builder
+			.addCase(getSelectedProfile.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getSelectedProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.selectedProfile = action.payload;
+			})
+			.addCase(getSelectedProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(logout, (state) => {
+				state.loading = false;
+				state.theme = 'light';
+				state.authType = 'signin';
+				state.foodTypeOptions = [
+					'Italian',
+					'Thai',
+					'Greek',
+					'American',
+					'Indian',
+					'German',
+					'French',
+					'Mexican',
+				];
+				state.selectedProfile = null;
+				state.isMobile = false;
+				state.deleteOpen = false;
+				state.deleteData = null;
+				state.contentDialog = false;
+				state.errors = null;
+				appAdapter.removeAll(state);
+			});
 	},
 });
 

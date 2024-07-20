@@ -99,7 +99,7 @@ const App = () => {
 						}
 					/>
 					<Route
-						path='/selected-profile'
+						path='/selected-profile/:id'
 						element={
 							<ProtectedRoute
 								element={<Layout children={<SelectedProfile />} />}
