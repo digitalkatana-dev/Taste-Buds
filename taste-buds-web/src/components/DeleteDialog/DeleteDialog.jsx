@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './delete.scss';
 
 const DeleteDialog = () => {
-	const { deleteOpen, deleteData } = useSelector((state) => state.app);
+	const { theme, deleteOpen, deleteData } = useSelector((state) => state.app);
 	const dispatch = useDispatch();
 
 	const handleClose = () => {
@@ -29,6 +29,7 @@ const DeleteDialog = () => {
 	return (
 		<Dialog
 			id='delete-dialog'
+			className={theme === 'dark' ? 'dark' : ''}
 			maxWidth='xs'
 			fullWidth
 			open={deleteOpen}
