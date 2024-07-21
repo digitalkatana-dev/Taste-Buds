@@ -5,9 +5,8 @@ import {
 	ListItemAvatar,
 	ListItemText,
 } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getChat } from '../../redux/slices/messageSlice';
 import { getChatName, getChatImages } from '../../util/helpers';
 import './chat-item.scss';
 
@@ -15,7 +14,6 @@ const ChatItem = ({ data }) => {
 	const { theme } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const chatName = getChatName(user?._id, data);
 	let latestMessage = data?.latestMessage
@@ -24,7 +22,6 @@ const ChatItem = ({ data }) => {
 	const chatImage = getChatImages(user?._id, data);
 
 	const handleClick = () => {
-		dispatch(getChat(data?._id));
 		navigate(`/chats/conversation/${data?._id}`);
 	};
 

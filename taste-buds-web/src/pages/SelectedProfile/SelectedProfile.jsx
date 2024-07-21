@@ -1,4 +1,4 @@
-import { IconButton, Paper, Stack, Typography } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';

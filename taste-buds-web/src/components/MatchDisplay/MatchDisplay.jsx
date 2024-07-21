@@ -18,9 +18,12 @@ const MatchDisplay = () => {
 	);
 
 	const handleMatchClick = (profile) => {
-		!isMobile && dispatch(setSelectedProfile(profile));
-		isMobile && navigate(`/selected-profile/${profile._id}`);
-		dispatch(getChat(profile._id));
+		if (!isMobile) {
+			dispatch(setSelectedProfile(profile));
+			dispatch(getChat(profile._id));
+		} else if (isMobile) {
+			navigate(`/selected-profile/${profile._id}`);
+		}
 	};
 
 	return (
