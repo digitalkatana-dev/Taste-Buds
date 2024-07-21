@@ -1,4 +1,4 @@
-import { Paper, Stack } from '@mui/material';
+import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -6,6 +6,7 @@ import {
 	getSelectedProfile,
 	setSelectedProfile,
 } from '../../redux/slices/appSlice';
+import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import './selected.scss';
 import Loading from '../../components/Loading';
 
@@ -31,8 +32,6 @@ const SelectedProfile = () => {
 			clearSelectedProfile();
 		};
 	}, [loadSelectedProfile, clearSelectedProfile]);
-
-	console.log('URL', profile);
 
 	return (
 		<div id='selected-profile'>
@@ -65,18 +64,60 @@ const SelectedProfile = () => {
 							{selectedProfile?.firstName + ' ' + selectedProfile?.lastName}
 						</span>
 						<span className='handle'>@{selectedProfile?.handle}</span>
-						<span className='desc'>{selectedProfile?.about}</span>
 					</Stack>
 				</Stack>
 				<Paper
 					className={theme === 'dark' ? 'profile-paper dark' : 'profile-paper'}
 					elevation={10}
 				>
-					<div className='greeting-container'>
-						<h3 className='greeting'>
-							Hi {selectedProfile?.firstName}, Welcome back 👋
-						</h3>
+					<Divider>
+						<Chip label='About' size='small' className='divider-chip' />
+					</Divider>
+					<div className='about-container'>{selectedProfile?.about}</div>
+					<Divider>
+						<Chip label='Diet' size='small' className='divider-chip' />
+					</Divider>
+					<div className='diet-container'>
+						<Chip
+							label={capitalizeFirstLetterOfEachWord(selectedProfile?.dietType)}
+							size='small'
+							variant={theme === 'dark' ? 'outlined' : 'filled'}
+							className='data-chip'
+						/>
 					</div>
+					<Divider>
+						<Chip label='Food Types' size='small' className='divider-chip' />
+					</Divider>
+					<div className='food-type-container'>
+						{selectedProfile?.favorites?.foodTypes?.map((item, i) => (
+							<Chip
+								key={i}
+								label={item}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						))}
+					</div>
+					<Divider>
+						<Chip label='Fav Dish' size='small' className='divider-chip' />
+					</Divider>
+					<div className='dish-container'>
+						<Chip
+							label={selectedProfile?.favorites?.dish}
+							size='small'
+							variant={theme === 'dark' ? 'outlined' : 'filled'}
+							className='data-chip'
+						/>
+					</div>
+					<Divider>
+						<Chip label='Food Porn' size='small' className='divider-chip' />
+					</Divider>
+					<div className='photo-container'></div>
+					<Divider>
+						<Chip label='Remove Match' size='small' className='divider-chip' />
+					</Divider>
+					<div className='unmatch-container'></div>
 				</Paper>
 			</section>
 		</div>

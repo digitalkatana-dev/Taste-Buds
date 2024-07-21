@@ -1,10 +1,17 @@
-import { IconButton, Paper, Stack, Typography } from '@mui/material';
+import {
+	Chip,
+	Divider,
+	IconButton,
+	Paper,
+	Stack,
+	Typography,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../redux/slices/appSlice';
+import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import './profile.scss';
 import ThemeSwitch from '../../components/ThemeSwitch';
-import NavWheel from '../../components/NavWheel';
 
 const Profile = () => {
 	const { theme } = useSelector((state) => state.app);
@@ -65,7 +72,50 @@ const Profile = () => {
 							<Typography>Dark</Typography>
 						</Stack>
 					</div>
-					{/* <NavWheel /> */}
+					<Divider>
+						<Chip label='About' size='small' className='divider-chip' />
+					</Divider>
+					<div className='about-container'>{user?.about}</div>
+					<Divider>
+						<Chip label='Diet' size='small' className='divider-chip' />
+					</Divider>
+					<div className='diet-container'>
+						<Chip
+							label={capitalizeFirstLetterOfEachWord(user?.dietType)}
+							size='small'
+							variant={theme === 'dark' ? 'outlined' : 'filled'}
+							className='data-chip'
+						/>
+					</div>
+					<Divider>
+						<Chip label='Food Types' size='small' className='divider-chip' />
+					</Divider>
+					<div className='food-type-container'>
+						{user?.favorites?.foodTypes?.map((item, i) => (
+							<Chip
+								key={i}
+								label={item}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						))}
+					</div>
+					<Divider>
+						<Chip label='Fav Dish' size='small' className='divider-chip' />
+					</Divider>
+					<div className='dish-container'>
+						<Chip
+							label={user?.favorites?.dish}
+							size='small'
+							variant={theme === 'dark' ? 'outlined' : 'filled'}
+							className='data-chip'
+						/>
+					</div>
+					<Divider>
+						<Chip label='Food Porn' size='small' className='divider-chip' />
+					</Divider>
+					<div className='photo-container'></div>
 				</Paper>
 			</section>
 		</div>
