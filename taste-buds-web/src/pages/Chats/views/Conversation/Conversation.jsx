@@ -7,13 +7,12 @@ import {
 	clearActiveChat,
 } from '../../../../redux/slices/messageSlice';
 import './convo.scss';
-import Loading from '../../../../components/Loading';
 import ChatDisplay from '../../../../components/ChatDisplay/ChatDisplay';
 import ChatInput from '../../../../components/ChatInput';
 
 const Conversation = () => {
 	const { user } = useSelector((state) => state.user);
-	const { loading, activeChat } = useSelector((state) => state.message);
+	const { activeChat } = useSelector((state) => state.message);
 	const location = useLocation();
 	const dispatch = useDispatch();
 
@@ -42,7 +41,6 @@ const Conversation = () => {
 
 	return (
 		<div id='convo'>
-			{loading && <Loading />}
 			<div className='title-bar-container'>
 				<div className='chat-images-container'>
 					<AvatarGroup max={4}>
