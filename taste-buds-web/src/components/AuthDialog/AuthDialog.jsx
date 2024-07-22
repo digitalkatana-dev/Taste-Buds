@@ -27,13 +27,22 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import './auth-dialog.scss';
+import Loading from '../Loading';
 import Button from '../Button';
 import TextInput from '../TextInput';
 
 const AuthDialog = ({ open, setShowDialog }) => {
 	const { authType } = useSelector((state) => state.app);
-	const { login, handle, email, password, confirmPassword, success, errors } =
-		useSelector((state) => state.user);
+	const {
+		loading,
+		login,
+		handle,
+		email,
+		password,
+		confirmPassword,
+		success,
+		errors,
+	} = useSelector((state) => state.user);
 	const [show, setShow] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const navigate = useNavigate();
@@ -126,6 +135,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 
 	return (
 		<Dialog open={open} maxWidth='xs' fullWidth>
+			{loading && <Loading />}
 			<ListItem sx={{ justifyContent: 'end' }}>
 				<IconButton size='small' onClick={handleClose}>
 					<HighlightOffIcon fontSize='medium' />
@@ -242,6 +252,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 						/>
 					)}
 					<Button
+						loading
 						// disabled={true}
 						type='submit'
 						variant='outlined'
