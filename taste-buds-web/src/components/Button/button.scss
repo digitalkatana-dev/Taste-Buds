@@ -1,11 +1,17 @@
+.nav-btn {
+	color: #fe3072 !important;
+	background: #ffff !important;
+	font-weight: bold !important;
+	padding-right: 20px !important;
+	padding-left: 20px !important;
+	border-radius: 10px !important;
+	margin: 10px !important;
+}
+
 .primary-btn {
-	color: #fff;
-	text-transform: uppercase;
-	font-size: 15px;
+	font-weight: bold !important;
 	background: linear-gradient(45deg, #fe3072, #ff5940);
-	padding: 12px 30px;
-	border-radius: 30px;
-	border: none;
+	border-radius: 30px !important;
 
 	&:hover {
 		background: linear-gradient(260deg, #fe3072, #ff5940);
@@ -13,28 +19,14 @@
 }
 
 .secondary-btn {
-	color: #797777;
-	background-color: #fff;
-	font-weight: 500;
-	font-size: 15px;
-	text-transform: uppercase;
-	padding: 12px 30px;
-	border-radius: 30px;
-	border: 2px solid #797777;
-	margin: 6px;
+	color: #797777 !important;
+	font-weight: bold !important;
+	border-radius: 30px !important;
+	border: 2px solid #797777 !important;
+	margin-top: 10px !important;
 
 	&:hover {
-		color: #303030;
-		border: 2px solid #303030;
+		color: #303030 !important;
+		border: 2px solid #303030 !important;
 	}
-}
-
-.nav-btn {
-	color: #fe3072;
-	background-color: #ffff;
-	font-size: 20px;
-	padding: 10px 20px;
-	border-radius: 10px;
-	border: none;
-	margin: 10px;
 }

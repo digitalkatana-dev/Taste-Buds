@@ -1,24 +1,28 @@
-import React from 'react';
+import { Button as Template } from '@mui/material';
 import './button.scss';
 
 const Button = ({
 	disabled,
 	type,
-	className,
-	children,
+	variant,
+	size,
 	fullWidth,
+	className,
 	onClick,
+	children,
 }) => {
 	return (
-		<button
+		<Template
 			disabled={disabled}
 			type={type}
+			variant={variant}
+			size={size}
+			fullWidth={fullWidth}
 			className={className}
-			style={{ width: fullWidth ? '100%' : 'initial' }}
 			onClick={onClick}
 		>
 			{children}
-		</button>
+		</Template>
 	);
 };
 

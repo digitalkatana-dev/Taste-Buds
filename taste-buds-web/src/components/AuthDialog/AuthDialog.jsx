@@ -244,6 +244,7 @@ const AuthDialog = ({ open, setShowDialog }) => {
 					<Button
 						// disabled={true}
 						type='submit'
+						variant='outlined'
 						className='secondary-btn'
 						fullWidth
 					>
