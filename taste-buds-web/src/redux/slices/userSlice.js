@@ -201,6 +201,7 @@ export const userSlice = createSlice({
 			state.email = '';
 			state.password = '';
 			state.confirmPassword = '';
+			state.errors = null;
 		},
 		clearUser: (state) => {
 			state.firstName = '';

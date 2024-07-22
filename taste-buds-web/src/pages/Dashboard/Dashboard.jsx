@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
-import ProfileContainer from '../../components/ProfileContainer';
+import SideBar from '../../components/SideBar';
 import ButtonRow from '../../components/ButtonRow';
 
 const Dashboard = () => {
@@ -45,7 +45,7 @@ const Dashboard = () => {
 
 	return (
 		<div id='dashboard'>
-			<ProfileContainer />
+			<SideBar />
 			<div className='swipe-container'>
 				<div className='card-container'>
 					{allUsers?.map((item) => {

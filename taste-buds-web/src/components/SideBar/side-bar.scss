@@ -1,19 +1,56 @@
-#profile-container {
+.side-bar {
 	display: none;
 }
 
 @media only screen and (min-width: 896px) {
-	#profile-container {
+	.side-bar {
 		width: 30%;
 		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--card-background);
-		box-shadow: rgba($color: #000000, $alpha: 0.05) 0px 6px 24px 0px,
-			rgba($color: #000000, $alpha: 0.08) 0px 0px 0px 1px;
+		box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+			rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 		text-align: left;
 		z-index: 1;
-		// border: 2px solid dodgerblue;
+
+		&.dark {
+			box-shadow: rgba(255, 255, 255, 0.05) 0px 6px 24px 0px,
+				rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
+		}
+
+		.img-container {
+			width: 30px;
+			height: 30px;
+			border-radius: 15px;
+			overflow: hidden;
+			margin: 10px;
+
+			img {
+				width: 100%;
+			}
+		}
+
+		.header {
+			height: 100px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: linear-gradient(45deg, rgb(254, 48, 114), rgb(255, 89, 64));
+
+			.user-profile {
+				display: flex;
+				align-items: center;
+				padding-left: 20px;
+				color: whitesmoke;
+				cursor: pointer;
+			}
+
+			.log-out {
+				padding-right: 20px;
+				color: whitesmoke;
+			}
+		}
 
 		.option {
 			background-color: whitesmoke;
@@ -27,7 +64,7 @@
 				border-bottom: 4px solid rgb(187, 187, 187);
 			}
 
-			&.mockDisabled {
+			&.off {
 				color: rgb(187, 187, 187);
 				border-bottom: 4px solid rgb(187, 187, 187);
 
@@ -38,22 +75,11 @@
 			}
 		}
 
-		.profile-btn {
+		.match-profile-btn {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			border-radius: 10px;
-
-			.img-container {
-				width: 30px;
-				height: 30px;
-				border-radius: 15px;
-				overflow: hidden;
-
-				img {
-					width: 100%;
-				}
-			}
 
 			h6 {
 				font-size: small;
