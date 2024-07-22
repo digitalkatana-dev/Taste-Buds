@@ -18,7 +18,7 @@ const Nav = ({ minimal, setShowDialog }) => {
 				<img className='logo' src={minimal ? darkLogo : lightLogo} alt='' />
 			</div>
 			{!user && !minimal && (
-				<Button className='nav-btn' onClick={handleClick}>
+				<Button variant='contained' className='nav-btn' onClick={handleClick}>
 					Log in
 				</Button>
 			)}

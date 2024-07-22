@@ -26,7 +26,12 @@ const Home = () => {
 			<Nav setShowDialog={setShowDialog} />
 			<div className='home'>
 				<h1 className='primary-title'>Swipe Right®</h1>
-				<Button className='primary-btn' onClick={handleClick}>
+				<Button
+					variant='contained'
+					size='large'
+					className='primary-btn'
+					onClick={handleClick}
+				>
 					{user ? 'Signout' : 'Create Account'}
 				</Button>
 			</div>
