@@ -35,7 +35,7 @@ import {
 } from '../../redux/slices/userSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './create-profile.scss';
-import Nav from '../../components/Nav';
+import TopBar from '../../components/TopBar';
 import TextInput from '../../components/TextInput';
 import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
@@ -151,7 +151,7 @@ const CreateProfile = () => {
 
 	return (
 		<>
-			<Nav minimal />
+			<TopBar page='create' minimal />
 			<Container>
 				<div className='profile-data'>
 					<h2>Create Profile</h2>
