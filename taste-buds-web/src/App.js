@@ -20,7 +20,7 @@ import SelectedProfile from './pages/SelectedProfile';
 import Profile from './pages/Profile';
 
 const App = () => {
-	const { theme } = useSelector((state) => state.app);
+	const { theme, authType } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
@@ -51,7 +51,13 @@ const App = () => {
 				<Routes>
 					<Route
 						path='/'
-						element={user ? <Navigate to='/dashboard' /> : <Home />}
+						element={
+							user && authType === 'signin' ? (
+								<Navigate to='/dashboard' />
+							) : (
+								<Home />
+							)
+						}
 					/>
 					<Route
 						path='/onboarding'
