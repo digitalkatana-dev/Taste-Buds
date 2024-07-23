@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthType } from '../../redux/slices/appSlice';
 import { logout } from '../../redux/slices/userSlice';
 import './home.scss';
-import Nav from '../../components/Nav';
+import TopBar from '../../components/TopBar';
 import Button from '../../components/Button';
 import AuthDialog from '../../components/AuthDialog';
 
@@ -23,7 +23,7 @@ const Home = () => {
 
 	return (
 		<div className='overlay'>
-			<Nav setShowDialog={setShowDialog} />
+			<TopBar page='home' setShowDialog={setShowDialog} />
 			<div className='home'>
 				<h1 className='primary-title'>Swipe Right®</h1>
 				<Button

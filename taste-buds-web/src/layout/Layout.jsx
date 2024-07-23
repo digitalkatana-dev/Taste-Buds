@@ -32,7 +32,7 @@ const Layout = ({ heading, children }) => {
 
 	return (
 		<Container id='layout' maxWidth='xl'>
-			<TopBar />
+			<TopBar page='layout' />
 			<div className='content-container'>
 				{heading && (
 					<div className='heading-container'>
