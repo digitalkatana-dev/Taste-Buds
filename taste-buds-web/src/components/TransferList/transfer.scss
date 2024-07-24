@@ -1,0 +1,9 @@
+#transfer-list {
+	flex-direction: column;
+}
+
+@media only screen and (min-width: 568px) {
+	#transfer-list {
+		flex-direction: row;
+	}
+}

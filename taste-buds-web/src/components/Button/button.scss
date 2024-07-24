@@ -30,3 +30,15 @@
 		border: 2px solid #303030 !important;
 	}
 }
+
+.create-profile-btn {
+	position: absolute !important;
+	bottom: 0;
+	font-weight: bold !important;
+	background: linear-gradient(45deg, #fe3072, #ff5940);
+	border-radius: 30px !important;
+
+	&:hover {
+		background: linear-gradient(260deg, #fe3072, #ff5940);
+	}
+}
