@@ -13,6 +13,7 @@ import {
 import { setFoodTypeOptions } from '../../redux/slices/appSlice';
 import { setFavFoodTypes } from '../../redux/slices/userSlice';
 import { not, intersection } from '../../util/helpers';
+import './transfer.scss';
 
 const TransferList = () => {
 	const { foodTypeOptions } = useSelector((state) => state.app);
@@ -89,7 +90,13 @@ const TransferList = () => {
 	);
 
 	return (
-		<Grid container spacing={2} justifyContent='center' alignItems='center'>
+		<Grid
+			container
+			spacing={2}
+			justifyContent='center'
+			alignItems='center'
+			id='transfer-list'
+		>
 			<Grid item>{customList(foodTypeOptions)}</Grid>
 			<Grid item>
 				<Grid container direction='column' alignItems='center'>

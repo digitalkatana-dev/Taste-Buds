@@ -188,17 +188,6 @@ const CreateProfile = () => {
 									<TextInput
 										className='profile-input'
 										type='number'
-										label='Day'
-										placeholder='DD'
-										size='small'
-										margin='dense'
-										value={dob.day}
-										onFocus={handleFocus}
-										onChange={(e) => handleChange(e, 'day')}
-									/>
-									<TextInput
-										className='profile-input'
-										type='number'
 										label='Month'
 										placeholder='MM'
 										size='small'
@@ -206,6 +195,17 @@ const CreateProfile = () => {
 										value={dob.month}
 										onFocus={handleFocus}
 										onChange={(e) => handleChange(e, 'month')}
+									/>
+									<TextInput
+										className='profile-input'
+										type='number'
+										label='Day'
+										placeholder='DD'
+										size='small'
+										margin='dense'
+										value={dob.day}
+										onFocus={handleFocus}
+										onChange={(e) => handleChange(e, 'day')}
 									/>
 									<TextInput
 										className='profile-input'
@@ -444,9 +444,6 @@ const CreateProfile = () => {
 									/>
 								</FormControl>
 							</FormControl>
-							<Button type='submit' fullWidth>
-								Submit
-							</Button>
 						</section>
 						<section>
 							<Button onClick={handleChooseProfilePhoto}>
@@ -473,6 +470,14 @@ const CreateProfile = () => {
 								</div>
 							</FormControl>
 						</section>
+						<Button
+							type='submit'
+							variant='contained'
+							fullWidth
+							className='create-profile-btn'
+						>
+							Submit
+						</Button>
 					</form>
 				</div>
 			</Container>
