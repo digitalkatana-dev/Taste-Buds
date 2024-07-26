@@ -99,12 +99,8 @@
 			overflow-y: auto;
 
 			.greeting-container,
-			.about-container,
-			.diet-container,
-			.food-type-container,
-			.dish-container,
-			.photo-container,
-			.unmatch-container {
+			.profile-data-container,
+			.photo-container {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 10px;

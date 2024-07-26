@@ -93,25 +93,33 @@ const initialState = userAdapter.getInitialState({
 	firstName: '',
 	lastName: '',
 	dob: {
-		day: '',
 		month: '',
+		day: '',
 		year: '',
 	},
 	genderIdentity: '',
+	editIdentity: false,
 	showGender: false,
 	genderInterest: '',
+	editInterest: false,
 	about: '',
+	editAbout: false,
 	location: {
 		city: '',
 		state: '',
 		postalCode: '',
 	},
+	editLocation: false,
 	distancePref: '',
+	editDistance: false,
 	dietType: '',
+	editDiet: false,
 	favorites: {
 		foodTypes: [],
 		dish: '',
 	},
+	editFavFoods: false,
+	editFavDish: false,
 	profilePhotoPreview: null,
 	communication: {
 		email: true,
@@ -150,11 +158,11 @@ export const userSlice = createSlice({
 		setLastName: (state, action) => {
 			state.lastName = action.payload;
 		},
-		setDOBDay: (state, action) => {
-			state.dob.day = action.payload;
-		},
 		setDOBMonth: (state, action) => {
 			state.dob.month = action.payload;
+		},
+		setDOBDay: (state, action) => {
+			state.dob.day = action.payload;
 		},
 		setDOBYear: (state, action) => {
 			state.dob.year = action.payload;
@@ -165,11 +173,20 @@ export const userSlice = createSlice({
 		setShowGender: (state, action) => {
 			state.showGender = action.payload;
 		},
+		toggleEditIdentity: (state) => {
+			state.editIdentity = !state.editIdentity;
+		},
 		setGenderInterest: (state, action) => {
 			state.genderInterest = action.payload;
 		},
+		toggleEditInterest: (state) => {
+			state.editInterest = !state.editInterest;
+		},
 		setAboutMe: (state, aciton) => {
 			state.about = aciton.payload;
+		},
+		toggleEditAbout: (state) => {
+			state.editAbout = !state.editAbout;
 		},
 		setCity: (state, action) => {
 			state.location.city = action.payload;
@@ -180,17 +197,32 @@ export const userSlice = createSlice({
 		setPostalCode: (state, action) => {
 			state.location.postalCode = action.payload;
 		},
+		toggleEditLocation: (state) => {
+			state.editLocation = !state.editLocation;
+		},
 		setDistancePref: (state, action) => {
 			state.distancePref = action.payload;
+		},
+		toggleEditDistance: (state) => {
+			state.editDistance = !state.editDistance;
 		},
 		setDietType: (state, action) => {
 			state.dietType = action.payload;
 		},
+		toggleEditDiet: (state) => {
+			state.editDiet = !state.editDiet;
+		},
 		setFavFoodTypes: (state, action) => {
 			state.favorites.foodTypes = action.payload;
 		},
+		toggleEditFavFoods: (state) => {
+			state.editFavFoods = !state.editFavFoods;
+		},
 		setFavDish: (state, action) => {
 			state.favorites.dish = action.payload;
+		},
+		toggleEditFavDish: (state) => {
+			state.editFavDish = !state.editFavDish;
 		},
 		setProfilePhotoPreview: (state, action) => {
 			state.profilePhotoPreview = action.payload;
@@ -237,25 +269,33 @@ export const userSlice = createSlice({
 			state.firstName = '';
 			state.lastName = '';
 			state.dob = {
-				day: '',
 				month: '',
+				day: '',
 				year: '',
 			};
 			state.genderIdentity = '';
 			state.showGender = false;
+			state.editIdentity = false;
 			state.genderInterest = '';
+			state.editInterest = false;
 			state.about = '';
+			state.editAbout = false;
 			state.location = {
 				city: '',
 				state: '',
 				postalCode: '',
 			};
+			state.editLocation = false;
 			state.distancePref = '';
+			state.editDistance = false;
 			state.dietType = '';
+			state.editDiet = false;
 			state.favorites = {
 				foodTypes: [],
 				dish: '',
 			};
+			state.editFavFoods = false;
+			state.editFavDish = false;
 			state.profilePhotoPreview = null;
 			state.communication = {
 				email: true,
@@ -318,8 +358,8 @@ export const userSlice = createSlice({
 				state.firstName = '';
 				state.lastName = '';
 				state.dob = {
-					day: null,
 					month: null,
+					day: null,
 					year: null,
 				};
 				state.genderIdentity = '';
@@ -396,15 +436,23 @@ export const {
 	setDOBYear,
 	setGenderIdentity,
 	setShowGender,
+	toggleEditIdentity,
 	setGenderInterest,
+	toggleEditInterest,
 	setAboutMe,
+	toggleEditAbout,
 	setCity,
 	setState,
 	setPostalCode,
+	toggleEditLocation,
 	setDistancePref,
+	toggleEditDistance,
 	setDietType,
+	toggleEditDiet,
 	setFavFoodTypes,
 	setFavDish,
+	toggleEditFavFoods,
+	toggleEditFavDish,
 	setProfilePhotoPreview,
 	clearAuthData,
 	clearUser,

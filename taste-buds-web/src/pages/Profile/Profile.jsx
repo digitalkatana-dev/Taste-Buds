@@ -8,6 +8,16 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../../redux/slices/appSlice';
+import {
+	toggleEditIdentity,
+	toggleEditInterest,
+	toggleEditAbout,
+	toggleEditLocation,
+	toggleEditDistance,
+	toggleEditDiet,
+	toggleEditFavFoods,
+	toggleEditFavDish,
+} from '../../redux/slices/userSlice';
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import './profile.scss';
@@ -15,12 +25,39 @@ import ThemeSwitch from '../../components/ThemeSwitch';
 
 const Profile = () => {
 	const { theme } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const {
+		user,
+		editIdentity,
+		editInterest,
+		editAbout,
+		editLocation,
+		editDistance,
+		editDiet,
+		editFavFoods,
+		editFavDish,
+	} = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	const handleSwitchTheme = () => {
 		const newTheme = theme === 'light' ? 'dark' : 'light';
 		dispatch(setTheme(newTheme));
+	};
+
+	const handleEditClick = (section) => {
+		const action_map = {
+			about: toggleEditAbout,
+			identity: toggleEditIdentity,
+			interest: toggleEditInterest,
+			location: toggleEditLocation,
+			distance: toggleEditDistance,
+			diet: toggleEditDiet,
+			foods: toggleEditFavFoods,
+			dish: toggleEditFavDish,
+		};
+
+		const action = action_map[section];
+
+		action && dispatch(action());
 	};
 
 	return (
@@ -75,46 +112,171 @@ const Profile = () => {
 					<Divider>
 						<Chip label='About' size='small' className='divider-chip' />
 					</Divider>
-					<div className='about-container'>{user?.about}</div>
-					<Divider>
-						<Chip label='Diet' size='small' className='divider-chip' />
-					</Divider>
-					<div className='diet-container'>
-						<Chip
-							label={capitalizeFirstLetterOfEachWord(user?.dietType)}
-							size='small'
-							variant={theme === 'dark' ? 'outlined' : 'filled'}
-							className='data-chip'
-						/>
+					<button className='edit-btn' onClick={() => handleEditClick('about')}>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editAbout ? <></> : <>{user?.about}</>}
 					</div>
 					<Divider>
-						<Chip label='Food Types' size='small' className='divider-chip' />
+						<Chip
+							label='Gender Identity'
+							size='small'
+							className='divider-chip'
+						/>
 					</Divider>
-					<div className='food-type-container'>
-						{user?.favorites?.foodTypes?.map((item, i) => (
+					<button
+						className='edit-btn'
+						onClick={() => handleEditClick('identity')}
+					>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editIdentity ? (
+							<></>
+						) : (
 							<Chip
-								key={i}
-								label={item}
+								label={capitalizeFirstLetterOfEachWord(user?.genderIdentity)}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
 							/>
-						))}
+						)}
+					</div>
+					<Divider>
+						<Chip
+							label='Gender Interest'
+							size='small'
+							className='divider-chip'
+						/>
+					</Divider>
+					<button
+						className='edit-btn'
+						onClick={() => handleEditClick('interest')}
+					>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editInterest ? (
+							<></>
+						) : (
+							<Chip
+								label={capitalizeFirstLetterOfEachWord(user?.genderInterest)}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						)}
+					</div>
+					<Divider>
+						<Chip label='Location' size='small' className='divider-chip' />
+					</Divider>
+					<button
+						className='edit-btn'
+						onClick={() => handleEditClick('location')}
+					>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editLocation ? (
+							<></>
+						) : (
+							<Chip
+								label={`${user?.location?.city}, ${user?.location?.state} ${user?.location?.postalCode}`}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						)}
+					</div>
+					<Divider>
+						<Chip
+							label='Distance Preference'
+							size='small'
+							className='divider-chip'
+						/>
+					</Divider>
+					<button
+						className='edit-btn'
+						onClick={() => handleEditClick('distance')}
+					>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editDistance ? (
+							<></>
+						) : (
+							<Chip
+								label={`${user?.distancePref} mi.`}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						)}
+					</div>
+					<Divider>
+						<Chip label='Diet' size='small' className='divider-chip' />
+					</Divider>
+					<button className='edit-btn' onClick={() => handleEditClick('diet')}>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editDiet ? (
+							<></>
+						) : (
+							<Chip
+								label={capitalizeFirstLetterOfEachWord(user?.dietType)}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						)}
+					</div>
+					<Divider>
+						<Chip label='Food Types' size='small' className='divider-chip' />
+					</Divider>
+					<button className='edit-btn' onClick={() => handleEditClick('foods')}>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editFavFoods ? (
+							<></>
+						) : (
+							<>
+								{user?.favorites?.foodTypes?.map((item, i) => (
+									<Chip
+										key={i}
+										label={item}
+										size='small'
+										variant={theme === 'dark' ? 'outlined' : 'filled'}
+										className='data-chip'
+									/>
+								))}
+							</>
+						)}
 					</div>
 					<Divider>
 						<Chip label='Fav Dish' size='small' className='divider-chip' />
 					</Divider>
-					<div className='dish-container'>
-						<Chip
-							label={user?.favorites?.dish}
-							size='small'
-							variant={theme === 'dark' ? 'outlined' : 'filled'}
-							className='data-chip'
-						/>
+					<button className='edit-btn' onClick={() => handleEditClick('dish')}>
+						EDIT
+					</button>
+					<div className='profile-data-container'>
+						{editFavDish ? (
+							<></>
+						) : (
+							<Chip
+								label={user?.favorites?.dish}
+								size='small'
+								variant={theme === 'dark' ? 'outlined' : 'filled'}
+								className='data-chip'
+							/>
+						)}
 					</div>
 					<Divider>
 						<Chip label='Food Porn' size='small' className='divider-chip' />
 					</Divider>
+					<button className='edit-btn'>UPLOAD</button>
 					<div className='photo-container'></div>
 				</Paper>
 			</section>

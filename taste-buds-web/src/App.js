@@ -118,6 +118,7 @@ const App = () => {
 							<ProtectedRoute element={<Layout children={<Profile />} />} />
 						}
 					/>
+					<Route path='/test' element={<CreateProfile />} />
 				</Routes>
 			</Router>
 		</div>
