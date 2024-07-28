@@ -82,6 +82,19 @@ export const updateMatches = createAsyncThunk(
 	}
 );
 
+export const updateProfile = createAsyncThunk(
+	'users/update_profile',
+	async (updateData, { rejectWithValue }) => {
+		const { profileId, data } = updateData;
+		try {
+			const res = await budsApi.put(`/profiles/${profileId}/update`, data);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
 	loading: false,
@@ -110,7 +123,7 @@ const initialState = userAdapter.getInitialState({
 		postalCode: '',
 	},
 	editLocation: false,
-	distancePref: '',
+	distancePref: null,
 	editDistance: false,
 	dietType: '',
 	editDiet: false,
@@ -201,7 +214,7 @@ export const userSlice = createSlice({
 			state.editLocation = !state.editLocation;
 		},
 		setDistancePref: (state, action) => {
-			state.distancePref = action.payload;
+			state.distancePref = parseInt(action.payload);
 		},
 		toggleEditDistance: (state) => {
 			state.editDistance = !state.editDistance;
@@ -227,6 +240,30 @@ export const userSlice = createSlice({
 		setProfilePhotoPreview: (state, action) => {
 			state.profilePhotoPreview = action.payload;
 		},
+		populateAbout: (state, action) => {
+			state.about = action.payload;
+		},
+		populateIdentity: (state, action) => {
+			state.genderIdentity = action.payload;
+		},
+		populateInterest: (state, action) => {
+			state.genderInterest = action.payload;
+		},
+		populateLocation: (state, action) => {
+			state.location = action.payload;
+		},
+		populateDistance: (state, action) => {
+			state.distancePref = action.payload;
+		},
+		populateDiet: (state, action) => {
+			state.dietType = action.payload;
+		},
+		populateFoods: (state, action) => {
+			state.favorites.foodTypes = action.payload;
+		},
+		populateDish: (state, action) => {
+			state.favorites.dish = action.payload;
+		},
 		clearAuthData: (state) => {
 			state.login = '';
 			state.handle = '';
@@ -250,6 +287,13 @@ export const userSlice = createSlice({
 				sms: false,
 				voice: false,
 				snail: false,
+			};
+		},
+		clearLocation: (state) => {
+			state.location = {
+				city: '',
+				state: '',
+				postalCode: '',
 			};
 		},
 		clearSuccess: (state) => {
@@ -419,6 +463,39 @@ export const userSlice = createSlice({
 			.addCase(updateMatches.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
+			})
+			.addCase(updateProfile.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(updateProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.user = action.payload.updatedProfile;
+				state.about = '';
+				state.editAbout = false;
+				state.genderIdentity = '';
+				state.editIdentity = false;
+				state.genderInterest = '';
+				state.editInterest = false;
+				state.location = {
+					city: '',
+					state: '',
+					postalCode: '',
+				};
+				state.editLocation = false;
+				state.distancePref = null;
+				state.editDistance = false;
+				state.dietType = '';
+				state.editDiet = false;
+				state.favorites.foodTypes = [];
+				state.editFavFoods = false;
+				state.favorites.dish = '';
+				state.editFavDish = false;
+			})
+			.addCase(updateProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
 			});
 	},
 });
@@ -454,8 +531,17 @@ export const {
 	toggleEditFavFoods,
 	toggleEditFavDish,
 	setProfilePhotoPreview,
+	populateAbout,
+	populateIdentity,
+	populateInterest,
+	populateLocation,
+	populateDistance,
+	populateDiet,
+	populateFoods,
+	populateDish,
 	clearAuthData,
 	clearUser,
+	clearLocation,
 	clearSuccess,
 	clearErrors,
 	logout,
