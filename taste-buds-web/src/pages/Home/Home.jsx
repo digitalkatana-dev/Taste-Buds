@@ -25,7 +25,7 @@ const Home = () => {
 		<div className='overlay'>
 			<TopBar page='home' setShowDialog={setShowDialog} />
 			<div className='home'>
-				<h1 className='primary-title'>Swipe Right®</h1>
+				<h1 className='primary-title'>Make a Friend, Grab Some Grub®</h1>
 				<Button
 					variant='contained'
 					size='large'
