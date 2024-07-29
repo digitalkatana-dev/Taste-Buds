@@ -193,14 +193,14 @@ const Profile = () => {
 			updateData.data = {
 				favorites: {
 					...user?.favorites,
-					dish: user?.favorites?.dish,
+					foodTypes: favorites?.foodTypes,
 				},
 			};
 		} else if (field === 'dish') {
 			updateData.data = {
 				favorites: {
 					...user?.favorites,
-					dish: favorites.dish,
+					dish: favorites?.dish,
 				},
 			};
 		}
@@ -574,7 +574,7 @@ const Profile = () => {
 					<div className='profile-data-container'>
 						{editFavFoods ? (
 							<form onSubmit={(e) => handleSubmit(e, 'foods')}>
-								<TransferList update />
+								<TransferList isUpdate />
 								<Button type='submit'>Update</Button>
 							</form>
 						) : (
