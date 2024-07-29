@@ -15,11 +15,17 @@ import { setFavFoodTypes } from '../../redux/slices/userSlice';
 import { not, intersection } from '../../util/helpers';
 import './transfer.scss';
 
-const TransferList = () => {
-	const { foodTypeOptions } = useSelector((state) => state.app);
+const TransferList = ({ isUpdate }) => {
+	let { foodTypeOptions } = useSelector((state) => state.app);
 	const { favorites } = useSelector((state) => state.user);
 	const [checked, setChecked] = useState([]);
 	const dispatch = useDispatch();
+
+	if (isUpdate) {
+		foodTypeOptions = foodTypeOptions.filter(
+			(food) => !favorites?.foodTypes.includes(food)
+		);
+	}
 
 	const leftChecked = intersection(checked, foodTypeOptions);
 	const rightChecked = intersection(checked, favorites.foodTypes);
