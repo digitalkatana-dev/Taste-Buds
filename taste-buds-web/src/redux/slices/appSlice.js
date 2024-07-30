@@ -35,6 +35,8 @@ const initialState = appAdapter.getInitialState({
 	],
 	selectedProfile: null,
 	isMobile: false,
+	photoOpen: false,
+	photoDialogType: '',
 	deleteOpen: false,
 	deleteData: null,
 	contentDialog: false,
@@ -59,6 +61,12 @@ export const appSlice = createSlice({
 		},
 		setIsMobile: (state, action) => {
 			state.isMobile = action.payload;
+		},
+		setPhotoOpen: (state, action) => {
+			state.photoOpen = action.payload;
+		},
+		setPhotoDialogType: (state, action) => {
+			state.photoDialogType = action.payload;
 		},
 		setDeleteOpen: (state, action) => {
 			state.deleteOpen = action.payload;
@@ -112,6 +120,8 @@ export const appSlice = createSlice({
 				];
 				state.selectedProfile = null;
 				state.isMobile = false;
+				state.photoOpen = false;
+				state.photoDialogType = '';
 				state.deleteOpen = false;
 				state.deleteData = null;
 				state.contentDialog = false;
@@ -127,6 +137,8 @@ export const {
 	setFoodTypeOptions,
 	setSelectedProfile,
 	setIsMobile,
+	setPhotoOpen,
+	setPhotoDialogType,
 	setDeleteOpen,
 	setDeleteData,
 	setContentDialog,

@@ -8,14 +8,19 @@ import {
 } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setProfilePhotoPreview } from '../../redux/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPhotoOpen, setPhotoDialogType } from '../../redux/slices/appSlice';
+import { setPhotoPreview } from '../../redux/slices/userSlice';
+import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import Cropper from 'react-cropper';
 import CloseIcon from '@mui/icons-material/Close';
 import 'cropperjs/dist/cropper.css';
 import './photoUpload.scss';
 
-const PhotoUploadDialog = ({ open, setShowDialog }) => {
+const PhotoUploadDialog = () => {
+	const { theme, photoOpen, photoDialogType } = useSelector(
+		(state) => state.app
+	);
 	const [file, setFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [cropped, setCropped] = useState(null);
@@ -23,10 +28,13 @@ const PhotoUploadDialog = ({ open, setShowDialog }) => {
 	const dispatch = useDispatch();
 
 	const handleClose = () => {
-		setShowDialog(false);
+		dispatch(setPhotoOpen(false));
 		setFile(null);
 		setPreview(null);
 		setCropped(null);
+		setTimeout(() => {
+			dispatch(setPhotoDialogType(''));
+		}, 500);
 	};
 
 	const onCrop = () => {
@@ -52,27 +60,33 @@ const PhotoUploadDialog = ({ open, setShowDialog }) => {
 
 	const handleClick = () => {
 		const cropper = cropperRef.current?.cropper;
-		dispatch(setProfilePhotoPreview(cropper.getCroppedCanvas().toDataURL()));
-		setShowDialog(false);
+		dispatch(setPhotoPreview(cropper.getCroppedCanvas().toDataURL()));
+		dispatch(setPhotoOpen(false));
+		setTimeout(() => {
+			dispatch(setPhotoDialogType(''));
+		}, 500);
 	};
 
 	useEffect(() => {
-		if (open === false) {
+		if (photoOpen === false) {
 			setFile(null);
 			setPreview(null);
 			setCropped(null);
 		}
-	}, [open]);
+	}, [photoOpen]);
 
 	return (
 		<Dialog
 			id='photo-upload'
+			className={theme === 'dark' ? 'dark' : ''}
 			maxWidth='xs'
 			fullWidth
-			open={open}
+			open={photoOpen}
 			onClose={handleClose}
 		>
-			<DialogTitle className='title'>Upload Profile Photo</DialogTitle>
+			<DialogTitle className='title'>{`Upload ${capitalizeFirstLetterOfEachWord(
+				photoDialogType
+			)} Photo`}</DialogTitle>
 			<IconButton
 				sx={{ position: 'absolute', right: 8, top: 8 }}
 				className='close'

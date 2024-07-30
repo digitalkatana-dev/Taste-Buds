@@ -7,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './layout.scss';
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
+import PhotoUploadDialog from '../components/PhotoUploadDialog';
 import DeleteDialog from '../components/DeleteDialog';
 
 const Layout = ({ heading, children }) => {
@@ -47,6 +48,7 @@ const Layout = ({ heading, children }) => {
 				<div className='content'>{children}</div>
 			</div>
 			<BottomNav />
+			<PhotoUploadDialog />
 			<DeleteDialog />
 		</Container>
 	);

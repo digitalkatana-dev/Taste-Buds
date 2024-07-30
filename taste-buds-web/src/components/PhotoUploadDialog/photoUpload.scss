@@ -1,0 +1,23 @@
+#photo-upload {
+	&.dark {
+		.MuiPaper-root {
+			background-color: #16161a;
+			box-shadow: 0px 11px 15px -7px rgba(155, 155, 155, 0.2),
+				0px 24px 38px 3px rgba(155, 155, 155, 0.14),
+				0px 9px 46px 8px rgba(155, 155, 155, 0.12);
+		}
+
+		.title,
+		.close {
+			color: rgba(255, 255, 255, 0.34);
+		}
+
+		.MuiDialogContent-root {
+			border-color: rgba(255, 255, 255, 0.12);
+
+			p {
+				color: var(--error);
+			}
+		}
+	}
+}
