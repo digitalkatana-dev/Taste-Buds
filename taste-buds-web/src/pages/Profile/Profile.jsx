@@ -10,7 +10,11 @@ import {
 	Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/slices/appSlice';
+import {
+	setTheme,
+	setPhotoOpen,
+	setPhotoDialogType,
+} from '../../redux/slices/appSlice';
 import {
 	toggleEditAbout,
 	populateAbout,
@@ -171,6 +175,11 @@ const Profile = () => {
 		action && dispatch(action(e.target.value));
 	};
 
+	const handleUploadClick = () => {
+		dispatch(setPhotoOpen(true));
+		dispatch(setPhotoDialogType('food porn'));
+	};
+
 	const handleSubmit = (e, field) => {
 		e.preventDefault();
 		let updateData = {
@@ -223,34 +232,6 @@ const Profile = () => {
 			default:
 				break;
 		}
-
-		// if (field === 'about') {
-		// 	updateData.data = { about };
-		// } else if (field === 'gid') {
-		// 	updateData.data = { genderIdentity };
-		// } else if (field === 'gint') {
-		// 	updateData.data = { genderInterest };
-		// } else if (field === 'location') {
-		// 	updateData.data = { location };
-		// } else if (field === 'distance') {
-		// 	updateData.data = { distancePref };
-		// } else if (field === 'diet') {
-		// 	updateData.data = { dietType };
-		// } else if (field === 'foods') {
-		// 	updateData.data = {
-		// 		favorites: {
-		// 			...user?.favorites,
-		// 			foodTypes: favorites?.foodTypes,
-		// 		},
-		// 	};
-		// } else if (field === 'dish') {
-		// 	updateData.data = {
-		// 		favorites: {
-		// 			...user?.favorites,
-		// 			dish: favorites?.dish,
-		// 		},
-		// 	};
-		// }
 
 		dispatch(updateProfile(updateData));
 	};
@@ -684,7 +665,9 @@ const Profile = () => {
 					<Divider>
 						<Chip label='Food Porn' size='small' className='divider-chip' />
 					</Divider>
-					<button className='edit-btn'>UPLOAD</button>
+					<button className='edit-btn' onClick={handleUploadClick}>
+						UPLOAD
+					</button>
 					<div className='photo-container'></div>
 				</Paper>
 			</div>

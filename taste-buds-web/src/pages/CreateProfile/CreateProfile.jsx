@@ -8,10 +8,14 @@ import {
 	Radio,
 	RadioGroup,
 } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { resetOptions } from '../../redux/slices/appSlice';
+import {
+	setPhotoOpen,
+	setPhotoDialogType,
+	resetOptions,
+} from '../../redux/slices/appSlice';
 import {
 	setFirstName,
 	setLastName,
@@ -28,7 +32,7 @@ import {
 	setDistancePref,
 	setDietType,
 	setFavDish,
-	setProfilePhotoPreview,
+	setPhotoPreview,
 	createProfile,
 	clearErrors,
 	clearSuccess,
@@ -54,11 +58,10 @@ const CreateProfile = () => {
 		distancePref,
 		dietType,
 		favorites,
-		profilePhotoPreview,
+		photoPreview,
 		success,
 		errors,
 	} = useSelector((state) => state.user);
-	const [showDialog, setShowDialog] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -93,17 +96,18 @@ const CreateProfile = () => {
 
 	const handleChooseProfilePhoto = (e) => {
 		e.preventDefault();
-		setShowDialog(true);
+		dispatch(setPhotoOpen(true));
+		dispatch(setPhotoDialogType('profile'));
 	};
 
 	const handleClearPhotoPreview = () => {
-		dispatch(setProfilePhotoPreview(null));
+		dispatch(setPhotoPreview(null));
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		let data;
-		if (profilePhotoPreview) {
+		if (photoPreview) {
 			data = new FormData();
 			data.append('firstName', firstName);
 			data.append('lastName', lastName);
@@ -116,7 +120,7 @@ const CreateProfile = () => {
 			data.append('about', about);
 			data.append('dietType', dietType);
 			data.append('favorites', JSON.stringify(favorites));
-			data.append('b64str', profilePhotoPreview);
+			data.append('b64str', photoPreview);
 		} else {
 			data = {
 				firstName,
@@ -449,13 +453,10 @@ const CreateProfile = () => {
 							<Button onClick={handleChooseProfilePhoto}>
 								Choose Profile Photo
 							</Button>
-							<PhotoUploadDialog
-								open={showDialog}
-								setShowDialog={setShowDialog}
-							/>
+							<PhotoUploadDialog />
 							<FormControl>
 								<div id='image-preview-container'>
-									{profilePhotoPreview && (
+									{photoPreview && (
 										<>
 											<IconButton
 												sx={{ position: 'absolute', top: 10, right: 10 }}
@@ -464,7 +465,7 @@ const CreateProfile = () => {
 											>
 												<DeleteIcon className='delete-icon' />
 											</IconButton>
-											<img src={profilePhotoPreview} alt='' />
+											<img src={photoPreview} alt='' />
 										</>
 									)}
 								</div>

@@ -133,7 +133,7 @@ const initialState = userAdapter.getInitialState({
 	},
 	editFavFoods: false,
 	editFavDish: false,
-	profilePhotoPreview: null,
+	photoPreview: null,
 	communication: {
 		email: true,
 		sms: false,
@@ -237,8 +237,8 @@ export const userSlice = createSlice({
 		toggleEditFavDish: (state) => {
 			state.editFavDish = !state.editFavDish;
 		},
-		setProfilePhotoPreview: (state, action) => {
-			state.profilePhotoPreview = action.payload;
+		setPhotoPreview: (state, action) => {
+			state.photoPreview = action.payload;
 		},
 		populateAbout: (state, action) => {
 			state.about = action.payload;
@@ -340,7 +340,7 @@ export const userSlice = createSlice({
 			};
 			state.editFavFoods = false;
 			state.editFavDish = false;
-			state.profilePhotoPreview = null;
+			state.photoPreview = null;
 			state.communication = {
 				email: true,
 				sms: false,
@@ -421,7 +421,7 @@ export const userSlice = createSlice({
 					foodTypes: [],
 					dish: '',
 				};
-				state.profilePhotoPreview = null;
+				state.photoPreview = null;
 			})
 			.addCase(createProfile.rejected, (state, action) => {
 				state.loading = false;
@@ -530,7 +530,7 @@ export const {
 	setFavDish,
 	toggleEditFavFoods,
 	toggleEditFavDish,
-	setProfilePhotoPreview,
+	setPhotoPreview,
 	populateAbout,
 	populateIdentity,
 	populateInterest,
