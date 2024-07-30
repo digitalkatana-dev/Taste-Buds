@@ -16,7 +16,7 @@ import { not, intersection } from '../../util/helpers';
 import './transfer.scss';
 
 const TransferList = ({ isUpdate }) => {
-	let { foodTypeOptions } = useSelector((state) => state.app);
+	let { theme, foodTypeOptions } = useSelector((state) => state.app);
 	const { favorites } = useSelector((state) => state.user);
 	const [checked, setChecked] = useState([]);
 	const dispatch = useDispatch();
@@ -66,7 +66,9 @@ const TransferList = ({ isUpdate }) => {
 	};
 
 	const customList = (items) => (
-		<Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
+		<Paper
+			className={theme === 'dark' ? 'transfer-paper dark' : 'transfer-paper'}
+		>
 			<List dense component='div' role='list'>
 				{items.map((value) => {
 					const labelId = `transfer-list-item-${value}-label`;

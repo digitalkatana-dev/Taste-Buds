@@ -177,33 +177,80 @@ const Profile = () => {
 			profileId: user?._id,
 		};
 
-		if (field === 'about') {
-			updateData.data = { about };
-		} else if (field === 'gid') {
-			updateData.data = { genderIdentity };
-		} else if (field === 'gint') {
-			updateData.data = { genderInterest };
-		} else if (field === 'location') {
-			updateData.data = { location };
-		} else if (field === 'distance') {
-			updateData.data = { distancePref };
-		} else if (field === 'diet') {
-			updateData.data = { dietType };
-		} else if (field === 'foods') {
-			updateData.data = {
-				favorites: {
-					...user?.favorites,
-					foodTypes: favorites?.foodTypes,
-				},
-			};
-		} else if (field === 'dish') {
-			updateData.data = {
-				favorites: {
-					...user?.favorites,
-					dish: favorites?.dish,
-				},
-			};
+		switch (field) {
+			case 'about':
+				updateData.data = { about };
+				break;
+
+			case 'gid':
+				updateData.data = { genderIdentity };
+				break;
+
+			case 'gint':
+				updateData.data = { genderInterest };
+				break;
+
+			case 'location':
+				updateData.data = { location };
+				break;
+
+			case 'distance':
+				updateData.data = { distancePref };
+				break;
+
+			case 'diet':
+				updateData.data = { dietType };
+				break;
+
+			case 'foods':
+				updateData.data = {
+					favorites: {
+						...user?.favorites,
+						foodTypes: favorites?.foodTypes,
+					},
+				};
+				break;
+
+			case 'dish':
+				updateData.data = {
+					favorites: {
+						...user?.favorites,
+						dish: favorites?.dish,
+					},
+				};
+				break;
+
+			default:
+				break;
 		}
+
+		// if (field === 'about') {
+		// 	updateData.data = { about };
+		// } else if (field === 'gid') {
+		// 	updateData.data = { genderIdentity };
+		// } else if (field === 'gint') {
+		// 	updateData.data = { genderInterest };
+		// } else if (field === 'location') {
+		// 	updateData.data = { location };
+		// } else if (field === 'distance') {
+		// 	updateData.data = { distancePref };
+		// } else if (field === 'diet') {
+		// 	updateData.data = { dietType };
+		// } else if (field === 'foods') {
+		// 	updateData.data = {
+		// 		favorites: {
+		// 			...user?.favorites,
+		// 			foodTypes: favorites?.foodTypes,
+		// 		},
+		// 	};
+		// } else if (field === 'dish') {
+		// 	updateData.data = {
+		// 		favorites: {
+		// 			...user?.favorites,
+		// 			dish: favorites?.dish,
+		// 		},
+		// 	};
+		// }
 
 		dispatch(updateProfile(updateData));
 	};
@@ -220,7 +267,7 @@ const Profile = () => {
 					</div>
 				</div>
 			</div>
-			<section id='profile-content'>
+			<div id='profile-content'>
 				<Stack
 					direction='column'
 					justifyContent='center'
@@ -267,7 +314,9 @@ const Profile = () => {
 						{editAbout ? (
 							<form onSubmit={(e) => handleSubmit(e, 'about')}>
 								<TextInput
-									className='profile-input'
+									className={
+										theme === 'dark' ? 'profile-input dark' : 'profile-input'
+									}
 									label='About Me'
 									size='small'
 									margin='dense'
@@ -302,6 +351,7 @@ const Profile = () => {
 							<form onSubmit={(e) => handleSubmit(e, 'gid')}>
 								<div className='profile-row alt'>
 									<RadioGroup
+										sx={{ justifyContent: 'center' }}
 										row
 										defaultValue='female'
 										name='genderIdentity'
@@ -354,6 +404,7 @@ const Profile = () => {
 							<form onSubmit={(e) => handleSubmit(e, 'gint')}>
 								<div className='profile-row alt'>
 									<RadioGroup
+										sx={{ justifyContent: 'center' }}
 										row
 										name='genderInterest'
 										value={genderInterest}
@@ -406,7 +457,9 @@ const Profile = () => {
 							<form onSubmit={(e) => handleSubmit(e, 'location')}>
 								<div className='profile-row'>
 									<TextInput
-										className='profile-input'
+										className={
+											theme === 'dark' ? 'profile-input dark' : 'profile-input'
+										}
 										label='City'
 										size='small'
 										margin='dense'
@@ -415,7 +468,9 @@ const Profile = () => {
 										onChange={(e) => handleChange(e, 'city')}
 									/>
 									<TextInput
-										className='profile-input'
+										className={
+											theme === 'dark' ? 'profile-input dark' : 'profile-input'
+										}
 										label='State'
 										size='small'
 										margin='dense'
@@ -424,7 +479,9 @@ const Profile = () => {
 										onChange={(e) => handleChange(e, 'state')}
 									/>
 									<TextInput
-										className='profile-input'
+										className={
+											theme === 'dark' ? 'profile-input dark' : 'profile-input'
+										}
 										label='Postal Code'
 										size='small'
 										margin='dense'
@@ -462,6 +519,7 @@ const Profile = () => {
 							<form onSubmit={(e) => handleSubmit(e, 'distance')}>
 								<div className='profile-row alt'>
 									<RadioGroup
+										sx={{ justifyContent: 'center' }}
 										row
 										defaultValue='5'
 										name='distancePref'
@@ -507,6 +565,7 @@ const Profile = () => {
 							<form onSubmit={(e) => handleSubmit(e, 'diet')}>
 								<div className='profile-row-alt'>
 									<RadioGroup
+										sx={{ justifyContent: 'center' }}
 										row
 										name='dietType'
 										value={dietType}
@@ -601,7 +660,9 @@ const Profile = () => {
 						{editFavDish ? (
 							<form onSubmit={(e) => handleSubmit(e, 'dish')}>
 								<TextInput
-									className='profile-input'
+									className={
+										theme === 'dark' ? 'profile-input dark' : 'profile-input'
+									}
 									label='Favorite Dish'
 									size='small'
 									margin='dense'
@@ -626,7 +687,7 @@ const Profile = () => {
 					<button className='edit-btn'>UPLOAD</button>
 					<div className='photo-container'></div>
 				</Paper>
-			</section>
+			</div>
 		</div>
 	);
 };
