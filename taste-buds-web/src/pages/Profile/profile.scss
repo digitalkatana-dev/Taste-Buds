@@ -3,7 +3,6 @@
 	height: fit-content;
 	display: flex;
 	flex-direction: column;
-	// border: 3px solid dodgerblue;
 
 	.header-container {
 		.cover-photo-section {
@@ -47,7 +46,6 @@
 	#profile-content {
 		padding: 0 24px;
 		position: relative;
-		// border: 1px solid transparent;
 
 		.user-container {
 			position: absolute;
@@ -116,6 +114,13 @@
 			.profile-data-container {
 				form {
 					width: 100%;
+
+					.profile-row {
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						gap: 10px;
+					}
 				}
 			}
 
@@ -136,6 +141,19 @@
 
 				.data-chip {
 					color: var(--txt-primary);
+				}
+
+				.profile-data-container {
+					form {
+						.MuiRadio-root,
+						.MuiCheckbox-root {
+							color: var(--muted);
+						}
+
+						.Mui-checked {
+							color: #ba53f5;
+						}
+					}
 				}
 			}
 		}
