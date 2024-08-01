@@ -19,5 +19,11 @@
 				color: var(--error);
 			}
 		}
+
+		.save-btn {
+			&:disabled {
+				color: var(--muted);
+			}
+		}
 	}
 }

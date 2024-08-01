@@ -6,7 +6,6 @@ import {
 	DialogTitle,
 	IconButton,
 } from '@mui/material';
-import { MuiFileInput } from 'mui-file-input';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPhotoOpen, setPhotoDialogType } from '../../redux/slices/appSlice';
@@ -14,6 +13,7 @@ import { setPhotoPreview } from '../../redux/slices/userSlice';
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import Cropper from 'react-cropper';
 import CloseIcon from '@mui/icons-material/Close';
+import FileInput from '../FileInput/FileInput';
 import 'cropperjs/dist/cropper.css';
 import './photoUpload.scss';
 
@@ -95,7 +95,11 @@ const PhotoUploadDialog = () => {
 				<CloseIcon />
 			</IconButton>
 			<DialogContent className='content' dividers>
-				<MuiFileInput size='small' value={file} onChange={handleChange} />
+				<FileInput
+					placeholder='Choose a photo...'
+					value={file}
+					onChange={handleChange}
+				/>
 				<div className='image-preview-container'>
 					{preview && (
 						<Cropper
@@ -111,7 +115,7 @@ const PhotoUploadDialog = () => {
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose}>Cancel</Button>
-				<Button disabled={!cropped} onClick={handleClick}>
+				<Button disabled={!cropped} className='save-btn' onClick={handleClick}>
 					Save
 				</Button>
 			</DialogActions>
