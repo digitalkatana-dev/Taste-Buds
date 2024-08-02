@@ -669,6 +669,16 @@ const Profile = () => {
 						UPLOAD
 					</button>
 					<div className='photo-container'></div>
+					<Divider>
+						<Chip
+							label='Delete Account'
+							size='small'
+							className='divider-chip'
+						/>
+					</Divider>
+					<div className='profile-data-container delete'>
+						<Button className='delete-acct-btn'>Delete Account</Button>
+					</div>
 				</Paper>
 			</div>
 		</div>
