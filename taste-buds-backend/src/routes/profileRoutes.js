@@ -5,6 +5,9 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const requireAuth = require('../middleware/requireAuth');
 const Profile = model('Profile');
+const User = model('User');
+const Chat = model('Chat');
+const Message = model('Message');
 const router = Router();
 
 const storage = multer.memoryStorage();
@@ -174,6 +177,44 @@ router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 		res.json({ updatedProfile, success: 'Profile updated successfully!' });
 	} catch (err) {
 		errors.profiles = 'Error updating profiles!';
+		return res.status(400).json(errors);
+	}
+});
+
+// Delete
+router.delete('/profiles/:profileId/delete', requireAuth, async (req, res) => {
+	let errors = {};
+	const { profileId } = req?.params;
+
+	const deleted = await Profile.findByIdAndDelete(profileId);
+
+	try {
+		if (!deleted) {
+			errors.profile =
+				"Error, profile not found or you don't have permission to delete it.";
+			return res.status(404).json(errors);
+		}
+
+		await User.findByIdAndDelete(deleted?.user);
+
+		const chats = await Chat.find({
+			users: { $elemMatch: { $eq: profileId } },
+		});
+
+		chats?.forEach(async (chat) => {
+			const messages = await Message.find({ chat: chat._id });
+
+			messages?.forEach(async (message) => {
+				await Message.findByIdAndDelete(message._id);
+			});
+
+			await Chat.findByIdAndDelete(chat._id);
+		});
+
+		return res.json({ success: 'Account Deleted Successfully!' });
+	} catch (err) {
+		console.log(err);
+		errors.profile = 'Error, unable to delete account!';
 		return res.status(400).json(errors);
 	}
 });

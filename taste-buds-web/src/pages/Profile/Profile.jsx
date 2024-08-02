@@ -14,6 +14,8 @@ import {
 	setTheme,
 	setPhotoOpen,
 	setPhotoDialogType,
+	setDeleteOpen,
+	setDeleteData,
 } from '../../redux/slices/appSlice';
 import {
 	toggleEditAbout,
@@ -42,6 +44,7 @@ import {
 	populateDish,
 	setFavDish,
 	updateProfile,
+	deleteAccount,
 	clearLocation,
 	clearErrors,
 } from '../../redux/slices/userSlice';
@@ -234,6 +237,16 @@ const Profile = () => {
 		}
 
 		dispatch(updateProfile(updateData));
+	};
+
+	const handleDeleteClick = () => {
+		const data = {
+			type: 'account',
+			action: deleteAccount(user?._id),
+		};
+
+		dispatch(setDeleteData(data));
+		dispatch(setDeleteOpen(true));
 	};
 
 	return (
@@ -677,7 +690,9 @@ const Profile = () => {
 						/>
 					</Divider>
 					<div className='profile-data-container delete'>
-						<Button className='delete-acct-btn'>Delete Account</Button>
+						<Button className='delete-acct-btn' onClick={handleDeleteClick}>
+							Delete Account
+						</Button>
 					</div>
 				</Paper>
 			</div>
