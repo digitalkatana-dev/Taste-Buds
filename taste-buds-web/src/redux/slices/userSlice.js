@@ -95,6 +95,19 @@ export const updateProfile = createAsyncThunk(
 	}
 );
 
+export const deleteAccount = createAsyncThunk(
+	'users/delete_account',
+	async (data, { rejectWithValue, dispatch }) => {
+		try {
+			const res = await budsApi.delete(`/profiles/${data}/delete`);
+			const { success } = res.data;
+			if (success) dispatch(logout());
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const userAdapter = createEntityAdapter();
 const initialState = userAdapter.getInitialState({
 	loading: false,
@@ -494,6 +507,14 @@ export const userSlice = createSlice({
 				state.editFavDish = false;
 			})
 			.addCase(updateProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(deleteAccount.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(deleteAccount.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			});
