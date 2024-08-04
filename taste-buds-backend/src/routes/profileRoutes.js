@@ -283,14 +283,7 @@ router.delete('/profiles/:profileId/delete', requireAuth, async (req, res) => {
 		});
 
 		chats?.forEach(async (chat) => {
-			// const messages = await Message.find({ chat: chat._id });
-
 			await Message.deleteMany({ chat: chat._id });
-
-			// messages?.forEach(async (message) => {
-			// 	await Message.findByIdAndDelete(message._id);
-			// });
-
 			await Chat.findByIdAndDelete(chat._id);
 		});
 

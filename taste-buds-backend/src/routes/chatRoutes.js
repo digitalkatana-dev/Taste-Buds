@@ -201,11 +201,7 @@ router.delete('/chats/:id', requireAuth, async (req, res) => {
 			return res.status(404).json(errors);
 		}
 
-		const chatMessages = await Message.find({ chat: id });
-
-		chatMessages?.forEach(async (message) => {
-			await Message.findByIdAndDelete(message._id);
-		});
+		await Message.deleteMany({ chat: id });
 
 		return res.json({ success: 'Chat deleted successfully!' });
 	} catch (err) {
