@@ -3,6 +3,7 @@ import {
 	createEntityAdapter,
 	createSlice,
 } from '@reduxjs/toolkit';
+import { setPhotoDialogType } from './appSlice';
 import budsApi from '../../api/budsApi';
 
 export const signup = createAsyncThunk(
@@ -88,6 +89,21 @@ export const updateProfile = createAsyncThunk(
 		const { profileId, data } = updateData;
 		try {
 			const res = await budsApi.put(`/profiles/${profileId}/update`, data);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const manageFoodPorn = createAsyncThunk(
+	'users/manage_food_porn',
+	async (data, { rejectWithValue, dispatch }) => {
+		const profileId = data.get('profileId');
+		try {
+			const res = await budsApi.put(`/profiles/${profileId}/food-porn`, data);
+			const { success } = res.data;
+			if (success) dispatch(setPhotoDialogType(''));
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
@@ -505,6 +521,20 @@ export const userSlice = createSlice({
 				state.editFavFoods = false;
 				state.favorites.dish = '';
 				state.editFavDish = false;
+			})
+			.addCase(manageFoodPorn.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(manageFoodPorn.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.user = action.payload.updated;
+				state.photoPreview = null;
+			})
+			.addCase(manageFoodPorn.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
 			})
 			.addCase(updateProfile.rejected, (state, action) => {
 				state.loading = false;

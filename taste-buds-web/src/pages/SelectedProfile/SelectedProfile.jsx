@@ -73,11 +73,11 @@ const SelectedProfile = () => {
 					<Divider>
 						<Chip label='About' size='small' className='divider-chip' />
 					</Divider>
-					<div className='about-container'>{selectedProfile?.about}</div>
+					<div className='profile-data-container'>{selectedProfile?.about}</div>
 					<Divider>
 						<Chip label='Diet' size='small' className='divider-chip' />
 					</Divider>
-					<div className='diet-container'>
+					<div className='profile-data-container'>
 						<Chip
 							label={capitalizeFirstLetterOfEachWord(selectedProfile?.dietType)}
 							size='small'
@@ -88,7 +88,7 @@ const SelectedProfile = () => {
 					<Divider>
 						<Chip label='Food Types' size='small' className='divider-chip' />
 					</Divider>
-					<div className='food-type-container'>
+					<div className='profile-data-container'>
 						{selectedProfile?.favorites?.foodTypes?.map((item, i) => (
 							<Chip
 								key={i}
@@ -102,7 +102,7 @@ const SelectedProfile = () => {
 					<Divider>
 						<Chip label='Fav Dish' size='small' className='divider-chip' />
 					</Divider>
-					<div className='dish-container'>
+					<div className='profile-data-container'>
 						<Chip
 							label={selectedProfile?.favorites?.dish}
 							size='small'
@@ -113,11 +113,17 @@ const SelectedProfile = () => {
 					<Divider>
 						<Chip label='Food Porn' size='small' className='divider-chip' />
 					</Divider>
-					<div className='photo-container'></div>
+					<div className='fp-photo-container'>
+						{selectedProfile?.images?.map((image, i) => (
+							<div className='fp-img' key={i}>
+								<img src={image} alt='' />
+							</div>
+						))}
+					</div>
 					<Divider>
 						<Chip label='Remove Match' size='small' className='divider-chip' />
 					</Divider>
-					<div className='unmatch-container'></div>
+					<div className='profile-data-container unmatch'></div>
 				</Paper>
 			</section>
 		</div>
