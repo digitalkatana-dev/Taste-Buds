@@ -46,6 +46,18 @@ export const createProfile = createAsyncThunk(
 	}
 );
 
+export const getProfile = createAsyncThunk(
+	'users/get_profile',
+	async (data, { rejectWithValue }) => {
+		try {
+			const res = await budsApi.get(`/profiles/?id=${data}`);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const getBuds = createAsyncThunk(
 	'users/get_all',
 	async (data, { rejectWithValue }) => {
@@ -453,6 +465,18 @@ export const userSlice = createSlice({
 				state.photoPreview = null;
 			})
 			.addCase(createProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(getProfile.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(getProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.user = action.payload;
+			})
+			.addCase(getProfile.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})
