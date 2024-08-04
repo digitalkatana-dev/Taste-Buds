@@ -64,18 +64,28 @@
 			color: var(--txt-primary);
 			overflow-y: auto;
 
-			.about-container,
-			.diet-container,
-			.food-type-container,
-			.dish-container,
-			.photo-container,
-			.unmatch-container {
+			.profile-data-container,
+			.fp-photo-container {
 				display: flex;
 				flex-wrap: wrap;
 				gap: 10px;
 				margin: 15px 0;
 				text-align: left;
 				padding: 10px;
+			}
+
+			.fp-photo-container {
+				justify-content: center;
+
+				.fp-img {
+					width: 200px;
+					max-height: 250px;
+					position: relative;
+
+					img {
+						width: 100%;
+					}
+				}
 			}
 
 			&.dark {

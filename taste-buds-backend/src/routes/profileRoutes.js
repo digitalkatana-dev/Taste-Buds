@@ -181,6 +181,71 @@ router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 	}
 });
 
+// Update Profile Pic
+router.put(
+	'/profiles/:profileId/profile-pic',
+	requireAuth,
+	upload.single('file'),
+	async (req, res) => {}
+);
+
+// Upload Food Porn
+router.put(
+	'/profiles/:profileId/food-porn',
+	requireAuth,
+	upload.single('file'),
+	async (req, res) => {
+		let errors = {};
+
+		const { profileId } = req?.params;
+		const { b64str, url } = req?.body;
+
+		try {
+			let updated;
+
+			if (b64str) {
+				const uploadedImage = await cloudinaryUpload(b64str);
+
+				updated = await Profile.findByIdAndUpdate(
+					profileId,
+					{
+						$addToSet: { images: uploadedImage?.url },
+					},
+					{
+						new: true,
+					}
+				).populate('matches');
+			} else if (url) {
+				updated = await Profile.findByIdAndUpdate(
+					profileId,
+					{
+						$pull: { images: url },
+					},
+					{
+						new: true,
+					}
+				).populate('matches');
+			}
+
+			if (!updated) {
+				errors.profile = 'Error, profile not found!';
+				return res.status(404).json(errors);
+			}
+
+			res.json({
+				success: b64str
+					? 'Photo uploaded successfully!'
+					: url && 'Photo deleted successfully!',
+				updated,
+			});
+		} catch (err) {
+			console.log(err);
+			errors.profile = 'Error uploading food porn!';
+			return res.status(400).json(errors);
+		}
+	}
+);
+
 // Delete
 router.delete('/profiles/:profileId/delete', requireAuth, async (req, res) => {
 	let errors = {};

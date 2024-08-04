@@ -97,7 +97,7 @@ const CreateProfile = () => {
 	const handleChooseProfilePhoto = (e) => {
 		e.preventDefault();
 		dispatch(setPhotoOpen(true));
-		dispatch(setPhotoDialogType('profile'));
+		dispatch(setPhotoDialogType('initial profile'));
 	};
 
 	const handleClearPhotoPreview = () => {

@@ -9,6 +9,7 @@ import {
 	Stack,
 	Typography,
 } from '@mui/material';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	setTheme,
@@ -44,12 +45,14 @@ import {
 	populateDish,
 	setFavDish,
 	updateProfile,
+	manageFoodPorn,
 	deleteAccount,
 	clearLocation,
 	clearErrors,
 } from '../../redux/slices/userSlice';
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './profile.scss';
 import ThemeSwitch from '../../components/ThemeSwitch';
 import TextInput from '../../components/TextInput';
@@ -57,7 +60,7 @@ import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
 
 const Profile = () => {
-	const { theme } = useSelector((state) => state.app);
+	const { theme, photoDialogType } = useSelector((state) => state.app);
 	const {
 		user,
 		editAbout,
@@ -75,6 +78,7 @@ const Profile = () => {
 		editFavFoods,
 		editFavDish,
 		favorites,
+		photoPreview,
 	} = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
@@ -239,6 +243,14 @@ const Profile = () => {
 		dispatch(updateProfile(updateData));
 	};
 
+	const handleDeleteFoodPorn = (imageUrl) => {
+		const data = new FormData();
+		data.append('profileId', user?._id);
+		data.append('url', imageUrl);
+
+		dispatch(manageFoodPorn(data));
+	};
+
 	const handleDeleteClick = () => {
 		const data = {
 			type: 'account',
@@ -248,6 +260,20 @@ const Profile = () => {
 		dispatch(setDeleteData(data));
 		dispatch(setDeleteOpen(true));
 	};
+
+	const handleFoodPornUpload = useCallback(() => {
+		if (photoPreview && photoDialogType === 'food porn') {
+			const data = new FormData();
+			data.append('profileId', user?._id);
+			data.append('b64str', photoPreview);
+
+			dispatch(manageFoodPorn(data));
+		}
+	}, [dispatch, user, photoPreview, photoDialogType]);
+
+	useEffect(() => {
+		handleFoodPornUpload();
+	}, [handleFoodPornUpload]);
 
 	return (
 		<div id='profile'>
@@ -681,7 +707,20 @@ const Profile = () => {
 					<button className='edit-btn' onClick={handleUploadClick}>
 						UPLOAD
 					</button>
-					<div className='photo-container'></div>
+					<div className='fp-photo-container'>
+						{user?.images?.map((image, i) => (
+							<div className='fp-img' key={i}>
+								<IconButton
+									sx={{ position: 'absolute', top: 2, right: 2 }}
+									className='del-photo-btn'
+									onClick={() => handleDeleteFoodPorn(image)}
+								>
+									<DeleteIcon className='delete-icon' fontSize='small' />
+								</IconButton>
+								<img src={image} alt='' />
+							</div>
+						))}
+					</div>
 					<Divider>
 						<Chip
 							label='Delete Account'
