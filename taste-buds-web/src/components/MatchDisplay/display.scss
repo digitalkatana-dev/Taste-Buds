@@ -3,26 +3,40 @@
 	flex-wrap: wrap;
 	gap: 10px;
 	padding: 0 5px;
+	padding-top: 10px;
 	justify-content: center;
 	// border: 2px solid orange;
 
-	.match-card {
-		width: fit-content;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
+	.user-match-btn {
+		border-radius: 15px;
 
-		.img-container {
+		.match-card {
 			width: 150px;
 			height: 150px;
 			border-radius: 15px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			position: relative;
 			overflow: hidden;
-			margin: 10px;
 
 			img {
 				width: 100%;
 			}
+
+			.match-name-mobile {
+				position: absolute;
+				bottom: 5px;
+				background-color: black;
+				color: whitesmoke;
+				padding: 2px 7px;
+				border-radius: 10px;
+			}
 		}
+	}
+
+	.match-name {
+		display: none;
 	}
 }
 
@@ -30,11 +44,27 @@
 	#match-display {
 		justify-content: initial;
 
-		.match-card {
-			.img-container {
-				width: 30px;
-				height: 30px;
+		.user-match-btn-container {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+
+			.user-match-btn {
 				border-radius: 100%;
+
+				.match-card {
+					width: 30px;
+					height: 30px;
+					border-radius: 100%;
+
+					.match-name-mobile {
+						display: none;
+					}
+				}
+			}
+
+			.match-name {
+				display: block;
 			}
 		}
 	}
