@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { ButtonBase, Paper } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
@@ -10,7 +10,6 @@ const MatchDisplay = () => {
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const theme = user?.theme;
 	const matches = user?.matches;
 
 	const mutualMatches = matches?.filter(
@@ -30,20 +29,17 @@ const MatchDisplay = () => {
 	return (
 		<div id='match-display'>
 			{mutualMatches?.map((match) => (
-				<div
-					key={match?._id}
-					className='match-card'
-					onClick={() => handleMatchClick(match)}
-				>
-					<Paper
-						className={
-							theme === 'dark' ? 'img-container dark' : 'img-container'
-						}
-						elevation={10}
+				<div key={match?._id} className='user-match-btn-container'>
+					<ButtonBase
+						className='user-match-btn'
+						onClick={() => handleMatchClick(match)}
 					>
-						<img src={match.profilePhoto} alt={match.firstName} />
-					</Paper>
-					<h6>{match?.firstName}</h6>
+						<Paper className='match-card' elevation={10}>
+							<img src={match.profilePhoto} alt={match.firstName} />
+							<h6 className='match-name-mobile'>{match?.firstName}</h6>
+						</Paper>
+					</ButtonBase>
+					<h6 className='match-name'>{match?.firstName}</h6>
 				</div>
 			))}
 		</div>
