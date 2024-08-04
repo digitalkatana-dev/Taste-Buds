@@ -16,7 +16,8 @@ const VisuallyHiddenInput = styled(MuiFileInput)({
 });
 
 const FileInput = ({ placeholder, value, onChange }) => {
-	const { theme } = useSelector((state) => state.app);
+	const { user } = useSelector((state) => state.user);
+	const theme = user?.theme;
 
 	return (
 		<Button

@@ -6,9 +6,10 @@ import './chat-input.scss';
 import TextInput from '../TextInput';
 
 const ChatInput = () => {
-	const { theme } = useSelector((state) => state.app);
+	const { user } = useSelector((state) => state.user);
 	const { activeChat, message } = useSelector((state) => state.message);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleChange = (e) => {
 		dispatch(setMessage(e.target.value));

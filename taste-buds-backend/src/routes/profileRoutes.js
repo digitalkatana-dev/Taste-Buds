@@ -152,6 +152,22 @@ router.get('/profiles', requireAuth, async (req, res) => {
 	}
 });
 
+// Update All
+router.put('/profiles', async (req, res) => {
+	try {
+		const updated = await Profile.updateMany(
+			{},
+			{
+				$set: { theme: 'light' },
+			}
+		);
+
+		res.json(updated);
+	} catch (err) {
+		return res.status(400).json(err);
+	}
+});
+
 // Update
 router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 	let errors = {};
@@ -267,11 +283,13 @@ router.delete('/profiles/:profileId/delete', requireAuth, async (req, res) => {
 		});
 
 		chats?.forEach(async (chat) => {
-			const messages = await Message.find({ chat: chat._id });
+			// const messages = await Message.find({ chat: chat._id });
 
-			messages?.forEach(async (message) => {
-				await Message.findByIdAndDelete(message._id);
-			});
+			await Message.deleteMany({ chat: chat._id });
+
+			// messages?.forEach(async (message) => {
+			// 	await Message.findByIdAndDelete(message._id);
+			// });
 
 			await Chat.findByIdAndDelete(chat._id);
 		});

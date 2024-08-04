@@ -13,8 +13,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import './delete.scss';
 
 const DeleteDialog = () => {
-	const { theme, deleteOpen, deleteData } = useSelector((state) => state.app);
+	const { deleteOpen, deleteData } = useSelector((state) => state.app);
+	const { user } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleClose = () => {
 		dispatch(setDeleteOpen(false));

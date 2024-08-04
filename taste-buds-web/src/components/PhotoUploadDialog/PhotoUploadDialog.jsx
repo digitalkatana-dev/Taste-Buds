@@ -18,14 +18,14 @@ import 'cropperjs/dist/cropper.css';
 import './photoUpload.scss';
 
 const PhotoUploadDialog = () => {
-	const { theme, photoOpen, photoDialogType } = useSelector(
-		(state) => state.app
-	);
+	const { photoOpen, photoDialogType } = useSelector((state) => state.app);
+	const { user } = useSelector((state) => state.user);
 	const [file, setFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [cropped, setCropped] = useState(null);
 	const cropperRef = useRef(null);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleClose = () => {
 		dispatch(setPhotoOpen(false));

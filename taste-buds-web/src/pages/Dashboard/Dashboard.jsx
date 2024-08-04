@@ -7,8 +7,8 @@ import SideBar from '../../components/SideBar';
 import ButtonRow from '../../components/ButtonRow';
 
 const Dashboard = () => {
-	const [lastDirection, setLastDirection] = useState();
 	const { user, allUsers } = useSelector((state) => state.user);
+	const [lastDirection, setLastDirection] = useState();
 	const dispatch = useDispatch();
 
 	const swiped = (direction, swippedProfileId) => {
