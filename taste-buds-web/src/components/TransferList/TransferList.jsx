@@ -16,10 +16,11 @@ import { not, intersection } from '../../util/helpers';
 import './transfer.scss';
 
 const TransferList = ({ isUpdate }) => {
-	let { theme, foodTypeOptions } = useSelector((state) => state.app);
-	const { favorites } = useSelector((state) => state.user);
+	let { foodTypeOptions } = useSelector((state) => state.app);
+	const { user, favorites } = useSelector((state) => state.user);
 	const [checked, setChecked] = useState([]);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	if (isUpdate) {
 		foodTypeOptions = foodTypeOptions.filter(

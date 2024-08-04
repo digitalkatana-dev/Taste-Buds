@@ -20,8 +20,9 @@ import SelectedProfile from './pages/SelectedProfile';
 import Profile from './pages/Profile';
 
 const App = () => {
-	const { theme, authType } = useSelector((state) => state.app);
+	const { authType } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
+	const theme = user?.theme;
 	const dispatch = useDispatch();
 
 	const handleMobile = useCallback(() => {

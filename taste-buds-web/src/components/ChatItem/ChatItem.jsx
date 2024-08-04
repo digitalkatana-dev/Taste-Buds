@@ -11,9 +11,9 @@ import { getChatName, getChatImages } from '../../util/helpers';
 import './chat-item.scss';
 
 const ChatItem = ({ data }) => {
-	const { theme } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
+	const theme = user?.theme;
 
 	const chatName = getChatName(user?._id, data);
 	let latestMessage = data?.latestMessage

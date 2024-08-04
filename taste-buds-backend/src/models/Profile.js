@@ -2,6 +2,11 @@ const { Schema, model } = require('mongoose');
 
 const profileSchema = new Schema(
 	{
+		theme: {
+			type: String,
+			enum: ['light', 'dark'],
+			default: 'light',
+		},
 		firstName: {
 			type: String,
 			required: [true, 'First name is required'],

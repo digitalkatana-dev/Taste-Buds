@@ -21,7 +21,6 @@ export const getSelectedProfile = createAsyncThunk(
 export const appAdapter = createEntityAdapter();
 const initialState = appAdapter.getInitialState({
 	loading: false,
-	theme: 'light',
 	authType: 'signin',
 	foodTypeOptions: [
 		'Italian',
@@ -47,9 +46,6 @@ export const appSlice = createSlice({
 	name: 'app',
 	initialState,
 	reducers: {
-		setTheme: (state, action) => {
-			state.theme = action.payload;
-		},
 		setAuthType: (state, action) => {
 			state.authType = action.payload;
 		},
@@ -106,7 +102,6 @@ export const appSlice = createSlice({
 			})
 			.addCase(logout, (state) => {
 				state.loading = false;
-				state.theme = 'light';
 				state.authType = 'signin';
 				state.foodTypeOptions = [
 					'Italian',
@@ -132,7 +127,6 @@ export const appSlice = createSlice({
 });
 
 export const {
-	setTheme,
 	setAuthType,
 	setFoodTypeOptions,
 	setSelectedProfile,

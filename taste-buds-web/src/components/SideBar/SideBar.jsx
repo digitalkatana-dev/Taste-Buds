@@ -10,10 +10,11 @@ import MatchDisplay from '../MatchDisplay';
 import ChatContainer from '../ChatContainer';
 
 const SideBar = () => {
-	const { theme, selectedProfile } = useSelector((state) => state.app);
+	const { selectedProfile } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleUserProfileClick = () => {
 		navigate('/profile');

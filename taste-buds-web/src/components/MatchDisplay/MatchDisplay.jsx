@@ -6,11 +6,12 @@ import { getChat } from '../../redux/slices/messageSlice';
 import './display.scss';
 
 const MatchDisplay = () => {
-	const { isMobile, theme } = useSelector((state) => state.app);
+	const { isMobile } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
-	const matches = user?.matches;
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const theme = user?.theme;
+	const matches = user?.matches;
 
 	const mutualMatches = matches?.filter(
 		(match) =>

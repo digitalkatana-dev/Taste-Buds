@@ -12,7 +12,6 @@ import {
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	setTheme,
 	setPhotoOpen,
 	setPhotoDialogType,
 	setDeleteOpen,
@@ -60,7 +59,7 @@ import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
 
 const Profile = () => {
-	const { theme, photoDialogType } = useSelector((state) => state.app);
+	const { photoDialogType } = useSelector((state) => state.app);
 	const {
 		user,
 		editAbout,
@@ -81,10 +80,16 @@ const Profile = () => {
 		photoPreview,
 	} = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleSwitchTheme = () => {
 		const newTheme = theme === 'light' ? 'dark' : 'light';
-		dispatch(setTheme(newTheme));
+		const updateData = {
+			profileId: user?._id,
+			data: { theme: newTheme },
+		};
+
+		dispatch(updateProfile(updateData));
 	};
 
 	const handleEditClick = (section) => {

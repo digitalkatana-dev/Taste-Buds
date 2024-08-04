@@ -11,9 +11,11 @@ import './selected.scss';
 import Loading from '../../components/Loading';
 
 const SelectedProfile = () => {
-	const { loading, theme, selectedProfile } = useSelector((state) => state.app);
+	const { loading, selectedProfile } = useSelector((state) => state.app);
+	const { user } = useSelector((state) => state.user);
 	const location = useLocation();
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const profile = location.pathname.split('/')[2];
 

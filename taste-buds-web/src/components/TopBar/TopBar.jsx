@@ -8,9 +8,9 @@ import './top-bar.scss';
 import Button from '../Button';
 
 const TopBar = ({ page, minimal, setShowDialog }) => {
-	const { theme } = useSelector((state) => state.app);
 	const { user } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 
 	const handleDialog = () => {
 		setShowDialog(true);
