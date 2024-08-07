@@ -172,7 +172,7 @@ router.put('/profiles', async (req, res) => {
 router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 	let errors = {};
 
-	const profileId = req?.params?.profileId;
+	const { profileId } = req?.params;
 
 	try {
 		const updatedProfile = await Profile.findByIdAndUpdate(
@@ -257,6 +257,40 @@ router.put(
 		} catch (err) {
 			console.log(err);
 			errors.profile = 'Error uploading food porn!';
+			return res.status(400).json(errors);
+		}
+	}
+);
+
+// Remove Match
+router.put(
+	'/profiles/:profileId/remove-match',
+	requireAuth,
+	async (req, res) => {
+		let errors = {};
+
+		const { profileId } = req?.params;
+		const { matchId } = req?.body;
+
+		try {
+			const updated = await Profile.findByIdAndUpdate(
+				profileId,
+				{
+					$pull: { matches: matchId },
+				},
+				{
+					new: true,
+				}
+			).populate('matches');
+
+			if (!updated) {
+				errors.profile = 'Error, user profile not found!';
+				return res.status(404).json(errors);
+			}
+
+			res.json({ success: 'Match removed successfully!', updated });
+		} catch (err) {
+			errors.profile = 'Error removing match!';
 			return res.status(400).json(errors);
 		}
 	}

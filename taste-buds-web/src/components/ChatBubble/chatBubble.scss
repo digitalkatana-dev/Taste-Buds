@@ -1,11 +1,12 @@
 .chat-bubble {
 	width: fit-content !important;
+	max-width: 65% !important;
 	align-self: flex-start !important;
-	max-width: 45% !important;
-	padding: 3px 5px !important;
+	padding: 5px !important;
 	margin-bottom: 10px !important;
 	color: whitesmoke !important;
 	background-color: orangered !important;
+	text-align: left !important;
 
 	span {
 		font-size: 0.8rem !important;

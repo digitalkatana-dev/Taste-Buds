@@ -123,6 +123,22 @@ export const manageFoodPorn = createAsyncThunk(
 	}
 );
 
+export const removeMatch = createAsyncThunk(
+	'users/remove_match',
+	async (data, { rejectWithValue }) => {
+		const { profileId } = data;
+		try {
+			const res = await budsApi.put(
+				`/profiles/${profileId}/remove-match`,
+				data
+			);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
 export const deleteAccount = createAsyncThunk(
 	'users/delete_account',
 	async (data, { rejectWithValue, dispatch }) => {
@@ -561,6 +577,19 @@ export const userSlice = createSlice({
 				state.errors = action.payload;
 			})
 			.addCase(updateProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(removeMatch.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(removeMatch.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.user = action.payload.updated;
+			})
+			.addCase(removeMatch.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})

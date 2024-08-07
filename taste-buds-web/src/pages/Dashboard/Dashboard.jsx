@@ -18,6 +18,8 @@ const Dashboard = () => {
 	const dispatch = useDispatch();
 	const theme = user?.theme;
 
+	const potentialMatches = shuffleArray(allUsers);
+
 	const swiped = (direction, swippedProfileId) => {
 		const matches = user?.matches;
 		const areMatched = matches.includes(swippedProfileId);
@@ -163,7 +165,7 @@ const Dashboard = () => {
 			) : (
 				<div className='swipe-container'>
 					<div className='card-container'>
-						{shuffleArray(allUsers)?.map((item) => {
+						{potentialMatches?.map((item) => {
 							const name = `${item.firstName} ${item.lastName}`;
 							const favFoodTypes = item.favorites.foodTypes;
 							const favDish = item.favorites.dish;
