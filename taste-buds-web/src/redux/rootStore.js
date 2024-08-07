@@ -26,11 +26,17 @@ const userPersistConfig = {
 	whitelist: ['user'],
 };
 
+const messagePersistConfig = {
+	key: 'message',
+	storage,
+	whitelist: ['activeChat'],
+};
+
 export const store = configureStore({
 	reducer: {
 		app: persistReducer(appPersistConfig, appReducer),
 		user: persistReducer(userPersistConfig, userReducer),
-		message: messageReducer,
+		message: persistReducer(messagePersistConfig, messageReducer),
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

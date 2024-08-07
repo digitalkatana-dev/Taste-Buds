@@ -36,7 +36,10 @@ const ChatItem = ({ data }) => {
 				<ListItemText
 					primary={chatName}
 					secondary={latestMessage}
-					secondaryTypographyProps={{ color: 'var(--txt-secondary)' }}
+					secondaryTypographyProps={{
+						noWrap: true,
+						color: 'var(--txt-secondary)',
+					}}
 				/>
 			</ListItem>
 			<Divider
