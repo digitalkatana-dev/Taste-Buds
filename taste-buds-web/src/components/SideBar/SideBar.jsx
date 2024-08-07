@@ -33,10 +33,6 @@ const SideBar = () => {
 		}
 	};
 
-	const handleMatchProfileClick = () => {
-		navigate(`/selected-profile/${selectedProfile._id}`);
-	};
-
 	return (
 		<div className={theme === 'dark' ? 'side-bar dark' : 'side-bar'}>
 			<div className='header'>
@@ -50,31 +46,13 @@ const SideBar = () => {
 					<LogoutIcon fontSize='small' />
 				</IconButton>
 			</div>
-			<Stack
-				direction='row'
-				justifyContent={selectedProfile ? 'space-between' : 'unset'}
-				alignItems={selectedProfile ? 'center' : 'unset'}
-			>
+			<Stack direction='row' gap={1}>
 				<button
 					className={selectedProfile ? 'option off' : 'option'}
 					onClick={handleMatchesClick}
 				>
 					Matches
 				</button>
-				{selectedProfile && (
-					<IconButton
-						className='match-profile-btn'
-						onClick={handleMatchProfileClick}
-					>
-						<div className='img-container'>
-							<img
-								src={selectedProfile?.profilePhoto}
-								alt={selectedProfile?.handle}
-							/>
-						</div>
-						<h6>@{selectedProfile?.handle}</h6>
-					</IconButton>
-				)}
 				<button className='option' disabled={!selectedProfile}>
 					Chat
 				</button>
