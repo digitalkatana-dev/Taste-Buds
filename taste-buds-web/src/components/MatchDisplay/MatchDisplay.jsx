@@ -10,6 +10,7 @@ const MatchDisplay = () => {
 	const { user } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const theme = user?.theme;
 	const matches = user?.matches;
 
 	const mutualMatches = matches?.filter(
@@ -34,7 +35,10 @@ const MatchDisplay = () => {
 						className='user-match-btn'
 						onClick={() => handleMatchClick(match)}
 					>
-						<Paper className='match-card' elevation={10}>
+						<Paper
+							className={theme === 'dark' ? 'match-card dark' : 'match-card'}
+							elevation={10}
+						>
 							<img src={match.profilePhoto} alt={match.firstName} />
 							<h6 className='match-name-mobile'>{match?.firstName}</h6>
 						</Paper>
