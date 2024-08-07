@@ -50,5 +50,12 @@ export const capitalizeFirstLetterOfEachWord = (string) => {
 };
 
 export const shuffleArray = (array) => {
-	return array.sort(() => Math.random() - 0.5);
+	let newArray = array?.slice();
+
+	for (let i = newArray?.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+	}
+
+	return newArray;
 };

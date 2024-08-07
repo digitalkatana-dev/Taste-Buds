@@ -2,7 +2,10 @@ import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
-import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
+import {
+	shuffleArray,
+	capitalizeFirstLetterOfEachWord,
+} from '../../util/helpers';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import SideBar from '../../components/SideBar';
@@ -160,7 +163,7 @@ const Dashboard = () => {
 			) : (
 				<div className='swipe-container'>
 					<div className='card-container'>
-						{allUsers?.map((item) => {
+						{shuffleArray(allUsers)?.map((item) => {
 							const name = `${item.firstName} ${item.lastName}`;
 							const favFoodTypes = item.favorites.foodTypes;
 							const favDish = item.favorites.dish;
