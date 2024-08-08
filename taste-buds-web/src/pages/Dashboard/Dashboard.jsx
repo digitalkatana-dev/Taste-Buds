@@ -10,6 +10,7 @@ import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import SideBar from '../../components/SideBar';
 import ButtonRow from '../../components/ButtonRow';
+import Button from '../../components/Button';
 
 const Dashboard = () => {
 	const { isMobile, selectedProfile } = useSelector((state) => state.app);
@@ -158,7 +159,23 @@ const Dashboard = () => {
 									className='divider-chip'
 								/>
 							</Divider>
-							<div className='profile-data-container unmatch'></div>
+							<div className='profile-data-container profile-action'>
+								<Button size='small' className='profile-action-btn unmatch'>
+									Unmatch
+								</Button>
+							</div>
+							<Divider>
+								<Chip
+									label='Block User'
+									size='small'
+									className='divider-chip'
+								/>
+							</Divider>
+							<div className='profile-data-container profile-action'>
+								<Button size='small' className='profile-action-btn block'>
+									Block
+								</Button>
+							</div>
 						</Paper>
 					</section>
 				</div>
