@@ -51,9 +51,14 @@
 	margin-right: 5px;
 }
 
-.delete-acct-btn {
-	background-color: red !important;
+.profile-action-btn {
 	color: whitesmoke !important;
 	border-radius: 30px !important;
 	font-weight: bold !important;
+
+	&.delete,
+	&.unmatch,
+	&.block {
+		background-color: red !important;
+	}
 }

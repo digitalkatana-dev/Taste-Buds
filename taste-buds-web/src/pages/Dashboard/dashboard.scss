@@ -153,6 +153,11 @@
 						margin: 15px 0;
 						text-align: left;
 						padding: 10px;
+
+						&.profile-action {
+							justify-content: center;
+							padding: 10px;
+						}
 					}
 
 					.fp-photo-container {

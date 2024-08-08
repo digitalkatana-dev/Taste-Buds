@@ -733,8 +733,12 @@ const Profile = () => {
 							className='divider-chip'
 						/>
 					</Divider>
-					<div className='profile-data-container delete'>
-						<Button className='delete-acct-btn' onClick={handleDeleteClick}>
+					<div className='profile-data-container profile-action'>
+						<Button
+							size='small'
+							className='profile-action-btn delete'
+							onClick={handleDeleteClick}
+						>
 							Delete Account
 						</Button>
 					</div>
