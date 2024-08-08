@@ -158,7 +158,7 @@ router.put('/profiles', async (req, res) => {
 		const updated = await Profile.updateMany(
 			{},
 			{
-				$set: { theme: 'light' },
+				$set: { blocked: [] },
 			}
 		);
 

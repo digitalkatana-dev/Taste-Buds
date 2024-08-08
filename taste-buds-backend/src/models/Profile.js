@@ -99,6 +99,12 @@ const profileSchema = new Schema(
 				type: String,
 			},
 		],
+		blocked: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Profile',
+			},
+		],
 		user: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
