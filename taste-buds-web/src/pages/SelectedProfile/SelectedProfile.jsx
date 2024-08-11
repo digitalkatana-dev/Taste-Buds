@@ -1,11 +1,17 @@
 import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
 	getSelectedProfile,
 	setSelectedProfile,
+	setBlockOpen,
 } from '../../redux/slices/appSlice';
+import {
+	updateMatches,
+	updateBlocked,
+	clearSuccess,
+} from '../../redux/slices/userSlice';
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import './selected.scss';
 import Loading from '../../components/Loading';
@@ -13,12 +19,57 @@ import Button from '../../components/Button';
 
 const SelectedProfile = () => {
 	const { loading, selectedProfile } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const { user, success } = useSelector((state) => state.user);
 	const location = useLocation();
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const theme = user?.theme;
 
 	const profile = location.pathname.split('/')[2];
+	const theme = user?.theme;
+	const blocked = user?.blocked;
+
+	const blockedCheck = () => {
+		return blocked.some((item) => item === selectedProfile?._id);
+	};
+	const isBlocked = blockedCheck();
+
+	const handleUnmatch = () => {
+		const matches = user?.matches;
+		const matchCheck = () => {
+			return matches.some((match) => match._id === selectedProfile._id);
+		};
+		const areMatched = matchCheck();
+
+		if (areMatched) {
+			const updatedMatches = matches.filter(
+				(item) => item._id !== selectedProfile?._id
+			);
+			const data = {
+				profileId: user._id,
+				matches: updatedMatches,
+			};
+
+			dispatch(updateMatches(data));
+		} else {
+			return;
+		}
+	};
+
+	const handleBlock = () => {
+		if (isBlocked) {
+			const unblocked = blocked?.filter(
+				(item) => item !== selectedProfile?._id
+			);
+			const data = {
+				profileId: user._id,
+				blocked: unblocked,
+			};
+
+			dispatch(updateBlocked(data));
+		} else {
+			dispatch(setBlockOpen(true));
+		}
+	};
 
 	const loadSelectedProfile = useCallback(() => {
 		dispatch(getSelectedProfile(profile));
@@ -28,6 +79,18 @@ const SelectedProfile = () => {
 		dispatch(setSelectedProfile(null));
 	}, [dispatch]);
 
+	const handleUnmatchSuccess = useCallback(() => {
+		if (success) {
+			if (success === 'Matches updated successfully!') {
+				navigate('/matches');
+			}
+
+			setTimeout(() => {
+				dispatch(clearSuccess());
+			}, 2000);
+		}
+	}, [navigate, dispatch, success]);
+
 	useEffect(() => {
 		loadSelectedProfile();
 
@@ -35,6 +98,10 @@ const SelectedProfile = () => {
 			clearSelectedProfile();
 		};
 	}, [loadSelectedProfile, clearSelectedProfile]);
+
+	useEffect(() => {
+		handleUnmatchSuccess();
+	}, [handleUnmatchSuccess]);
 
 	return (
 		<div id='selected-profile'>
@@ -124,19 +191,27 @@ const SelectedProfile = () => {
 						))}
 					</div>
 					<Divider>
-						<Chip label='Remove Match' size='small' className='divider-chip' />
-					</Divider>
-					<div className='profile-data-container profile-action'>
-						<Button size='small' className='profile-action-btn unmatch'>
-							Unmatch
-						</Button>
-					</div>
-					<Divider>
 						<Chip label='Block User' size='small' className='divider-chip' />
 					</Divider>
 					<div className='profile-data-container profile-action'>
-						<Button size='small' className='profile-action-btn block'>
-							Block
+						<Button
+							size='small'
+							className='profile-action-btn block'
+							onClick={handleBlock}
+						>
+							{isBlocked ? 'Unblock' : 'Block'}
+						</Button>
+					</div>
+					<Divider>
+						<Chip label='Remove Match' size='small' className='divider-chip' />
+					</Divider>
+					<div className='profile-data-container profile-action'>
+						<Button
+							size='small'
+							className='profile-action-btn unmatch'
+							onClick={handleUnmatch}
+						>
+							Unmatch
 						</Button>
 					</div>
 				</Paper>

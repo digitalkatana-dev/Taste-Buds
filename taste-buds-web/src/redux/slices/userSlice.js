@@ -3,7 +3,7 @@ import {
 	createEntityAdapter,
 	createSlice,
 } from '@reduxjs/toolkit';
-import { setPhotoDialogType } from './appSlice';
+import { setPhotoDialogType, setBlockOpen } from './appSlice';
 import budsApi from '../../api/budsApi';
 
 export const signup = createAsyncThunk(
@@ -82,10 +82,10 @@ export const getGenderedBuds = createAsyncThunk(
 	}
 );
 
-export const updateMatches = createAsyncThunk(
-	'users/update_matches',
-	async (data, { rejectWithValue }) => {
-		const { profileId, ...others } = data;
+export const updateUserProfile = createAsyncThunk(
+	'users/update_user_profile',
+	async (updateData, { rejectWithValue }) => {
+		const { profileId, ...others } = updateData;
 		try {
 			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
 			return res.data;
@@ -95,12 +95,27 @@ export const updateMatches = createAsyncThunk(
 	}
 );
 
-export const updateProfile = createAsyncThunk(
-	'users/update_profile',
+export const updateMatches = createAsyncThunk(
+	'users/update_matches',
 	async (updateData, { rejectWithValue }) => {
-		const { profileId, data } = updateData;
+		const { profileId, ...others } = updateData;
 		try {
-			const res = await budsApi.put(`/profiles/${profileId}/update`, data);
+			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
+			return res.data;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const updateBlocked = createAsyncThunk(
+	'users/update_blocked',
+	async (updateData, { rejectWithValue, dispatch }) => {
+		const { profileId, ...others } = updateData;
+		try {
+			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
+			const { success } = res.data;
+			if (success) dispatch(setBlockOpen(false));
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
@@ -116,22 +131,6 @@ export const manageFoodPorn = createAsyncThunk(
 			const res = await budsApi.put(`/profiles/${profileId}/food-porn`, data);
 			const { success } = res.data;
 			if (success) dispatch(setPhotoDialogType(''));
-			return res.data;
-		} catch (err) {
-			return rejectWithValue(err.response.data);
-		}
-	}
-);
-
-export const removeMatch = createAsyncThunk(
-	'users/remove_match',
-	async (data, { rejectWithValue }) => {
-		const { profileId } = data;
-		try {
-			const res = await budsApi.put(
-				`/profiles/${profileId}/remove-match`,
-				data
-			);
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
@@ -520,24 +519,11 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.errors = action.payload;
 			})
-			.addCase(updateMatches.pending, (state) => {
+			.addCase(updateUserProfile.pending, (state) => {
 				state.loading = true;
 				state.errors = null;
 			})
-			.addCase(updateMatches.fulfilled, (state, action) => {
-				state.loading = false;
-				state.success = action.payload.success;
-				state.user = action.payload.updatedProfile;
-			})
-			.addCase(updateMatches.rejected, (state, action) => {
-				state.loading = false;
-				state.errors = action.payload;
-			})
-			.addCase(updateProfile.pending, (state) => {
-				state.loading = true;
-				state.errors = null;
-			})
-			.addCase(updateProfile.fulfilled, (state, action) => {
+			.addCase(updateUserProfile.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
 				state.user = action.payload.updatedProfile;
@@ -562,6 +548,36 @@ export const userSlice = createSlice({
 				state.favorites.dish = '';
 				state.editFavDish = false;
 			})
+			.addCase(updateUserProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(updateMatches.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(updateMatches.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = 'Matches updated successfully!';
+				state.user = action.payload.updatedProfile;
+			})
+			.addCase(updateMatches.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(updateBlocked.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(updateBlocked.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = 'Blocked updated successfully!';
+				state.user = action.payload.updatedProfile;
+			})
+			.addCase(updateBlocked.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = null;
+			})
 			.addCase(manageFoodPorn.pending, (state) => {
 				state.loading = true;
 				state.errors = null;
@@ -573,23 +589,6 @@ export const userSlice = createSlice({
 				state.photoPreview = null;
 			})
 			.addCase(manageFoodPorn.rejected, (state, action) => {
-				state.loading = false;
-				state.errors = action.payload;
-			})
-			.addCase(updateProfile.rejected, (state, action) => {
-				state.loading = false;
-				state.errors = action.payload;
-			})
-			.addCase(removeMatch.pending, (state) => {
-				state.loading = true;
-				state.errors = null;
-			})
-			.addCase(removeMatch.fulfilled, (state, action) => {
-				state.loading = false;
-				state.success = action.payload.success;
-				state.user = action.payload.updated;
-			})
-			.addCase(removeMatch.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})
