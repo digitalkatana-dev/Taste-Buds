@@ -1,7 +1,11 @@
 import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBlockOpen, setSelectedProfile } from '../../redux/slices/appSlice';
+import {
+	setWarningType,
+	setWarningOpen,
+	setSelectedProfile,
+} from '../../redux/slices/appSlice';
 import {
 	getGenderedBuds,
 	updateMatches,
@@ -71,7 +75,8 @@ const Dashboard = () => {
 
 			dispatch(updateBlocked(data));
 		} else {
-			dispatch(setBlockOpen(true));
+			dispatch(setWarningType('block'));
+			dispatch(setWarningOpen(true));
 		}
 	};
 

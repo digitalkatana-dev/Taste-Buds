@@ -5,7 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
 	getSelectedProfile,
 	setSelectedProfile,
-	setBlockOpen,
+	setWarningOpen,
+	setWarningType,
 } from '../../redux/slices/appSlice';
 import {
 	updateMatches,
@@ -67,7 +68,8 @@ const SelectedProfile = () => {
 
 			dispatch(updateBlocked(data));
 		} else {
-			dispatch(setBlockOpen(true));
+			dispatch(setWarningType('block'));
+			dispatch(setWarningOpen(true));
 		}
 	};
 

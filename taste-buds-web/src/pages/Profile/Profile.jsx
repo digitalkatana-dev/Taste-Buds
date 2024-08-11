@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
 	setPhotoOpen,
 	setPhotoDialogType,
-	setDeleteOpen,
+	setWarningType,
+	setWarningOpen,
 	setDeleteData,
 } from '../../redux/slices/appSlice';
 import {
@@ -258,8 +259,9 @@ const Profile = () => {
 			action: deleteAccount(user?._id),
 		};
 
+		dispatch(setWarningType('delete'));
 		dispatch(setDeleteData(data));
-		dispatch(setDeleteOpen(true));
+		dispatch(setWarningOpen(true));
 	};
 
 	const handleFoodPornUpload = useCallback(() => {

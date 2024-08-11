@@ -3,7 +3,7 @@ import {
 	createEntityAdapter,
 	createSlice,
 } from '@reduxjs/toolkit';
-import { setPhotoDialogType, setBlockOpen } from './appSlice';
+import { setPhotoDialogType, setWarningOpen, setWarningType } from './appSlice';
 import budsApi from '../../api/budsApi';
 
 export const signup = createAsyncThunk(
@@ -115,7 +115,10 @@ export const updateBlocked = createAsyncThunk(
 		try {
 			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
 			const { success } = res.data;
-			if (success) dispatch(setBlockOpen(false));
+			if (success) {
+				dispatch(setWarningOpen(false));
+				dispatch(setWarningType(''));
+			}
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
