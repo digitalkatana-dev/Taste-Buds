@@ -1,7 +1,13 @@
 import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGenderedBuds, updateMatches } from '../../redux/slices/userSlice';
+import { setBlockOpen, setSelectedProfile } from '../../redux/slices/appSlice';
+import {
+	getGenderedBuds,
+	updateMatches,
+	updateBlocked,
+	clearSuccess,
+} from '../../redux/slices/userSlice';
 import {
 	shuffleArray,
 	capitalizeFirstLetterOfEachWord,
@@ -14,16 +20,25 @@ import Button from '../../components/Button';
 
 const Dashboard = () => {
 	const { isMobile, selectedProfile } = useSelector((state) => state.app);
-	const { user, allUsers } = useSelector((state) => state.user);
+	const { user, allUsers, success } = useSelector((state) => state.user);
 	const [lastDirection, setLastDirection] = useState();
 	const dispatch = useDispatch();
 	const theme = user?.theme;
+	const blocked = user?.blocked;
+
+	const blockedCheck = () => {
+		return blocked.some((item) => item === selectedProfile?._id);
+	};
+	const isBlocked = blockedCheck();
 
 	const potentialMatches = shuffleArray(allUsers);
 
 	const swiped = (direction, swippedProfileId) => {
 		const matches = user?.matches;
-		const areMatched = matches.includes(swippedProfileId);
+		const matchCheck = () => {
+			return matches.some((match) => match._id === swippedProfileId);
+		};
+		const areMatched = matchCheck();
 
 		if (direction === 'right') {
 			if (!areMatched) {
@@ -32,7 +47,6 @@ const Dashboard = () => {
 					profileId: user._id,
 					matches: updatedMatches,
 				};
-
 				dispatch(updateMatches(data));
 			} else {
 				return;
@@ -45,13 +59,67 @@ const Dashboard = () => {
 		console.log(name + ' left the screen!');
 	};
 
+	const handleBlock = () => {
+		if (isBlocked) {
+			const unblocked = blocked?.filter(
+				(item) => item !== selectedProfile?._id
+			);
+			const data = {
+				profileId: user._id,
+				blocked: unblocked,
+			};
+
+			dispatch(updateBlocked(data));
+		} else {
+			dispatch(setBlockOpen(true));
+		}
+	};
+
+	const handleUnmatch = () => {
+		const matches = user?.matches;
+		const matchCheck = () => {
+			return matches.some((match) => match._id === selectedProfile._id);
+		};
+		const areMatched = matchCheck();
+
+		if (areMatched) {
+			const updatedMatches = matches.filter(
+				(item) => item._id !== selectedProfile?._id
+			);
+			const data = {
+				profileId: user._id,
+				matches: updatedMatches,
+			};
+
+			dispatch(updateMatches(data));
+		} else {
+			return;
+		}
+	};
+
 	const handleGetUsers = useCallback(() => {
 		dispatch(getGenderedBuds(user?.genderInterest));
 	}, [dispatch, user]);
 
+	const handleUnmatchSuccess = useCallback(() => {
+		if (success) {
+			if (success === 'Matches updated successfully!') {
+				dispatch(setSelectedProfile(null));
+			}
+
+			setTimeout(() => {
+				dispatch(clearSuccess());
+			}, 2000);
+		}
+	}, [dispatch, success]);
+
 	useEffect(() => {
 		handleGetUsers();
 	}, [user, handleGetUsers]);
+
+	useEffect(() => {
+		handleUnmatchSuccess();
+	}, [handleUnmatchSuccess]);
 
 	return (
 		<div id='dashboard'>
@@ -154,26 +222,34 @@ const Dashboard = () => {
 							</div>
 							<Divider>
 								<Chip
-									label='Remove Match'
-									size='small'
-									className='divider-chip'
-								/>
-							</Divider>
-							<div className='profile-data-container profile-action'>
-								<Button size='small' className='profile-action-btn unmatch'>
-									Unmatch
-								</Button>
-							</div>
-							<Divider>
-								<Chip
 									label='Block User'
 									size='small'
 									className='divider-chip'
 								/>
 							</Divider>
 							<div className='profile-data-container profile-action'>
-								<Button size='small' className='profile-action-btn block'>
-									Block
+								<Button
+									size='small'
+									className='profile-action-btn block'
+									onClick={handleBlock}
+								>
+									{isBlocked ? 'Unblock' : 'Block'}
+								</Button>
+							</div>
+							<Divider>
+								<Chip
+									label='Remove Match'
+									size='small'
+									className='divider-chip'
+								/>
+							</Divider>
+							<div className='profile-data-container profile-action'>
+								<Button
+									size='small'
+									className='profile-action-btn unmatch'
+									onClick={handleUnmatch}
+								>
+									Unmatch
 								</Button>
 							</div>
 						</Paper>

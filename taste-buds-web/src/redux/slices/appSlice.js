@@ -38,6 +38,8 @@ const initialState = appAdapter.getInitialState({
 	photoDialogType: '',
 	deleteOpen: false,
 	deleteData: null,
+	blockOpen: false,
+	blockData: null,
 	contentDialog: false,
 	errors: null,
 });
@@ -69,6 +71,9 @@ export const appSlice = createSlice({
 		},
 		setDeleteData: (state, action) => {
 			state.deleteData = action.payload;
+		},
+		setBlockOpen: (state, action) => {
+			state.blockOpen = action.payload;
 		},
 		setContentDialog: (state, action) => {
 			state.contentDialog = action.payload;
@@ -135,6 +140,7 @@ export const {
 	setPhotoDialogType,
 	setDeleteOpen,
 	setDeleteData,
+	setBlockOpen,
 	setContentDialog,
 	resetOptions,
 } = appSlice.actions;

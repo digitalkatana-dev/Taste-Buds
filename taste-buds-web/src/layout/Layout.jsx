@@ -9,6 +9,7 @@ import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import PhotoUploadDialog from '../components/PhotoUploadDialog';
 import DeleteDialog from '../components/DeleteDialog';
+import BlockDialog from '../components/BlockDialog';
 
 const Layout = ({ heading, children }) => {
 	const { activeChat } = useSelector((state) => state.message);
@@ -50,6 +51,7 @@ const Layout = ({ heading, children }) => {
 			<BottomNav />
 			<PhotoUploadDialog />
 			<DeleteDialog />
+			<BlockDialog />
 		</Container>
 	);
 };

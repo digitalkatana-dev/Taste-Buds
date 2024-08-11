@@ -43,7 +43,7 @@ import {
 	toggleEditFavDish,
 	populateDish,
 	setFavDish,
-	updateProfile,
+	updateUserProfile,
 	manageFoodPorn,
 	deleteAccount,
 	clearLocation,
@@ -86,10 +86,10 @@ const Profile = () => {
 		const newTheme = theme === 'light' ? 'dark' : 'light';
 		const updateData = {
 			profileId: user?._id,
-			data: { theme: newTheme },
+			theme: newTheme,
 		};
 
-		dispatch(updateProfile(updateData));
+		dispatch(updateUserProfile(updateData));
 	};
 
 	const handleEditClick = (section) => {
@@ -200,44 +200,40 @@ const Profile = () => {
 
 		switch (field) {
 			case 'about':
-				updateData.data = { about };
+				updateData.about = about;
 				break;
 
 			case 'gid':
-				updateData.data = { genderIdentity };
+				updateData.genderIdentity = genderIdentity;
 				break;
 
 			case 'gint':
-				updateData.data = { genderInterest };
+				updateData.genderInterest = genderInterest;
 				break;
 
 			case 'location':
-				updateData.data = { location };
+				updateData.location = location;
 				break;
 
 			case 'distance':
-				updateData.data = { distancePref };
+				updateData.distancePref = distancePref;
 				break;
 
 			case 'diet':
-				updateData.data = { dietType };
+				updateData.dietType = dietType;
 				break;
 
 			case 'foods':
-				updateData.data = {
-					favorites: {
-						...user?.favorites,
-						foodTypes: favorites?.foodTypes,
-					},
+				updateData.favorites = {
+					...user?.favorites,
+					foodTypes: favorites?.foodTypes,
 				};
 				break;
 
 			case 'dish':
-				updateData.data = {
-					favorites: {
-						...user?.favorites,
-						dish: favorites?.dish,
-					},
+				updateData.favorites = {
+					...user?.favorites,
+					dish: favorites?.dish,
 				};
 				break;
 
@@ -245,7 +241,7 @@ const Profile = () => {
 				break;
 		}
 
-		dispatch(updateProfile(updateData));
+		dispatch(updateUserProfile(updateData));
 	};
 
 	const handleDeleteFoodPorn = (imageUrl) => {
