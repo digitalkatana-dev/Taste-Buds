@@ -1,15 +1,20 @@
 import { Container, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { setDeleteData, setDeleteOpen } from '../redux/slices/appSlice';
+import {
+	setWarningType,
+	setWarningOpen,
+	setDeleteData,
+} from '../redux/slices/appSlice';
 import { deleteChat } from '../redux/slices/messageSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './layout.scss';
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import PhotoUploadDialog from '../components/PhotoUploadDialog';
-import DeleteDialog from '../components/DeleteDialog';
-import BlockDialog from '../components/BlockDialog';
+// import DeleteDialog from '../components/DeleteDialog';
+// import BlockDialog from '../components/BlockDialog';
+import WarningDialog from '../components/WarningDialog';
 
 const Layout = ({ heading, children }) => {
 	const { activeChat } = useSelector((state) => state.message);
@@ -28,8 +33,9 @@ const Layout = ({ heading, children }) => {
 			action: deleteChat(chatId),
 		};
 
+		dispatch(setWarningType('delete'));
 		dispatch(setDeleteData(data));
-		dispatch(setDeleteOpen(true));
+		dispatch(setWarningOpen(true));
 	};
 
 	return (
@@ -50,8 +56,9 @@ const Layout = ({ heading, children }) => {
 			</div>
 			<BottomNav />
 			<PhotoUploadDialog />
-			<DeleteDialog />
-			<BlockDialog />
+			{/* <DeleteDialog />
+			<BlockDialog /> */}
+			<WarningDialog />
 		</Container>
 	);
 };

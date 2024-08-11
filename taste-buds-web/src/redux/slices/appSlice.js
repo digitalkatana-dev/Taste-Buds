@@ -36,6 +36,8 @@ const initialState = appAdapter.getInitialState({
 	isMobile: false,
 	photoOpen: false,
 	photoDialogType: '',
+	warningType: '',
+	warningOpen: false,
 	deleteOpen: false,
 	deleteData: null,
 	blockOpen: false,
@@ -65,6 +67,12 @@ export const appSlice = createSlice({
 		},
 		setPhotoDialogType: (state, action) => {
 			state.photoDialogType = action.payload;
+		},
+		setWarningType: (state, action) => {
+			state.warningType = action.payload;
+		},
+		setWarningOpen: (state, action) => {
+			state.warningOpen = action.payload;
 		},
 		setDeleteOpen: (state, action) => {
 			state.deleteOpen = action.payload;
@@ -122,6 +130,8 @@ export const appSlice = createSlice({
 				state.isMobile = false;
 				state.photoOpen = false;
 				state.photoDialogType = '';
+				state.warningType = '';
+				state.warningOpen = false;
 				state.deleteOpen = false;
 				state.deleteData = null;
 				state.contentDialog = false;
@@ -138,6 +148,8 @@ export const {
 	setIsMobile,
 	setPhotoOpen,
 	setPhotoDialogType,
+	setWarningType,
+	setWarningOpen,
 	setDeleteOpen,
 	setDeleteData,
 	setBlockOpen,
