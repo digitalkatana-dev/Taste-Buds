@@ -12,8 +12,6 @@ import './layout.scss';
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import PhotoUploadDialog from '../components/PhotoUploadDialog';
-// import DeleteDialog from '../components/DeleteDialog';
-// import BlockDialog from '../components/BlockDialog';
 import WarningDialog from '../components/WarningDialog';
 
 const Layout = ({ heading, children }) => {
@@ -56,8 +54,6 @@ const Layout = ({ heading, children }) => {
 			</div>
 			<BottomNav />
 			<PhotoUploadDialog />
-			{/* <DeleteDialog />
-			<BlockDialog /> */}
 			<WarningDialog />
 		</Container>
 	);

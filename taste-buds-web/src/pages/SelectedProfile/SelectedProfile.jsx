@@ -198,7 +198,9 @@ const SelectedProfile = () => {
 					<div className='profile-data-container profile-action'>
 						<Button
 							size='small'
-							className='profile-action-btn block'
+							className={
+								isBlocked ? 'profile-action-btn unblock' : 'profile-action-btn'
+							}
 							onClick={handleBlock}
 						>
 							{isBlocked ? 'Unblock' : 'Block'}
@@ -210,7 +212,7 @@ const SelectedProfile = () => {
 					<div className='profile-data-container profile-action'>
 						<Button
 							size='small'
-							className='profile-action-btn unmatch'
+							className='profile-action-btn'
 							onClick={handleUnmatch}
 						>
 							Unmatch

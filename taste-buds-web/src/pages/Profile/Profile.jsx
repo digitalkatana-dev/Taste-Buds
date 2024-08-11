@@ -734,7 +734,7 @@ const Profile = () => {
 					<div className='profile-data-container profile-action'>
 						<Button
 							size='small'
-							className='profile-action-btn delete'
+							className='profile-action-btn'
 							onClick={handleDeleteClick}
 						>
 							Delete Account
