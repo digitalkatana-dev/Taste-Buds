@@ -19,13 +19,13 @@ import './photoUpload.scss';
 
 const PhotoUploadDialog = () => {
 	const { photoOpen, photoDialogType } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const [file, setFile] = useState(null);
 	const [preview, setPreview] = useState(null);
 	const [cropped, setCropped] = useState(null);
 	const cropperRef = useRef(null);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
 	const handleClose = () => {
 		dispatch(setPhotoOpen(false));

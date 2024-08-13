@@ -8,9 +8,9 @@ import './top-bar.scss';
 import Button from '../Button';
 
 const TopBar = ({ page, minimal, setShowDialog }) => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
 	const handleDialog = () => {
 		setShowDialog(true);
@@ -37,7 +37,7 @@ const TopBar = ({ page, minimal, setShowDialog }) => {
 			</div>
 			{page === 'home' || page === 'create' ? (
 				<>
-					{!user && !minimal && (
+					{!activeUser && !minimal && (
 						<Button
 							variant='contained'
 							className='login-btn'

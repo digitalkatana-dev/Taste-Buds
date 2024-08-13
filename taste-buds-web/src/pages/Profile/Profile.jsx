@@ -62,7 +62,7 @@ import Button from '../../components/Button';
 const Profile = () => {
 	const { photoDialogType } = useSelector((state) => state.app);
 	const {
-		user,
+		activeUser,
 		editAbout,
 		about,
 		editIdentity,
@@ -81,12 +81,12 @@ const Profile = () => {
 		photoPreview,
 	} = useSelector((state) => state.user);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
 	const handleSwitchTheme = () => {
 		const newTheme = theme === 'light' ? 'dark' : 'light';
 		const updateData = {
-			profileId: user?._id,
+			profileId: activeUser?._id,
 			theme: newTheme,
 		};
 
@@ -98,7 +98,7 @@ const Profile = () => {
 			about: () => {
 				dispatch(toggleEditAbout());
 				if (editAbout === false) {
-					dispatch(populateAbout(user?.about));
+					dispatch(populateAbout(activeUser?.about));
 				} else if (editAbout === true) {
 					dispatch(populateAbout(''));
 				}
@@ -106,7 +106,7 @@ const Profile = () => {
 			identity: () => {
 				dispatch(toggleEditIdentity());
 				if (editIdentity === false) {
-					dispatch(populateIdentity(user?.genderIdentity));
+					dispatch(populateIdentity(activeUser?.genderIdentity));
 				} else if (editIdentity === true) {
 					dispatch(populateIdentity(''));
 				}
@@ -114,7 +114,7 @@ const Profile = () => {
 			interest: () => {
 				dispatch(toggleEditInterest());
 				if (editInterest === false) {
-					dispatch(populateInterest(user?.genderInterest));
+					dispatch(populateInterest(activeUser?.genderInterest));
 				} else if (editInterest === true) {
 					dispatch(populateInterest(''));
 				}
@@ -122,7 +122,7 @@ const Profile = () => {
 			location: () => {
 				dispatch(toggleEditLocation());
 				if (editLocation === false) {
-					dispatch(populateLocation(user?.location));
+					dispatch(populateLocation(activeUser?.location));
 				} else if (editLocation === true) {
 					dispatch(clearLocation());
 				}
@@ -130,7 +130,7 @@ const Profile = () => {
 			distance: () => {
 				dispatch(toggleEditDistance());
 				if (editDistance === false) {
-					dispatch(populateDistance(user?.distancePref));
+					dispatch(populateDistance(activeUser?.distancePref));
 				} else if (editDistance === true) {
 					dispatch(populateDistance(null));
 				}
@@ -138,7 +138,7 @@ const Profile = () => {
 			diet: () => {
 				dispatch(toggleEditDiet());
 				if (editDiet === false) {
-					dispatch(populateDiet(user?.dietType));
+					dispatch(populateDiet(activeUser?.dietType));
 				} else if (editDiet === true) {
 					dispatch(populateDiet(''));
 				}
@@ -146,7 +146,7 @@ const Profile = () => {
 			foods: () => {
 				dispatch(toggleEditFavFoods());
 				if (editFavFoods === false) {
-					dispatch(populateFoods(user?.favorites?.foodTypes));
+					dispatch(populateFoods(activeUser?.favorites?.foodTypes));
 				} else if (editFavFoods === true) {
 					dispatch(populateFoods([]));
 				}
@@ -154,7 +154,7 @@ const Profile = () => {
 			dish: () => {
 				dispatch(toggleEditFavDish());
 				if (editFavDish === false) {
-					dispatch(populateDish(user?.favorites?.dish));
+					dispatch(populateDish(activeUser?.favorites?.dish));
 				} else if (editFavDish === true) {
 					dispatch(populateDish(''));
 				}
@@ -196,7 +196,7 @@ const Profile = () => {
 	const handleSubmit = (e, field) => {
 		e.preventDefault();
 		let updateData = {
-			profileId: user?._id,
+			profileId: activeUser?._id,
 		};
 
 		switch (field) {
@@ -226,14 +226,14 @@ const Profile = () => {
 
 			case 'foods':
 				updateData.favorites = {
-					...user?.favorites,
+					...activeUser?.favorites,
 					foodTypes: favorites?.foodTypes,
 				};
 				break;
 
 			case 'dish':
 				updateData.favorites = {
-					...user?.favorites,
+					...activeUser?.favorites,
 					dish: favorites?.dish,
 				};
 				break;
@@ -247,7 +247,7 @@ const Profile = () => {
 
 	const handleDeleteFoodPorn = (imageUrl) => {
 		const data = new FormData();
-		data.append('profileId', user?._id);
+		data.append('profileId', activeUser?._id);
 		data.append('url', imageUrl);
 
 		dispatch(manageFoodPorn(data));
@@ -256,7 +256,7 @@ const Profile = () => {
 	const handleDeleteClick = () => {
 		const data = {
 			type: 'account',
-			action: deleteAccount(user?._id),
+			action: deleteAccount(activeUser?._id),
 		};
 
 		dispatch(setWarningType('delete'));
@@ -267,12 +267,12 @@ const Profile = () => {
 	const handleFoodPornUpload = useCallback(() => {
 		if (photoPreview && photoDialogType === 'food porn') {
 			const data = new FormData();
-			data.append('profileId', user?._id);
+			data.append('profileId', activeUser?._id);
 			data.append('b64str', photoPreview);
 
 			dispatch(manageFoodPorn(data));
 		}
-	}, [dispatch, user, photoPreview, photoDialogType]);
+	}, [dispatch, activeUser, photoPreview, photoDialogType]);
 
 	useEffect(() => {
 		handleFoodPornUpload();
@@ -283,7 +283,9 @@ const Profile = () => {
 			<div className='header-container'>
 				<div className='cover-photo-section'>
 					<div className='cover-photo-container'>
-						{user?.coverPhoto && <img src={user?.coverPhoto} alt='cover' />}
+						{activeUser?.coverPhoto && (
+							<img src={activeUser?.coverPhoto} alt='cover' />
+						)}
 						<IconButton className='cover-photo-btn'>
 							<PhotoCameraOutlinedIcon className='btn-icon' />
 						</IconButton>
@@ -299,16 +301,16 @@ const Profile = () => {
 					className='user-container'
 				>
 					<div className='profile-photo-container'>
-						<img src={user?.profilePhoto} alt={user?.handle} />
+						<img src={activeUser?.profilePhoto} alt={activeUser?.handle} />
 						<IconButton className='profile-photo-btn'>
 							<PhotoCameraOutlinedIcon className='btn-icon' />
 						</IconButton>
 					</div>
 					<Stack direction='column' alignItems='center'>
 						<span className='full-name'>
-							{user?.firstName + ' ' + user?.lastName}
+							{activeUser?.firstName + ' ' + activeUser?.lastName}
 						</span>
-						<span className='handle'>@{user?.handle}</span>
+						<span className='handle'>@{activeUser?.handle}</span>
 						<span className='desc'></span>
 					</Stack>
 				</Stack>
@@ -317,7 +319,9 @@ const Profile = () => {
 					elevation={10}
 				>
 					<div className='greeting-container'>
-						<h3 className='greeting'>Hi {user?.firstName}, Welcome back 👋</h3>
+						<h3 className='greeting'>
+							Hi {activeUser?.firstName}, Welcome back 👋
+						</h3>
 						<Stack direction='row' alignItems='center'>
 							<Typography>Light</Typography>
 							<ThemeSwitch
@@ -353,7 +357,7 @@ const Profile = () => {
 								<Button type='type'>Update</Button>
 							</form>
 						) : (
-							<>{user?.about}</>
+							<>{activeUser?.about}</>
 						)}
 					</div>
 					<Divider>
@@ -402,7 +406,9 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={capitalizeFirstLetterOfEachWord(user?.genderIdentity)}
+								label={capitalizeFirstLetterOfEachWord(
+									activeUser?.genderIdentity
+								)}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -459,7 +465,9 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={capitalizeFirstLetterOfEachWord(user?.genderInterest)}
+								label={capitalizeFirstLetterOfEachWord(
+									activeUser?.genderInterest
+								)}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -517,7 +525,7 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={`${user?.location?.city}, ${user?.location?.state} ${user?.location?.postalCode}`}
+								label={`${activeUser?.location?.city}, ${activeUser?.location?.state} ${activeUser?.location?.postalCode}`}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -570,7 +578,7 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={`${user?.distancePref} mi.`}
+								label={`${activeUser?.distancePref} mi.`}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -640,7 +648,7 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={capitalizeFirstLetterOfEachWord(user?.dietType)}
+								label={capitalizeFirstLetterOfEachWord(activeUser?.dietType)}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -661,7 +669,7 @@ const Profile = () => {
 							</form>
 						) : (
 							<>
-								{user?.favorites?.foodTypes?.map((item, i) => (
+								{activeUser?.favorites?.foodTypes?.map((item, i) => (
 									<Chip
 										key={i}
 										label={item}
@@ -697,7 +705,7 @@ const Profile = () => {
 							</form>
 						) : (
 							<Chip
-								label={user?.favorites?.dish}
+								label={activeUser?.favorites?.dish}
 								size='small'
 								variant={theme === 'dark' ? 'outlined' : 'filled'}
 								className='data-chip'
@@ -711,7 +719,7 @@ const Profile = () => {
 						UPLOAD
 					</button>
 					<div className='fp-photo-container'>
-						{user?.images?.map((image, i) => (
+						{activeUser?.images?.map((image, i) => (
 							<div className='fp-img' key={i}>
 								<IconButton
 									sx={{ position: 'absolute', top: 2, right: 2 }}

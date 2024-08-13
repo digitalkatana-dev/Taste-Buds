@@ -28,7 +28,7 @@ import Button from '../../components/Button';
 
 const Dashboard = () => {
 	const { isMobile, selectedProfile } = useSelector((state) => state.app);
-	const { user, allUsers, success } = useSelector((state) => state.user);
+	const { activeUser, allUsers, success } = useSelector((state) => state.user);
 	const [currentIndex, setCurrentIndex] = useState();
 	const [lastDirection, setLastDirection] = useState();
 	const currentIndexRef = useRef(currentIndex);
@@ -40,8 +40,8 @@ const Dashboard = () => {
 		[allUsers]
 	);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
-	const blocked = user?.blocked;
+	const theme = activeUser?.theme;
+	const blocked = activeUser?.blocked;
 
 	const updateCurrentIndex = (val) => {
 		setCurrentIndex(val);
@@ -58,7 +58,7 @@ const Dashboard = () => {
 	const isBlocked = blockedCheck();
 
 	const swiped = (direction, swippedProfileId, index) => {
-		const matches = user?.matches;
+		const matches = activeUser?.matches;
 		const matchCheck = () => {
 			return matches.some((match) => match._id === swippedProfileId);
 		};
@@ -68,7 +68,7 @@ const Dashboard = () => {
 			if (!areMatched) {
 				const updatedMatches = [swippedProfileId, ...matches];
 				const data = {
-					profileId: user._id,
+					profileId: activeUser._id,
 					matches: updatedMatches,
 				};
 				dispatch(updateMatches(data));
@@ -105,7 +105,7 @@ const Dashboard = () => {
 				(item) => item !== selectedProfile?._id
 			);
 			const data = {
-				profileId: user._id,
+				profileId: activeUser._id,
 				blocked: unblocked,
 			};
 
@@ -117,7 +117,7 @@ const Dashboard = () => {
 	};
 
 	const handleUnmatch = () => {
-		const matches = user?.matches;
+		const matches = activeUser?.matches;
 		const matchCheck = () => {
 			return matches.some((match) => match._id === selectedProfile._id);
 		};
@@ -128,7 +128,7 @@ const Dashboard = () => {
 				(item) => item._id !== selectedProfile?._id
 			);
 			const data = {
-				profileId: user._id,
+				profileId: activeUser._id,
 				matches: updatedMatches,
 			};
 
@@ -139,8 +139,8 @@ const Dashboard = () => {
 	};
 
 	const handleGetUsers = useCallback(() => {
-		dispatch(getGenderedBuds(user?.genderInterest));
-	}, [dispatch, user]);
+		dispatch(getGenderedBuds(activeUser?.genderInterest));
+	}, [dispatch, activeUser]);
 
 	const handleSuccess = useCallback(() => {
 		if (success) {
@@ -158,7 +158,7 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		handleGetUsers();
-	}, [user, handleGetUsers]);
+	}, [activeUser, handleGetUsers]);
 
 	useEffect(() => {
 		handleSuccess();

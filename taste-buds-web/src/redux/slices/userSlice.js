@@ -200,7 +200,7 @@ const initialState = userAdapter.getInitialState({
 		voice: false,
 		snail: false,
 	},
-	user: null,
+	activeUser: null,
 	allUsers: null,
 	success: null,
 	errors: null,
@@ -407,7 +407,7 @@ export const userSlice = createSlice({
 				voice: false,
 				snail: false,
 			};
-			state.user = null;
+			state.activeUser = null;
 			state.allUsers = null;
 			state.success = null;
 			state.errors = null;
@@ -423,7 +423,7 @@ export const userSlice = createSlice({
 			.addCase(signup.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.user = action.payload.user;
+				state.activeUser = action.payload.user;
 				state.handle = '';
 				state.email = '';
 				state.password = '';
@@ -441,7 +441,7 @@ export const userSlice = createSlice({
 			.addCase(signin.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.user = action.payload.userProfile;
+				state.activeUser = action.payload.userProfile;
 				state.login = '';
 				state.password = '';
 				state.errors = null;
@@ -457,7 +457,7 @@ export const userSlice = createSlice({
 			.addCase(createProfile.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.user = action.payload.profile;
+				state.activeUser = action.payload.profile;
 				state.errors = null;
 				state.firstName = '';
 				state.lastName = '';
@@ -493,7 +493,7 @@ export const userSlice = createSlice({
 			})
 			.addCase(getProfile.fulfilled, (state, action) => {
 				state.loading = false;
-				state.user = action.payload;
+				state.activeUser = action.payload;
 			})
 			.addCase(getProfile.rejected, (state, action) => {
 				state.loading = false;
@@ -531,7 +531,7 @@ export const userSlice = createSlice({
 			.addCase(updateUserProfile.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.user = action.payload.updatedProfile;
+				state.activeUser = action.payload.updatedProfile;
 				state.about = '';
 				state.editAbout = false;
 				state.genderIdentity = '';
@@ -564,7 +564,7 @@ export const userSlice = createSlice({
 			.addCase(updateMatches.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = 'Matches updated successfully!';
-				state.user = action.payload.updatedProfile;
+				state.activeUser = action.payload.updatedProfile;
 			})
 			.addCase(updateMatches.rejected, (state, action) => {
 				state.loading = false;
@@ -577,7 +577,7 @@ export const userSlice = createSlice({
 			.addCase(updateBlocked.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = 'Blocked updated successfully!';
-				state.user = action.payload.updatedProfile;
+				state.activeUser = action.payload.updatedProfile;
 			})
 			.addCase(updateBlocked.rejected, (state, action) => {
 				state.loading = false;
@@ -590,7 +590,7 @@ export const userSlice = createSlice({
 			.addCase(manageFoodPorn.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
-				state.user = action.payload.updated;
+				state.activeUser = action.payload.updated;
 				state.photoPreview = null;
 			})
 			.addCase(manageFoodPorn.rejected, (state, action) => {

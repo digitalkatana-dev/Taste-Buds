@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import './chatBubble.scss';
 
 const ChatBubble = ({ data }) => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 
-	const isMine = user?._id === data?.sender?._id ? true : false;
+	const isMine = activeUser?._id === data?.sender?._id ? true : false;
 
 	if (isMine) {
 		return (
