@@ -5,14 +5,14 @@ import { getProfile } from '../../redux/slices/userSlice';
 import './btmNav.scss';
 
 const BottomNav = () => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const currentLocation = location.pathname.split('/')[1];
 
 	const handleClick = (route) => {
-		dispatch(getProfile(user?._id));
+		dispatch(getProfile(activeUser?._id));
 		if (route === 'chats') {
 			navigate(`/${route}/inbox`);
 		} else {
@@ -42,7 +42,7 @@ const BottomNav = () => {
 				className={currentLocation === 'matches' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('matches')}
 			>
-				{user?.genderIdentity === 'male' ? (
+				{activeUser?.genderIdentity === 'male' ? (
 					<p className='noto-color-emoji-regular'>🍻</p>
 				) : (
 					<p className='noto-color-emoji-regular'>🥂</p>
@@ -60,13 +60,13 @@ const BottomNav = () => {
 				className={currentLocation === 'profile' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('profile')}
 			>
-				{user?.genderIdentity === 'male' && (
+				{activeUser?.genderIdentity === 'male' && (
 					<p className='noto-color-emoji-regular'>🙋🏽‍♂️</p>
 				)}
-				{user?.genderIdentity === 'female' && (
+				{activeUser?.genderIdentity === 'female' && (
 					<p className='noto-color-emoji-regular'>🙋🏽‍♀️</p>
 				)}
-				{user?.genderIdentity === 'non-binary' && (
+				{activeUser?.genderIdentity === 'non-binary' && (
 					<p className='noto-color-emoji-regular'>🙋🏽</p>
 				)}
 				<h6>My Profile</h6>

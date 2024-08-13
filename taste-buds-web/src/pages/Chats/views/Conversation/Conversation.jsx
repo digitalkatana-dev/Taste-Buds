@@ -11,13 +11,15 @@ import ChatDisplay from '../../../../components/ChatDisplay/ChatDisplay';
 import ChatInput from '../../../../components/ChatInput';
 
 const Conversation = () => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const { activeChat } = useSelector((state) => state.message);
 	const location = useLocation();
 	const dispatch = useDispatch();
 
 	const chat = location.pathname.split('/')[3];
-	const chatUsers = activeChat?.users?.filter((item) => item._id !== user?._id);
+	const chatUsers = activeChat?.users?.filter(
+		(item) => item._id !== activeUser?._id
+	);
 
 	let chatName;
 

@@ -2,9 +2,9 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ProtectedRoute = ({ element }) => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 
-	if (!user) {
+	if (!activeUser) {
 		return <Navigate to='/' />;
 	}
 

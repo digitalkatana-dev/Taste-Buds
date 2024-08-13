@@ -23,7 +23,7 @@ const appPersistConfig = {
 const userPersistConfig = {
 	key: 'user',
 	storage,
-	whitelist: ['user'],
+	whitelist: ['activeUser'],
 };
 
 const messagePersistConfig = {

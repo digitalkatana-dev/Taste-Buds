@@ -11,15 +11,15 @@ import { getChatName, getChatImages } from '../../util/helpers';
 import './chat-item.scss';
 
 const ChatItem = ({ data }) => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const navigate = useNavigate();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
-	const chatName = getChatName(user?._id, data);
+	const chatName = getChatName(activeUser?._id, data);
 	let latestMessage = data?.latestMessage
 		? `${data?.latestMessage?.sender?.handle}: ${data?.latestMessage?.content}`
 		: 'No messages.';
-	const chatImage = getChatImages(user?._id, data);
+	const chatImage = getChatImages(activeUser?._id, data);
 
 	const handleClick = () => {
 		navigate(`/chats/conversation/${data?._id}`);

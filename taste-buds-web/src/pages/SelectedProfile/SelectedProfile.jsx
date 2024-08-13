@@ -20,14 +20,14 @@ import Button from '../../components/Button';
 
 const SelectedProfile = () => {
 	const { loading, selectedProfile } = useSelector((state) => state.app);
-	const { user, success } = useSelector((state) => state.user);
+	const { activeUser, success } = useSelector((state) => state.user);
 	const location = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const profile = location.pathname.split('/')[2];
-	const theme = user?.theme;
-	const blocked = user?.blocked;
+	const theme = activeUser?.theme;
+	const blocked = activeUser?.blocked;
 
 	const blockedCheck = () => {
 		return blocked.some((item) => item === selectedProfile?._id);
@@ -35,7 +35,7 @@ const SelectedProfile = () => {
 	const isBlocked = blockedCheck();
 
 	const handleUnmatch = () => {
-		const matches = user?.matches;
+		const matches = activeUser?.matches;
 		const matchCheck = () => {
 			return matches.some((match) => match._id === selectedProfile._id);
 		};
@@ -46,7 +46,7 @@ const SelectedProfile = () => {
 				(item) => item._id !== selectedProfile?._id
 			);
 			const data = {
-				profileId: user._id,
+				profileId: activeUser._id,
 				matches: updatedMatches,
 			};
 
@@ -62,7 +62,7 @@ const SelectedProfile = () => {
 				(item) => item !== selectedProfile?._id
 			);
 			const data = {
-				profileId: user._id,
+				profileId: activeUser._id,
 				blocked: unblocked,
 			};
 

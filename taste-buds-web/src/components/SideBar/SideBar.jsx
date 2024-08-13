@@ -11,10 +11,10 @@ import ChatContainer from '../ChatContainer';
 
 const SideBar = () => {
 	const { selectedProfile } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
 	const handleUserProfileClick = () => {
 		navigate('/profile');
@@ -38,9 +38,9 @@ const SideBar = () => {
 			<div className='header'>
 				<div className='user-profile' onClick={handleUserProfileClick}>
 					<div className='img-container'>
-						<img src={user?.profilePhoto} alt={user?.firstName} />
+						<img src={activeUser?.profilePhoto} alt={activeUser?.firstName} />
 					</div>
-					<h3>@{user?.handle}</h3>
+					<h3>@{activeUser?.handle}</h3>
 				</div>
 				<IconButton className='log-out' onClick={handleLogout}>
 					<LogoutIcon fontSize='small' />

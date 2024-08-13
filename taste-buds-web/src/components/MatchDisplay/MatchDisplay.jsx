@@ -7,15 +7,15 @@ import './display.scss';
 
 const MatchDisplay = () => {
 	const { isMobile } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const theme = user?.theme;
-	const matches = user?.matches;
+	const theme = activeUser?.theme;
+	const matches = activeUser?.matches;
 
 	const mutualMatches = matches?.filter(
 		(match) =>
-			match.matches.filter((profile) => profile === user?._id).length > 0
+			match.matches.filter((profile) => profile === activeUser?._id).length > 0
 	);
 
 	const handleMatchClick = (profile) => {

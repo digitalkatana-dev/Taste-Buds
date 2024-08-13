@@ -21,8 +21,8 @@ import Profile from './pages/Profile';
 
 const App = () => {
 	const { authType } = useSelector((state) => state.app);
-	const { user } = useSelector((state) => state.user);
-	const theme = user?.theme;
+	const { activeUser } = useSelector((state) => state.user);
+	const theme = activeUser?.theme;
 	const dispatch = useDispatch();
 
 	const handleMobile = useCallback(() => {
@@ -53,7 +53,7 @@ const App = () => {
 					<Route
 						path='/'
 						element={
-							user && authType === 'signin' ? (
+							activeUser && authType === 'signin' ? (
 								<Navigate to='/dashboard' />
 							) : (
 								<Home />

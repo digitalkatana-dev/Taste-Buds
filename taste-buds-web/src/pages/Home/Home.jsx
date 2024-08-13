@@ -8,12 +8,12 @@ import Button from '../../components/Button';
 import AuthDialog from '../../components/AuthDialog';
 
 const Home = () => {
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const [showDialog, setShowDialog] = useState(false);
 	const dispatch = useDispatch();
 
 	const handleClick = () => {
-		if (user) {
+		if (activeUser) {
 			dispatch(logout());
 		} else {
 			dispatch(setAuthType('signup'));
@@ -32,7 +32,7 @@ const Home = () => {
 					className='primary-btn'
 					onClick={handleClick}
 				>
-					{user ? 'Signout' : 'Create Account'}
+					{activeUser ? 'Signout' : 'Create Account'}
 				</Button>
 			</div>
 			<AuthDialog open={showDialog} setShowDialog={setShowDialog} />

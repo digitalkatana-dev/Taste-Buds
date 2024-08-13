@@ -17,10 +17,10 @@ import './transfer.scss';
 
 const TransferList = ({ isUpdate }) => {
 	let { foodTypeOptions } = useSelector((state) => state.app);
-	const { user, favorites } = useSelector((state) => state.user);
+	const { activeUser, favorites } = useSelector((state) => state.user);
 	const [checked, setChecked] = useState([]);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
+	const theme = activeUser?.theme;
 
 	if (isUpdate) {
 		foodTypeOptions = foodTypeOptions.filter(

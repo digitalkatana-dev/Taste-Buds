@@ -22,10 +22,10 @@ const WarningDialog = () => {
 	const { warningOpen, warningType, deleteData, selectedProfile } = useSelector(
 		(state) => state.app
 	);
-	const { user } = useSelector((state) => state.user);
+	const { activeUser } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
-	const theme = user?.theme;
-	const blocked = user?.blocked;
+	const theme = activeUser?.theme;
+	const blocked = activeUser?.blocked;
 
 	const handleClose = () => {
 		dispatch(setWarningOpen(false));
@@ -46,7 +46,7 @@ const WarningDialog = () => {
 			case 'block':
 				const updated = [...blocked, selectedProfile?._id];
 				const data = {
-					profileId: user._id,
+					profileId: activeUser._id,
 					blocked: updated,
 				};
 
