@@ -1,10 +1,4 @@
-#selected-profile {
-	width: 100%;
-	height: fit-content;
-	display: flex;
-	flex-direction: column;
-	// border: 3px solid dodgerblue;
-
+#user-profile {
 	.header-container {
 		.cover-photo-section {
 			height: 180px;
@@ -29,7 +23,6 @@
 	#profile-content {
 		padding: 0 24px;
 		position: relative;
-		// border: 1px solid transparent;
 
 		.user-container {
 			position: absolute;
@@ -114,7 +107,27 @@
 			}
 		}
 	}
+
+	&.dashboard {
+		display: none;
+	}
+
+	&.selected-profile {
+		width: 100%;
+		height: fit-content;
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 @media only screen and (min-width: 896px) {
+	#user-profile {
+		&.dashboard {
+			width: 68%;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			overflow-y: scroll;
+		}
+	}
 }
