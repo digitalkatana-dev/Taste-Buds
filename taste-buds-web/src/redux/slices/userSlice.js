@@ -517,6 +517,7 @@ export const userSlice = createSlice({
 			})
 			.addCase(getGenderedBuds.fulfilled, (state, action) => {
 				state.loading = false;
+				state.success = 'Gendered retrieved successfully!';
 				state.allUsers = shuffleArray(action.payload);
 			})
 			.addCase(getGenderedBuds.rejected, (state, action) => {

@@ -29,7 +29,7 @@ import Button from '../../components/Button';
 const Dashboard = () => {
 	const { isMobile, selectedProfile } = useSelector((state) => state.app);
 	const { user, allUsers, success } = useSelector((state) => state.user);
-	const [currentIndex, setCurrentIndex] = useState(allUsers?.length - 1);
+	const [currentIndex, setCurrentIndex] = useState();
 	const [lastDirection, setLastDirection] = useState();
 	const currentIndexRef = useRef(currentIndex);
 	const childRefs = useMemo(
@@ -142,9 +142,11 @@ const Dashboard = () => {
 		dispatch(getGenderedBuds(user?.genderInterest));
 	}, [dispatch, user]);
 
-	const handleUnmatchSuccess = useCallback(() => {
+	const handleSuccess = useCallback(() => {
 		if (success) {
-			if (success === 'Matches updated successfully!') {
+			if (success === 'Gendered retrieved successfully!') {
+				setCurrentIndex(allUsers?.length - 1);
+			} else if (success === 'Matches updated successfully!') {
 				dispatch(setSelectedProfile(null));
 			}
 
@@ -152,15 +154,15 @@ const Dashboard = () => {
 				dispatch(clearSuccess());
 			}, 2000);
 		}
-	}, [dispatch, success]);
+	}, [dispatch, success, allUsers]);
 
 	useEffect(() => {
 		handleGetUsers();
 	}, [user, handleGetUsers]);
 
 	useEffect(() => {
-		handleUnmatchSuccess();
-	}, [handleUnmatchSuccess]);
+		handleSuccess();
+	}, [handleSuccess]);
 
 	return (
 		<div id='dashboard'>
@@ -313,9 +315,9 @@ const Dashboard = () => {
 									ref={childRefs[index]}
 									className='swipe'
 									key={item._id}
-									preventSwipe={['up', 'down']}
 									onSwipe={(dir) => swiped(dir, item._id, index)}
 									onCardLeftScreen={() => outOfFrame(item.firstName, index)}
+									preventSwipe={['up', 'down']}
 								>
 									<div className='card'>
 										<img src={item.profilePhoto} alt={name} />
