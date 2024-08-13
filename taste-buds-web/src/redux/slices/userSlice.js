@@ -4,6 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { setPhotoDialogType, setWarningOpen, setWarningType } from './appSlice';
+import { shuffleArray } from '../../util/helpers';
 import budsApi from '../../api/budsApi';
 
 export const signup = createAsyncThunk(
@@ -516,7 +517,7 @@ export const userSlice = createSlice({
 			})
 			.addCase(getGenderedBuds.fulfilled, (state, action) => {
 				state.loading = false;
-				state.allUsers = action.payload;
+				state.allUsers = shuffleArray(action.payload);
 			})
 			.addCase(getGenderedBuds.rejected, (state, action) => {
 				state.loading = false;
