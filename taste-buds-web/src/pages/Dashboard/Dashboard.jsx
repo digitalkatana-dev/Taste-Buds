@@ -1,5 +1,12 @@
 import { Chip, Divider, Paper, Stack } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+	createRef,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	setWarningType,
@@ -12,10 +19,7 @@ import {
 	updateBlocked,
 	clearSuccess,
 } from '../../redux/slices/userSlice';
-import {
-	shuffleArray,
-	capitalizeFirstLetterOfEachWord,
-} from '../../util/helpers';
+import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import SideBar from '../../components/SideBar';
@@ -25,19 +29,35 @@ import Button from '../../components/Button';
 const Dashboard = () => {
 	const { isMobile, selectedProfile } = useSelector((state) => state.app);
 	const { user, allUsers, success } = useSelector((state) => state.user);
+	const [currentIndex, setCurrentIndex] = useState(allUsers?.length - 1);
 	const [lastDirection, setLastDirection] = useState();
+	const currentIndexRef = useRef(currentIndex);
+	const childRefs = useMemo(
+		() =>
+			Array(allUsers?.length)
+				.fill(0)
+				.map((i) => createRef()),
+		[allUsers]
+	);
 	const dispatch = useDispatch();
 	const theme = user?.theme;
 	const blocked = user?.blocked;
+
+	const updateCurrentIndex = (val) => {
+		setCurrentIndex(val);
+		currentIndexRef.current = val;
+	};
+
+	const canGoBack = currentIndex < allUsers?.length - 1;
+
+	const canSwipe = currentIndex >= 0;
 
 	const blockedCheck = () => {
 		return blocked.some((item) => item === selectedProfile?._id);
 	};
 	const isBlocked = blockedCheck();
 
-	const potentialMatches = shuffleArray(allUsers);
-
-	const swiped = (direction, swippedProfileId) => {
+	const swiped = (direction, swippedProfileId, index) => {
 		const matches = user?.matches;
 		const matchCheck = () => {
 			return matches.some((match) => match._id === swippedProfileId);
@@ -57,10 +77,26 @@ const Dashboard = () => {
 			}
 		}
 		setLastDirection(direction);
+		updateCurrentIndex(index - 1);
 	};
 
-	const outOfFrame = (name) => {
-		console.log(name + ' left the screen!');
+	const outOfFrame = (name, idx) => {
+		console.log(`${name} (${idx}) left the screen!`, currentIndexRef.current);
+		currentIndexRef.current >= idx && childRefs[idx].current.restoreCard();
+	};
+
+	const swipe = async (dir) => {
+		if (canSwipe && currentIndex < allUsers?.length) {
+			await childRefs[currentIndex].current.swipe(dir); // Swipe the card!
+		}
+	};
+
+	const goBack = async () => {
+		if (!canGoBack) return;
+		const newIndex = currentIndex + 1;
+		updateCurrentIndex(newIndex);
+		await childRefs[newIndex].current.restoreCard();
+		setLastDirection(undefined);
 	};
 
 	const handleBlock = () => {
@@ -267,17 +303,19 @@ const Dashboard = () => {
 			) : (
 				<div className='swipe-container'>
 					<div className='card-container'>
-						{potentialMatches?.map((item) => {
+						{allUsers?.map((item, index) => {
 							const name = `${item.firstName} ${item.lastName}`;
 							const favFoodTypes = item.favorites.foodTypes;
 							const favDish = item.favorites.dish;
 
 							return (
 								<TinderCard
+									ref={childRefs[index]}
 									className='swipe'
 									key={item._id}
-									onSwipe={(dir) => swiped(dir, item._id)}
-									onCardLeftScreen={() => outOfFrame(item.firstName)}
+									preventSwipe={['up', 'down']}
+									onSwipe={(dir) => swiped(dir, item._id, index)}
+									onCardLeftScreen={() => outOfFrame(item.firstName, index)}
 								>
 									<div className='card'>
 										<img src={item.profilePhoto} alt={name} />
@@ -300,7 +338,12 @@ const Dashboard = () => {
 					)}
 				</div>
 			)}
-			<ButtonRow />
+			<ButtonRow
+				swipeLeft={() => swipe('left')}
+				undo={() => goBack()}
+				swipeRight={() => swipe('right')}
+				lastDirection={lastDirection}
+			/>
 		</div>
 	);
 };

@@ -15,6 +15,11 @@
 		&.reply {
 			border-color: gold;
 			color: gold;
+
+			&:disabled {
+				border-color: var(--muted);
+				color: var(--muted);
+			}
 		}
 
 		&.close {
