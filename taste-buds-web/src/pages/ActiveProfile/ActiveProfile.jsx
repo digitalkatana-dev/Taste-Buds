@@ -53,13 +53,13 @@ import {
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
-import './profile.scss';
+import './active-profile.scss';
 import ThemeSwitch from '../../components/ThemeSwitch';
 import TextInput from '../../components/TextInput';
 import TransferList from '../../components/TransferList';
 import Button from '../../components/Button';
 
-const Profile = () => {
+const ActiveProfile = () => {
 	const { photoDialogType } = useSelector((state) => state.app);
 	const {
 		activeUser,
@@ -279,7 +279,7 @@ const Profile = () => {
 	}, [handleFoodPornUpload]);
 
 	return (
-		<div id='profile'>
+		<div id='active-profile'>
 			<div className='header-container'>
 				<div className='cover-photo-section'>
 					<div className='cover-photo-container'>
@@ -754,4 +754,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default ActiveProfile;

@@ -17,7 +17,7 @@ import Search from './pages/Search';
 import Matches from './pages/Matches';
 import Chats from './pages/Chats';
 import SelectedProfile from './pages/SelectedProfile';
-import Profile from './pages/Profile';
+import ActiveProfile from './pages/ActiveProfile';
 
 const App = () => {
 	const { authType } = useSelector((state) => state.app);
@@ -116,7 +116,9 @@ const App = () => {
 					<Route
 						path='/profile'
 						element={
-							<ProtectedRoute element={<Layout children={<Profile />} />} />
+							<ProtectedRoute
+								element={<Layout children={<ActiveProfile />} />}
+							/>
 						}
 					/>
 				</Routes>

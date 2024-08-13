@@ -158,7 +158,7 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		handleGetUsers();
-	}, [activeUser, handleGetUsers]);
+	}, [handleGetUsers]);
 
 	useEffect(() => {
 		handleSuccess();
