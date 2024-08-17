@@ -48,14 +48,16 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
 	cors: {
-		origin: 'http://localhost:3000',
+		origin: 'https://taste-buds.onrender.com',
 		methods: ['GET', 'POST'],
 	},
 	pingInterval: 25000,
 	pingTimeout: 60000,
 });
 
-const pubClient = createClient({ url: 'redis://localhost:6379' });
+const pubClient = createClient({
+	url: 'redis://red-cr0d50o8fa8c73d31mn0:6379',
+});
 const subClient = pubClient.duplicate();
 
 pubClient.on('error', (err) => console.error('Redis Pub Client Error', err));
