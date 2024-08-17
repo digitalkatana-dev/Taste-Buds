@@ -7,6 +7,7 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { setIsMobile } from './redux/slices/appSlice';
+import { socket } from './util/socket';
 import './app.scss';
 import Layout from './layout';
 import Home from './pages/Home';
@@ -24,6 +25,10 @@ const App = () => {
 	const { activeUser } = useSelector((state) => state.user);
 	const theme = activeUser?.theme;
 	const dispatch = useDispatch();
+
+	socket.on('connect', () => {
+		if (activeUser) socket.emit('reconnect', activeUser?._id);
+	});
 
 	const handleMobile = useCallback(() => {
 		const handleResize = () => {

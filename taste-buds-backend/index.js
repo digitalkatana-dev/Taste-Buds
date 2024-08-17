@@ -5,12 +5,14 @@ require('./src/models/Message');
 require('./src/models/Notification');
 const { config } = require('dotenv');
 const { set, connect, connection } = require('mongoose');
+const { createClient } = require('redis');
+const { createAdapter } = require('@socket.io/redis-adapter');
 const { Server } = require('socket.io');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const http = require('http');
-const assetRoutes = require('./src/routes/assetRoutes');
+// const assetRoutes = require('./src/routes/assetRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const profileRoutes = require('./src/routes/profileRoutes');
 const chatRoutes = require('./src/routes/chatRoutes');
@@ -53,22 +55,38 @@ const io = new Server(server, {
 	pingTimeout: 60000,
 });
 
+const pubClient = createClient({ url: 'redis://localhost:6379' });
+const subClient = pubClient.duplicate();
+
+pubClient.on('error', (err) => console.error('Redis Pub Client Error', err));
+subClient.on('error', (err) => console.error('Redis Sub Client Error', err));
+
+Promise.all([pubClient.connect(), subClient.connect()])
+	.then(() => {
+		io.adapter(createAdapter(pubClient, subClient));
+
+		console.log('Socket.io is connected to Redis');
+	})
+	.catch(console.error);
+
 const activeSockets = new Set();
 
 io.on('connection', (socket) => {
 	socket.on('setup', (userData) => {
-		console.log(`User connected: ${userData}`);
+		activeSockets.add(socket.id);
+		pubClient.sAdd(`sockets:${userData}`, socket.id);
 		socket.join(userData);
 		socket.emit('connected');
-		activeSockets.add(socket.id);
+		console.log(`User connected: ${userData}`);
 	});
 
-	socket.on('refresh', (userData) => {
-		console.log(`User refreshed: ${userData}`);
+	socket.on('reconnect', (userData) => {
+		pubClient.sAdd(`sockets:${userData}`, socket.id);
 		socket.join(userData);
 		socket.emit('reconnected');
+		console.log(`User reconnected: ${userData}`);
 		activeSockets.add(socket.id);
-		console.log('Active Sockets', activeSockets);
+		// console.log('Active Sockets', activeSockets);
 	});
 
 	socket.on('pong', () => {
@@ -125,6 +143,15 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
+		pubClient.keys('sockets:*').then((keys) => {
+			keys.forEach((key) => {
+				pubClient.sRem(key, socket.id).then(() => {
+					pubClient.sCard(key).then((count) => {
+						if (count === 0) pubClient.del(key);
+					});
+				});
+			});
+		});
 		activeSockets.delete(socket.id);
 	});
 
