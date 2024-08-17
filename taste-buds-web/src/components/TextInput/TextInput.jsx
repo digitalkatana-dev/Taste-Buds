@@ -18,6 +18,7 @@ const TextInput = ({
 	value,
 	onFocus,
 	onChange,
+	onKeyDown,
 	InputProps,
 	error,
 }) => {
@@ -39,6 +40,7 @@ const TextInput = ({
 				value={value}
 				onFocus={onFocus}
 				onChange={onChange}
+				onKeyDown={onKeyDown}
 				InputProps={InputProps}
 			/>
 			{error && <h6 className='error'>{error}</h6>}

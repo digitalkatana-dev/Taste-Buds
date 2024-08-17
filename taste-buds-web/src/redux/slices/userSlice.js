@@ -4,6 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { setPhotoDialogType, setWarningOpen, setWarningType } from './appSlice';
+import { socket } from '../../util/socket';
 import { shuffleArray } from '../../util/helpers';
 import budsApi from '../../api/budsApi';
 
@@ -364,6 +365,7 @@ export const userSlice = createSlice({
 		},
 		logout: (state) => {
 			localStorage.removeItem('token');
+			socket.emit('logout');
 			state.loading = false;
 			state.login = '';
 			state.handle = '';
@@ -424,6 +426,7 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.success = action.payload.success;
 				state.activeUser = action.payload.user;
+				socket.emit('setup', action.payload.user._id);
 				state.handle = '';
 				state.email = '';
 				state.password = '';
@@ -442,6 +445,7 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.success = action.payload.success;
 				state.activeUser = action.payload.userProfile;
+				socket.emit('setup', action.payload.userProfile._id);
 				state.login = '';
 				state.password = '';
 				state.errors = null;

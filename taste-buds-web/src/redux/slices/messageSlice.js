@@ -320,7 +320,9 @@ export const messageSlice = createSlice({
 				state.loading = false;
 				state.message = '';
 				state.chatList = null;
-				state.conversation = null;
+				state.unread = [];
+				state.newest = null;
+				state.activeChat = null;
 				state.success = null;
 				state.errors = null;
 				messageAdapter.removeAll(state);
