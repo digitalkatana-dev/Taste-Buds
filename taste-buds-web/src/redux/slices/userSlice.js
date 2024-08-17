@@ -4,7 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { setPhotoDialogType, setWarningOpen, setWarningType } from './appSlice';
-import { socket, emitNotification } from '../../util/socket';
+import { socket } from '../../util/socket';
 import { shuffleArray } from '../../util/helpers';
 import budsApi from '../../api/budsApi';
 
@@ -445,7 +445,7 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.success = action.payload.success;
 				state.activeUser = action.payload.userProfile;
-				socket.emit('setup', action.payload.user._id);
+				socket.emit('setup', action.payload.userProfile._id);
 				state.login = '';
 				state.password = '';
 				state.errors = null;

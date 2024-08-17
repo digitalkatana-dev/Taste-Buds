@@ -49,7 +49,7 @@ const io = new Server(server, {
 		origin: 'http://localhost:3000',
 		methods: ['GET', 'POST'],
 	},
-	pingInterval: 45000,
+	pingInterval: 25000,
 	pingTimeout: 60000,
 });
 
@@ -102,6 +102,7 @@ io.on('connection', (socket) => {
 
 	socket.on('typing', (room) => {
 		socket.in(room).emit('typing');
+		console.log('typing!');
 	});
 
 	socket.on('stop typing', (room) => {

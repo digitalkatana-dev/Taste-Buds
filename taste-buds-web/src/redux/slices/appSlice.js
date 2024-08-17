@@ -38,10 +38,7 @@ const initialState = appAdapter.getInitialState({
 	photoDialogType: '',
 	warningType: '',
 	warningOpen: false,
-	deleteOpen: false,
 	deleteData: null,
-	blockOpen: false,
-	blockData: null,
 	contentDialog: false,
 	errors: null,
 });
@@ -132,7 +129,6 @@ export const appSlice = createSlice({
 				state.photoDialogType = '';
 				state.warningType = '';
 				state.warningOpen = false;
-				state.deleteOpen = false;
 				state.deleteData = null;
 				state.contentDialog = false;
 				state.errors = null;
