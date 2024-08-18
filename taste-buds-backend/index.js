@@ -61,14 +61,6 @@ const subClient = pubClient.duplicate();
 pubClient.on('error', (err) => console.error('Redis Pub Client Error', err));
 subClient.on('error', (err) => console.error('Redis Sub Client Error', err));
 
-// Promise.all([pubClient.connect(), subClient.connect()])
-// 	.then(() => {
-// 		io.adapter(createAdapter(pubClient, subClient));
-
-// 		console.log('Socket.io is connected to Redis');
-// 	})
-// 	.catch(console.error);
-
 try {
 	Promise.all([pubClient.connect(), subClient.connect()]);
 	io.adapter(createAdapter(pubClient, subClient));
@@ -83,8 +75,7 @@ const activeChats = new Set();
 
 io.on('connection', (socket) => {
 	socket.on('setup', (userData) => {
-		activeSockets.add(socket.id);
-		pubClient.sAdd(`sockets:${userData}`, socket.id);
+		pubClient.sAdd(`socket: ${userData}`, socket.id);
 		socket.join(userData);
 		activeSockets.add(socket.id);
 		socket.emit('connected');
@@ -92,12 +83,11 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('reconnect', (userData) => {
-		pubClient.sAdd(`sockets:${userData}`, socket.id);
+		pubClient.sAdd(`socket: ${userData}`, socket.id);
 		socket.join(userData);
 		activeSockets.add(socket.id);
 		socket.emit('reconnected');
 		console.log(`User reconnected: ${userData}`);
-		// console.log('Active Sockets', activeSockets);
 	});
 
 	socket.on('pong', () => {
@@ -114,28 +104,65 @@ io.on('connection', (socket) => {
 		console.log('Active Sockets', activeSockets);
 	}, 30000);
 
-	socket.on('join room', (room) => {
-		activeChats.add(room);
-		socket.join(room);
-		socket.emit('joined');
-		console.log('Joined room:', room);
+	socket.on('join chat', async (chatId) => {
+		if (chatId) {
+			const exists = await pubClient.exists(`chat: ${chatId}`);
+
+			if (!exists) {
+				activeChats.add(chatId);
+			}
+
+			pubClient.sAdd(`chat: ${chatId}`, socket.id);
+			socket.join(chatId);
+			activeChats.add(chatId);
+			socket.emit('joined');
+			console.log('Joined chat and updated Redis:', chatId);
+			console.log('Active Chats:', activeChats);
+
+			const members = await pubClient.sMembers(`chat: ${chatId}`);
+			console.log(`Sockets in chat ${chatId}:`, members);
+		}
 	});
 
-	socket.on('rejoin', (room) => {
-		activeChats.add(room);
-		socket.join(room);
-		socket.emit('rejoined');
-		console.log(`Room refreshed: ${room}`);
-		console.log('Active Chats', activeChats);
+	socket.on('rejoin chat', (chatId) => {
+		if (chatId) {
+			pubClient.sAdd(`chat: ${chatId}`, socket.id);
+			socket.join(chatId);
+			socket.emit('rejoined');
+			console.log(`Rejoined chat: ${chatId}`);
+			console.log('Active Chats', activeChats);
+		}
 	});
 
-	socket.on('typing', (room) => {
-		socket.in(room).emit('typing');
-		console.log('typing!');
+	socket.on('leave chat', async (chatId) => {
+		await pubClient.sRem(`chat: ${chatId}`, socket.id);
+		socket.leave(chatId);
+		const members = await pubClient.sMembers(`chat: ${chatId}`);
+		// console.log('Members', members);
+		if (members.length === 0) {
+			activeChats.delete(chatId);
+			pubClient.del(`chat: ${chatId}`);
+			console.log(
+				`Chat ${chatId} is now empty and has been removed from activeChats.`,
+				activeChats
+			);
+		}
 	});
 
-	socket.on('stop typing', (room) => {
-		socket.in(room).emit('stop typing');
+	socket.on('typing', (chatId) => {
+		pubClient.sMembers(`chat: ${chatId}`).then((socketIds) => {
+			socketIds.forEach((id) => {
+				io.to(id).emit('typing');
+			});
+		});
+	});
+
+	socket.on('stop typing', (chatId) => {
+		pubClient.sMembers(`chat: ${chatId}`).then((socketIds) => {
+			socketIds.forEach((id) => {
+				io.to(id).emit('stop typing');
+			});
+		});
 	});
 
 	socket.on('notification received', (room) => {
@@ -154,7 +181,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
-		pubClient.keys('sockets:*').then((keys) => {
+		pubClient.keys('socket:*').then((keys) => {
 			keys.forEach((key) => {
 				pubClient.sRem(key, socket.id).then(() => {
 					pubClient.sCard(key).then((count) => {
@@ -171,7 +198,7 @@ io.on('connection', (socket) => {
 			activeSockets.delete(socket.id);
 		} else {
 			activeSockets.clear();
-			pubClient.del(`sockets:${userData}`);
+			pubClient.del(`socket: ${userData}`);
 		}
 		socket.disconnect();
 		console.log('Socket disconnected');

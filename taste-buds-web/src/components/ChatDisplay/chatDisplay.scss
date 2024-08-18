@@ -1,4 +1,5 @@
 #chat-display {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	flex-shrink: 0;
@@ -6,4 +7,9 @@
 	padding: 15px;
 	background-color: var(--card-background);
 	overflow-y: auto;
+
+	.typing-badge {
+		position: absolute;
+		bottom: 2.5px;
+	}
 }

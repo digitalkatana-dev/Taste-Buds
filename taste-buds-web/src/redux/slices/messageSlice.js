@@ -152,6 +152,7 @@ export const messageAdapter = createEntityAdapter();
 const initialState = messageAdapter.getInitialState({
 	loading: false,
 	recipients: [],
+	typing: false,
 	message: '',
 	chatList: null,
 	unread: [],
@@ -165,6 +166,9 @@ export const messageSlice = createSlice({
 	name: 'message',
 	initialState,
 	reducers: {
+		setTyping: (state, action) => {
+			state.typing = action.payload;
+		},
 		setMessage: (state, action) => {
 			state.message = action.payload;
 		},
@@ -318,6 +322,7 @@ export const messageSlice = createSlice({
 			})
 			.addCase(logout, (state) => {
 				state.loading = false;
+				state.typing = false;
 				state.message = '';
 				state.chatList = null;
 				state.unread = [];
@@ -331,6 +336,7 @@ export const messageSlice = createSlice({
 });
 
 export const {
+	setTyping,
 	setMessage,
 	addRecipient,
 	popRecipient,
