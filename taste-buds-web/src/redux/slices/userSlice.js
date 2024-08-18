@@ -363,9 +363,9 @@ export const userSlice = createSlice({
 		clearErrors: (state) => {
 			state.errors = null;
 		},
-		logout: (state) => {
+		logout: (state, action) => {
 			localStorage.removeItem('token');
-			socket.emit('logout');
+			socket.emit('logout', action.payload);
 			state.loading = false;
 			state.login = '';
 			state.handle = '';
