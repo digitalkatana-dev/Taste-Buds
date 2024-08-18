@@ -21,7 +21,7 @@ const SideBar = () => {
 	};
 
 	const handleLogout = () => {
-		dispatch(logout());
+		dispatch(logout(activeUser._id));
 	};
 
 	const handleMatchesClick = () => {

@@ -63,21 +63,32 @@ const subClient = pubClient.duplicate();
 pubClient.on('error', (err) => console.error('Redis Pub Client Error', err));
 subClient.on('error', (err) => console.error('Redis Sub Client Error', err));
 
-Promise.all([pubClient.connect(), subClient.connect()])
-	.then(() => {
-		io.adapter(createAdapter(pubClient, subClient));
+// Promise.all([pubClient.connect(), subClient.connect()])
+// 	.then(() => {
+// 		io.adapter(createAdapter(pubClient, subClient));
 
-		console.log('Socket.io is connected to Redis');
-	})
-	.catch(console.error);
+// 		console.log('Socket.io is connected to Redis');
+// 	})
+// 	.catch(console.error);
+
+try {
+	Promise.all([pubClient.connect(), subClient.connect()]);
+	io.adapter(createAdapter(pubClient, subClient));
+
+	console.log('Socket.io is connected to Redis');
+} catch (err) {
+	console.error;
+}
 
 const activeSockets = new Set();
+const activeChats = new Set();
 
 io.on('connection', (socket) => {
 	socket.on('setup', (userData) => {
 		activeSockets.add(socket.id);
 		pubClient.sAdd(`sockets:${userData}`, socket.id);
 		socket.join(userData);
+		activeSockets.add(socket.id);
 		socket.emit('connected');
 		console.log(`User connected: ${userData}`);
 	});
@@ -85,9 +96,9 @@ io.on('connection', (socket) => {
 	socket.on('reconnect', (userData) => {
 		pubClient.sAdd(`sockets:${userData}`, socket.id);
 		socket.join(userData);
+		activeSockets.add(socket.id);
 		socket.emit('reconnected');
 		console.log(`User reconnected: ${userData}`);
-		activeSockets.add(socket.id);
 		// console.log('Active Sockets', activeSockets);
 	});
 
@@ -106,17 +117,17 @@ io.on('connection', (socket) => {
 	}, 30000);
 
 	socket.on('join room', (room) => {
-		console.log('Joined room:', room);
+		activeChats.add(room);
 		socket.join(room);
 		socket.emit('joined');
-		activeChats.add(room);
+		console.log('Joined room:', room);
 	});
 
 	socket.on('rejoin', (room) => {
-		console.log(`Room refreshed: ${room}`);
+		activeChats.add(room);
 		socket.join(room);
 		socket.emit('rejoined');
-		activeChats.add(room);
+		console.log(`Room refreshed: ${room}`);
 		console.log('Active Chats', activeChats);
 	});
 
@@ -157,14 +168,15 @@ io.on('connection', (socket) => {
 		activeSockets.delete(socket.id);
 	});
 
-	socket.on('logout', () => {
+	socket.on('logout', (userData) => {
 		if (activeSockets.size > 1) {
 			activeSockets.delete(socket.id);
 		} else {
 			activeSockets.clear();
+			pubClient.del(`sockets:${userData}`);
 		}
-		console.log('Socket disconnected');
 		socket.disconnect();
+		console.log('Socket disconnected');
 	});
 });
 
