@@ -12,28 +12,7 @@ const ChatDisplay = () => {
 			{conversation?.map((item) => (
 				<ChatBubble key={item._id} data={item} />
 			))}
-			<div className='typing-badge'>
-				<h5>
-					Typing
-					<TypeAnimation
-						deletionSpeed={100}
-						cursor={false}
-						sequence={[
-							'.', // Types '.'
-							500, // Waits 500ms
-							'..', // Types another '.'
-							500, // Waits 500ms
-							'...', // Types another '.'
-							500, // Waits 500ms
-							'', // Deletes everything
-							500, // Waits 500ms before restarting
-						]}
-						wrapper='span'
-						repeat={Infinity}
-					/>
-				</h5>
-			</div>
-			{/* {typing && (
+			{typing && (
 				<div className='typing-badge'>
 					<h5>
 						Typing
@@ -55,7 +34,7 @@ const ChatDisplay = () => {
 						/>
 					</h5>
 				</div>
-			)} */}
+			)}
 		</div>
 	);
 };

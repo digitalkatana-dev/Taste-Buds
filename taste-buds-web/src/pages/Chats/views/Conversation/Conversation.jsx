@@ -6,6 +6,7 @@ import {
 	getChat,
 	clearActiveChat,
 } from '../../../../redux/slices/messageSlice';
+import { socket } from '../../../../util/socket';
 import './convo.scss';
 import ChatDisplay from '../../../../components/ChatDisplay/ChatDisplay';
 import ChatInput from '../../../../components/ChatInput';
@@ -32,6 +33,14 @@ const Conversation = () => {
 	const clearChat = useCallback(() => {
 		dispatch(clearActiveChat());
 	}, [dispatch]);
+
+	useEffect(() => {
+		activeChat && socket.emit('join chat', activeChat?._id);
+
+		return () => {
+			activeChat && socket.emit('leave chat', activeChat?._id);
+		};
+	}, [activeChat]);
 
 	useEffect(() => {
 		loadChat();
