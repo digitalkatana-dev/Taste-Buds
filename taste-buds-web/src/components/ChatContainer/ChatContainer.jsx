@@ -9,10 +9,10 @@ const ChatContainer = () => {
 	const { activeChat } = useSelector((state) => state.message);
 
 	useEffect(() => {
-		socket.emit('join chat', activeChat?._id);
+		activeChat && socket.emit('join chat', activeChat?._id);
 
 		return () => {
-			socket.emit('leave chat', activeChat?._id);
+			activeChat && socket.emit('leave chat', activeChat?._id);
 		};
 	}, [activeChat]);
 
