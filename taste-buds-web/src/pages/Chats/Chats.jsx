@@ -1,11 +1,26 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { socket } from '../../util/socket';
 import './chats.scss';
 import Looading from '../../components/Loading';
 import Inbox from './views/Inbox';
 import Conversation from './views/Conversation';
 
 const Chats = ({ type }) => {
-	const { loading } = useSelector((state) => state.message);
+	const { loading, activeChat } = useSelector((state) => state.message);
+	const location = useLocation();
+
+	const page = location.pathname.split('/')[2];
+
+	useEffect(() => {
+		activeChat && socket.emit('join chat', activeChat?._id);
+
+		return () => {
+			page !== 'conversation' && socket.emit('leave chat', activeChat?._id);
+		};
+	}, [activeChat, page]);
+
 	return (
 		<div id='chats'>
 			{loading && <Looading />}

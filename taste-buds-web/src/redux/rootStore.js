@@ -29,7 +29,7 @@ const userPersistConfig = {
 const messagePersistConfig = {
 	key: 'message',
 	storage,
-	whitelist: ['activeChat'],
+	whitelist: ['activeChat', 'socketId'],
 };
 
 export const store = configureStore({

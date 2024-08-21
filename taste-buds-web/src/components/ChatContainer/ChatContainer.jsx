@@ -1,20 +1,16 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setSocketId } from '../../redux/slices/messageSlice';
 import { socket } from '../../util/socket';
 import ChatDisplay from '../ChatDisplay';
 import ChatInput from '../ChatInput';
 import './chatContainer.scss';
 
 const ChatContainer = () => {
-	const { activeChat } = useSelector((state) => state.message);
+	const dispatch = useDispatch();
 
-	useEffect(() => {
-		activeChat && socket.emit('join chat', activeChat?._id);
-
-		return () => {
-			activeChat && socket.emit('leave chat', activeChat?._id);
-		};
-	}, [activeChat]);
+	socket.on('joined', (id) => {
+		dispatch(setSocketId(id));
+	});
 
 	return (
 		<div id='chat-container'>

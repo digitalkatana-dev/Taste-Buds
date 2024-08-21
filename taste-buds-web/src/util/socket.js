@@ -15,7 +15,9 @@ socket.on('ping', () => {
 	socket.emit('pong');
 });
 
-socket.on('joined', () => console.log('Joined successfully!'));
+socket.on('joined', (socketId) =>
+	console.log(`Joined successfully, with socket id: ${socketId}`)
+);
 socket.on('rejoined', () => console.log('Rejoined successfully!'));
 socket.on('typing', () => console.log('someone is typing'));
 
