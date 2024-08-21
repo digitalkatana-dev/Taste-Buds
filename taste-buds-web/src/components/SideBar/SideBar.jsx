@@ -1,9 +1,11 @@
 import { IconButton, Stack } from '@mui/material';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import { logout } from '../../redux/slices/userSlice';
 import { clearActiveChat } from '../../redux/slices/messageSlice';
+import { socket } from '../../util/socket';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './side-bar.scss';
 import MatchDisplay from '../MatchDisplay';
@@ -12,6 +14,7 @@ import ChatContainer from '../ChatContainer';
 const SideBar = () => {
 	const { selectedProfile } = useSelector((state) => state.app);
 	const { activeUser } = useSelector((state) => state.user);
+	const { activeChat } = useSelector((state) => state.message);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const theme = activeUser?.theme;
@@ -32,6 +35,14 @@ const SideBar = () => {
 			return;
 		}
 	};
+
+	useEffect(() => {
+		activeChat && socket.emit('join chat', activeChat?._id);
+
+		return () => {
+			activeChat && socket.emit('leave chat', activeChat?._id);
+		};
+	}, [activeChat, selectedProfile]);
 
 	return (
 		<div className={theme === 'dark' ? 'side-bar dark' : 'side-bar'}>

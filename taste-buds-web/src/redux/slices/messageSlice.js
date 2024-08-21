@@ -158,6 +158,7 @@ const initialState = messageAdapter.getInitialState({
 	unread: [],
 	newest: null,
 	activeChat: null,
+	socketId: null,
 	success: null,
 	errors: null,
 });
@@ -171,6 +172,9 @@ export const messageSlice = createSlice({
 		},
 		setMessage: (state, action) => {
 			state.message = action.payload;
+		},
+		setSocketId: (state, action) => {
+			state.socketId = action.payload;
 		},
 		addRecipient: (state, action) => {
 			state.recipients = [...state.recipients, action.payload];
@@ -328,6 +332,7 @@ export const messageSlice = createSlice({
 				state.unread = [];
 				state.newest = null;
 				state.activeChat = null;
+				state.socketId = null;
 				state.success = null;
 				state.errors = null;
 				messageAdapter.removeAll(state);
@@ -338,6 +343,7 @@ export const messageSlice = createSlice({
 export const {
 	setTyping,
 	setMessage,
+	setSocketId,
 	addRecipient,
 	popRecipient,
 	removeRecipient,

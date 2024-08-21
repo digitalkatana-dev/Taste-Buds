@@ -23,13 +23,13 @@ import ActiveProfile from './pages/ActiveProfile';
 const App = () => {
 	const { authType } = useSelector((state) => state.app);
 	const { activeUser } = useSelector((state) => state.user);
-	const { activeChat } = useSelector((state) => state.message);
+	const { activeChat, socketId } = useSelector((state) => state.message);
 	const theme = activeUser?.theme;
 	const dispatch = useDispatch();
 
 	socket.on('connect', () => {
 		if (activeUser) socket.emit('reconnect', activeUser?._id);
-		if (activeChat) socket.emit('rejoin chat', activeChat?._id);
+		if (activeChat) socket.emit('rejoin chat', activeChat?._id, socketId);
 	});
 
 	const handleMobile = useCallback(() => {

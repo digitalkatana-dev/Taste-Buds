@@ -82,7 +82,14 @@ io.on('connection', (socket) => {
 		console.log(`User connected: ${userData}`);
 	});
 
-	socket.on('reconnect', (userData) => {
+	socket.on('reconnect', async (userData) => {
+		const exists = await pubClient.exists(`socket: ${userData}`);
+
+		if (exists) {
+			const members = await pubClient.sMembers(`socket: ${userData}`);
+			pubClient.del(`socket: ${userData}`);
+			activeSockets.delete(members);
+		}
 		pubClient.sAdd(`socket: ${userData}`, socket.id);
 		socket.join(userData);
 		activeSockets.add(socket.id);
@@ -102,6 +109,7 @@ io.on('connection', (socket) => {
 		}
 
 		console.log('Active Sockets', activeSockets);
+		console.log('Active Chats', activeChats);
 	}, 30000);
 
 	socket.on('join chat', async (chatId) => {
@@ -115,22 +123,23 @@ io.on('connection', (socket) => {
 			pubClient.sAdd(`chat: ${chatId}`, socket.id);
 			socket.join(chatId);
 			activeChats.add(chatId);
-			socket.emit('joined');
-			console.log('Joined chat and updated Redis:', chatId);
-			console.log('Active Chats:', activeChats);
-
-			const members = await pubClient.sMembers(`chat: ${chatId}`);
-			console.log(`Sockets in chat ${chatId}:`, members);
+			socket.emit('joined', socket.id);
 		}
 	});
 
-	socket.on('rejoin chat', (chatId) => {
-		if (chatId) {
+	socket.on('rejoin chat', async (chatId, deadSocket) => {
+		const members = await pubClient.sMembers(`chat: ${chatId}`);
+
+		if (chatId && deadSocket) {
+			const exists = members.some((member) => member === deadSocket);
+
+			if (exists) {
+				await pubClient.sRem(`chat: ${chatId}`, deadSocket);
+			}
+
 			pubClient.sAdd(`chat: ${chatId}`, socket.id);
 			socket.join(chatId);
 			socket.emit('rejoined');
-			console.log(`Rejoined chat: ${chatId}`);
-			console.log('Active Chats', activeChats);
 		}
 	});
 
@@ -138,7 +147,6 @@ io.on('connection', (socket) => {
 		await pubClient.sRem(`chat: ${chatId}`, socket.id);
 		socket.leave(chatId);
 		const members = await pubClient.sMembers(`chat: ${chatId}`);
-		// console.log('Members', members);
 		if (members.length === 0) {
 			activeChats.delete(chatId);
 			pubClient.del(`chat: ${chatId}`);
@@ -149,19 +157,19 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('typing', (chatId) => {
-		pubClient.sMembers(`chat: ${chatId}`).then((socketIds) => {
-			socketIds.forEach((id) => {
-				io.to(id).emit('typing');
-			});
+	socket.on('typing', async (chatId) => {
+		const members = await pubClient.sMembers(`chat: ${chatId}`);
+		const sanitizedMembers = members.filter((member) => member !== socket.id);
+		sanitizedMembers?.forEach((member) => {
+			io.to(member).emit('typing');
 		});
 	});
 
-	socket.on('stop typing', (chatId) => {
-		pubClient.sMembers(`chat: ${chatId}`).then((socketIds) => {
-			socketIds.forEach((id) => {
-				io.to(id).emit('stop typing');
-			});
+	socket.on('stop typing', async (chatId) => {
+		const members = await pubClient.sMembers(`chat: ${chatId}`);
+		const sanitizedMembers = members.filter((member) => member !== socket.id);
+		sanitizedMembers?.forEach((member) => {
+			io.to(member).emit('stop typing');
 		});
 	});
 
