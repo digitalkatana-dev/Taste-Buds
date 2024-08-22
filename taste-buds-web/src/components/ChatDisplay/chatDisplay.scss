@@ -13,3 +13,9 @@
 		bottom: 2.5px;
 	}
 }
+
+@media only screen and (min-width: 896px) {
+	#chat-display {
+		max-height: calc(100vh - 229.2px);
+	}
+}
