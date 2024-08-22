@@ -7,6 +7,7 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { setIsMobile } from './redux/slices/appSlice';
+import { getChat } from './redux/slices/messageSlice';
 import { socket } from './util/socket';
 import './app.scss';
 import Layout from './layout';
@@ -32,6 +33,8 @@ const App = () => {
 		if (activeChat) socket.emit('rejoin chat', activeChat?._id, socketId);
 	});
 
+	socket.on('message received', () => loadChat());
+
 	const handleMobile = useCallback(() => {
 		const handleResize = () => {
 			if (window.innerWidth <= 895) {
@@ -48,6 +51,10 @@ const App = () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [dispatch]);
+
+	const loadChat = useCallback(() => {
+		dispatch(getChat(activeChat?._id));
+	}, [dispatch, activeChat]);
 
 	useEffect(() => {
 		handleMobile();

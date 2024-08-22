@@ -5,11 +5,11 @@ import {
 	setTyping,
 	setMessage,
 	sendMessage,
-} from '../../redux/slices/messageSlice';
-import { socket } from '../../util/socket';
+} from '../../../../redux/slices/messageSlice';
+import { socket } from '../../../../util/socket';
 import SendIcon from '@mui/icons-material/Send';
 import './chat-input.scss';
-import TextInput from '../TextInput';
+import TextInput from '../../../../components/TextInput';
 
 const ChatInput = () => {
 	const { activeUser } = useSelector((state) => state.user);

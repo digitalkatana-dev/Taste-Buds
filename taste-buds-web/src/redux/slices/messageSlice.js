@@ -4,6 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { logout } from './userSlice';
+import { socket } from '../../util/socket';
 import budsApi from '../../api/budsApi';
 
 export const findUsers = createAsyncThunk(
@@ -232,6 +233,7 @@ export const messageSlice = createSlice({
 			.addCase(sendMessage.fulfilled, (state, action) => {
 				state.loading = false;
 				state.success = action.payload.success;
+				socket.emit('new message', action.payload.newMessage);
 				state.message = '';
 			})
 			.addCase(sendMessage.rejected, (state, action) => {
