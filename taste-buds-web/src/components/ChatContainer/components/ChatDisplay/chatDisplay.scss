@@ -1,4 +1,5 @@
 #chat-display {
+	max-height: calc(100vh - 320.8px);
 	position: relative;
 	display: flex;
 	flex-direction: column;

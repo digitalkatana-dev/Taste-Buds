@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux';
 import { setSocketId } from '../../redux/slices/messageSlice';
 import { socket } from '../../util/socket';
-import ChatDisplay from '../ChatDisplay';
-import ChatInput from '../ChatInput';
+import ChatDisplay from './components/ChatDisplay';
+import ChatInput from './components/ChatInput';
 import './chatContainer.scss';
 
 const ChatContainer = () => {
