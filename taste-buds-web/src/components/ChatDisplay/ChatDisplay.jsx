@@ -1,3 +1,4 @@
+import { Chip } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { TypeAnimation } from 'react-type-animation';
 import './chatDisplay.scss';
@@ -13,27 +14,37 @@ const ChatDisplay = () => {
 				<ChatBubble key={item._id} data={item} />
 			))}
 			{typing && (
-				<div className='typing-badge'>
-					<h5>
-						Typing
-						<TypeAnimation
-							deletionSpeed={100}
-							cursor={false}
-							sequence={[
-								'.', // Types '.'
-								500, // Waits 500ms
-								'..', // Types another '.'
-								500, // Waits 500ms
-								'...', // Types another '.'
-								500, // Waits 500ms
-								'', // Deletes everything
-								500, // Waits 500ms before restarting
-							]}
-							wrapper='span'
-							repeat={Infinity}
-						/>
-					</h5>
-				</div>
+				<Chip
+					sx={{
+						height: 'auto',
+						'& .MuiChip-label': {
+							display: 'block',
+							whiteSpace: 'normal',
+						},
+					}}
+					label={
+						<span>
+							Typing
+							<TypeAnimation
+								deletionSpeed={100}
+								cursor={false}
+								sequence={[
+									'.', // Types '.'
+									500, // Waits 500ms
+									'..', // Types another '.'
+									500, // Waits 500ms
+									'...', // Types another '.'
+									500, // Waits 500ms
+									'', // Deletes everything
+									500, // Waits 500ms before restarting
+								]}
+								wrapper='span'
+								repeat={Infinity}
+							/>
+						</span>
+					}
+					className='chat-bubble'
+				/>
 			)}
 		</div>
 	);
