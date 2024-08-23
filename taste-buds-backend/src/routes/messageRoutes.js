@@ -5,6 +5,7 @@ const requireAuth = require('../middleware/requireAuth');
 const Message = model('Message');
 const Chat = model('Chat');
 const Profile = model('Profile');
+const Notification = model('Notification');
 const router = Router();
 
 // Create
@@ -28,25 +29,25 @@ router.post('/messages', requireAuth, async (req, res) => {
 		const rawMessage = new Message(messageData);
 		await rawMessage?.save();
 
+		const updatedChat = await Chat.findByIdAndUpdate(chatId, {
+			latestMessage: rawMessage,
+		});
+		const chatUsers = updatedChat?.users;
+
 		const newMessage = await Message.findById(rawMessage?._id)
 			.populate('sender')
 			.populate('chat');
 
-		/*const updatedChat =*/ await Chat.findByIdAndUpdate(chatId, {
-			latestMessage: rawMessage,
+		chatUsers.forEach((user) => {
+			if (user == newMessage.sender._id.toString()) return;
+
+			Notification.insertNotification(
+				user,
+				newMessage.sender._id,
+				'newMessage',
+				newMessage.chat._id
+			);
 		});
-		// const chatUsers = updatedChat?.users;
-
-		// chatUsers.forEach((user) => {
-		// 	if (user == newMessage.sender._id.toString()) return;
-
-		// 	Notification.insertNotification(
-		// 		user,
-		// 		newMessage.sender,
-		// 		'newMessage',
-		// 		newMessage.chat._id
-		// 	);
-		// });
 
 		res.status(201).json({
 			newMessage,
