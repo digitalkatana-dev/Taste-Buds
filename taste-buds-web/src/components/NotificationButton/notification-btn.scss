@@ -1,11 +1,11 @@
 .side-bar-notify {
-	color: whitesmoke;
+	color: whitesmoke !important;
 }
 
 .top-bar-notify {
-	color: var(--highlight);
+	color: var(--highlight) !important;
 
 	&:hover {
-		background-color: var(--highlight-shadow);
+		background-color: var(--highlight-shadow) !important;
 	}
 }
