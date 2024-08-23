@@ -8,6 +8,7 @@ import { clearActiveChat } from '../../redux/slices/messageSlice';
 import { socket } from '../../util/socket';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './side-bar.scss';
+import NotificationButton from '../NotificationButton/NotificationButton';
 import MatchDisplay from '../MatchDisplay';
 import ChatContainer from '../ChatContainer';
 
@@ -53,9 +54,12 @@ const SideBar = () => {
 					</div>
 					<h3>@{activeUser?.handle}</h3>
 				</div>
-				<IconButton className='log-out' onClick={handleLogout}>
-					<LogoutIcon fontSize='small' />
-				</IconButton>
+				<Stack direction='row' gap={1} marginRight='5px'>
+					<NotificationButton className='side-bar-notify' />
+					<IconButton className='log-out' onClick={handleLogout}>
+						<LogoutIcon fontSize='small' />
+					</IconButton>
+				</Stack>
 			</div>
 			<Stack direction='row' gap={1}>
 				<button

@@ -44,7 +44,7 @@ const Layout = ({ heading, children }) => {
 					<div className='heading-container'>
 						<h2 className='heading'>{heading}</h2>
 						{isChat && (
-							<IconButton className='chat-btn' onClick={handleDeleteClick}>
+							<IconButton className='del-chat-btn' onClick={handleDeleteClick}>
 								<DeleteIcon className='btn-icon' />
 							</IconButton>
 						)}
