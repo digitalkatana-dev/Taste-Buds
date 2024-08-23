@@ -1,6 +1,6 @@
 #chat-container {
-	height: 100%;
 	display: flex;
+	flex: 1;
 	flex-direction: column;
 	background-color: whitesmoke;
 	box-shadow: rgba($color: #000000, $alpha: 0.05) 0px 6px 24px 0px,

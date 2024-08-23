@@ -26,13 +26,16 @@
 			padding: 0 15px;
 			border-bottom: 2px ridge var(--txt-primary);
 			flex-shrink: 0;
+			position: relative;
 
 			.heading {
 				flex: 1;
 			}
 
-			.chat-btn {
+			.del-chat-btn {
 				color: var(--error);
+				position: absolute;
+				right: 15px;
 
 				&:hover {
 					background-color: var(--error-shadow);

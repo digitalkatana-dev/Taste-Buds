@@ -19,6 +19,11 @@
 
 		.log-out {
 			color: var(--error);
+			margin-right: 15px;
+
+			&:hover {
+				background-color: var(--error-shadow);
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/userSlice';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -6,6 +6,7 @@ import lightLogo from '../../assets/logo-light.png';
 import darkLogo from '../../assets/logo-dark.png';
 import './top-bar.scss';
 import Button from '../Button';
+import NotificationButton from '../NotificationButton';
 
 const TopBar = ({ page, minimal, setShowDialog }) => {
 	const { activeUser } = useSelector((state) => state.user);
@@ -49,9 +50,12 @@ const TopBar = ({ page, minimal, setShowDialog }) => {
 				</>
 			) : (
 				page === 'layout' && (
-					<IconButton className='log-out' onClick={handleLogout}>
-						<LogoutIcon fontSize='small' />
-					</IconButton>
+					<Stack direction='row' gap={1}>
+						<NotificationButton className='top-bar-notify' />
+						<IconButton className='log-out' onClick={handleLogout}>
+							<LogoutIcon fontSize='small' />
+						</IconButton>
+					</Stack>
 				)
 			)}
 		</nav>
