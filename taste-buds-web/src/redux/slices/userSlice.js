@@ -4,6 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { setPhotoDialogType, setWarningOpen, setWarningType } from './appSlice';
+import { getUnopened } from './notificationSlice';
 import { socket } from '../../util/socket';
 import { shuffleArray } from '../../util/helpers';
 import budsApi from '../../api/budsApi';
@@ -24,11 +25,12 @@ export const signup = createAsyncThunk(
 
 export const signin = createAsyncThunk(
 	'users/signin',
-	async (data, { rejectWithValue }) => {
+	async (data, { rejectWithValue, dispatch }) => {
 		try {
 			const res = await budsApi.post('/users/signin', data);
 			const { success, userProfile, token } = res.data;
 			localStorage.setItem('token', token);
+			dispatch(getUnopened(userProfile._id));
 			return { success, userProfile };
 		} catch (err) {
 			return rejectWithValue(err.response.data);

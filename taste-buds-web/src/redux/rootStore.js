@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import appReducer from './slices/appSlice';
 import userReducer from './slices/userSlice';
 import messageReducer from './slices/messageSlice';
+import notificationReducer from './slices/notificationSlice';
 
 const appPersistConfig = {
 	key: 'app',
@@ -37,6 +38,7 @@ export const store = configureStore({
 		app: persistReducer(appPersistConfig, appReducer),
 		user: persistReducer(userPersistConfig, userReducer),
 		message: persistReducer(messagePersistConfig, messageReducer),
+		notification: notificationReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
