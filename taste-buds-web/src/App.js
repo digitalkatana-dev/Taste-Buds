@@ -7,6 +7,7 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { setIsMobile } from './redux/slices/appSlice';
+import { getLatest } from './redux/slices/notificationSlice';
 import { getChat } from './redux/slices/messageSlice';
 import { socket } from './util/socket';
 import './app.scss';
@@ -30,8 +31,14 @@ const App = () => {
 
 	socket.on('connect', () => {
 		if (activeUser) socket.emit('reconnect', activeUser?._id);
-		if (activeChat) socket.emit('rejoin chat', activeChat?._id, socketId);
+		if (activeChat) {
+			socket.emit('rejoin chat', activeChat?._id, socketId);
+		} else {
+			return;
+		}
 	});
+
+	socket.on('notification received', () => handleNotification());
 
 	socket.on('message received', () => loadChat());
 
@@ -55,6 +62,10 @@ const App = () => {
 	const loadChat = useCallback(() => {
 		dispatch(getChat(activeChat?._id));
 	}, [dispatch, activeChat]);
+
+	const handleNotification = useCallback(() => {
+		dispatch(getLatest(activeUser?._id));
+	}, [dispatch, activeUser]);
 
 	useEffect(() => {
 		handleMobile();

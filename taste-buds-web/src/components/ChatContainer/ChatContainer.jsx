@@ -12,6 +12,10 @@ const ChatContainer = () => {
 		dispatch(setSocketId(id));
 	});
 
+	socket.on('rejoined', (id) => {
+		dispatch(setSocketId(id));
+	});
+
 	return (
 		<div id='chat-container'>
 			<ChatDisplay />

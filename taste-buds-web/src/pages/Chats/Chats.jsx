@@ -14,10 +14,18 @@ const Chats = ({ type }) => {
 	const page = location.pathname.split('/')[2];
 
 	useEffect(() => {
-		activeChat && socket.emit('join chat', activeChat?._id);
+		if (activeChat) {
+			socket.emit('join chat', activeChat?._id);
+		} else {
+			return;
+		}
 
 		return () => {
-			page !== 'conversation' && socket.emit('leave chat', activeChat?._id);
+			if (activeChat && page !== 'conversation') {
+				socket.emit('leave chat', activeChat?._id);
+			} else {
+				return;
+			}
 		};
 	}, [activeChat, page]);
 

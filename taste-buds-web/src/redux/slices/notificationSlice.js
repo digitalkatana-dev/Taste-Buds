@@ -38,7 +38,7 @@ export const getLatest = createAsyncThunk(
 			const res = await budsApi.get(`/notifications/${data}/?latest=true`);
 			const { myNotifications, success } = res.data;
 			if (success) {
-				dispatch(getUnopened());
+				dispatch(getUnopened(data));
 			}
 			return myNotifications;
 		} catch (err) {

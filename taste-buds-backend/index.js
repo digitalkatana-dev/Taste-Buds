@@ -74,6 +74,7 @@ try {
 
 const activeSockets = new Set();
 const activeChats = new Set();
+const activeChatMembers = new Set();
 
 io.on('connection', (socket) => {
 	socket.on('setup', (userData) => {
@@ -103,51 +104,49 @@ io.on('connection', (socket) => {
 		console.log('Pong!');
 	});
 
-	const pingInterval = setInterval(() => {
+	const pingInterval = setInterval(async () => {
 		if (activeSockets.size === 0) {
 			clearInterval(pingInterval);
 		} else {
 			io.emit('ping');
 		}
-
 		console.log('Active Sockets', activeSockets);
 		console.log('Active Chats', activeChats);
+		console.log('Active Chat Members', activeChatMembers);
 	}, 30000);
 
 	socket.on('join chat', async (chatId) => {
-		if (chatId) {
-			const exists = await pubClient.exists(`chat: ${chatId}`);
-
-			if (!exists) {
-				activeChats.add(chatId);
-			}
-
-			pubClient.sAdd(`chat: ${chatId}`, socket.id);
-			socket.join(chatId);
-			activeChats.add(chatId);
-			socket.emit('joined', socket.id);
-		}
+		pubClient.sAdd(`chat: ${chatId}`, socket.id);
+		socket.join(chatId);
+		activeChats.add(chatId);
+		activeChatMembers.add(socket.id);
+		socket.emit('joined', socket.id);
 	});
 
 	socket.on('rejoin chat', async (chatId, deadSocket) => {
-		const members = await pubClient.sMembers(`chat: ${chatId}`);
+		const chatExists = await pubClient.exists(`chat: ${chatId}`);
+		if (chatExists) {
+			const members = await pubClient.sMembers(`chat: ${chatId}`);
+			const memberExists = members.some((member) => member === deadSocket);
 
-		if (chatId && deadSocket) {
-			const exists = members.some((member) => member === deadSocket);
-
-			if (exists) {
+			if (memberExists) {
 				await pubClient.sRem(`chat: ${chatId}`, deadSocket);
+				console.log('Does chat still exist?', chatExists);
+				pubClient.sAdd(`chat: ${chatId}`, socket.id);
+				socket.join(chatId);
+				activeChats.add(chatId);
+				activeChatMembers.delete(deadSocket);
+				activeChatMembers.add(socket.id);
 			}
 
-			pubClient.sAdd(`chat: ${chatId}`, socket.id);
-			socket.join(chatId);
-			socket.emit('rejoined');
+			socket.emit('rejoined', socket.id);
 		}
 	});
 
 	socket.on('leave chat', async (chatId) => {
 		await pubClient.sRem(`chat: ${chatId}`, socket.id);
 		socket.leave(chatId);
+		activeChatMembers.delete(socket.id);
 		const members = await pubClient.sMembers(`chat: ${chatId}`);
 		if (members.length === 0) {
 			activeChats.delete(chatId);
