@@ -7,8 +7,6 @@ import {
 	Navigate,
 } from 'react-router-dom';
 import { setIsMobile } from './redux/slices/appSlice';
-import { getLatest } from './redux/slices/notificationSlice';
-import { getChat } from './redux/slices/messageSlice';
 import { socket } from './util/socket';
 import './app.scss';
 import Layout from './layout';
@@ -38,10 +36,6 @@ const App = () => {
 		}
 	});
 
-	socket.on('notification received', () => handleNotification());
-
-	socket.on('message received', () => loadChat());
-
 	const handleMobile = useCallback(() => {
 		const handleResize = () => {
 			if (window.innerWidth <= 895) {
@@ -58,14 +52,6 @@ const App = () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [dispatch]);
-
-	const loadChat = useCallback(() => {
-		dispatch(getChat(activeChat?._id));
-	}, [dispatch, activeChat]);
-
-	const handleNotification = useCallback(() => {
-		dispatch(getLatest(activeUser?._id));
-	}, [dispatch, activeUser]);
 
 	useEffect(() => {
 		handleMobile();

@@ -21,8 +21,8 @@ socket.on('joined', (socketId) =>
 socket.on('rejoined', () => console.log('Rejoined successfully!'));
 socket.on('typing', () => console.log('someone is typing'));
 
-export const emitNotification = (userId, user) => {
-	if (userId === user) return;
+export const emitNotification = (recipient, user) => {
+	if (recipient === user) return;
 
-	socket.emit('notification received', userId);
+	socket.emit('notification received', recipient);
 };
