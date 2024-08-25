@@ -172,9 +172,9 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.on('notification received', (room) => {
-		console.log('new notification for:', room);
-		socket.in(room).emit('notification received');
+	socket.on('notification received', (recipient) => {
+		console.log('new notification for:', recipient);
+		io.to(recipient).emit('notification received');
 	});
 
 	socket.on('new message', (newMessage) => {

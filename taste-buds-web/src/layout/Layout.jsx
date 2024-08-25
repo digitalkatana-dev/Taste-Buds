@@ -1,4 +1,5 @@
 import { Container, IconButton } from '@mui/material';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import {
@@ -6,7 +7,9 @@ import {
 	setWarningOpen,
 	setDeleteData,
 } from '../redux/slices/appSlice';
-import { deleteChat } from '../redux/slices/messageSlice';
+import { getLatest } from '../redux/slices/notificationSlice';
+import { getChat, deleteChat } from '../redux/slices/messageSlice';
+import { socket } from '../util/socket';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './layout.scss';
 import TopBar from '../components/TopBar';
@@ -15,6 +18,7 @@ import PhotoUploadDialog from '../components/PhotoUploadDialog';
 import WarningDialog from '../components/WarningDialog';
 
 const Layout = ({ heading, children }) => {
+	const { activeUser } = useSelector((state) => state.app);
 	const { activeChat } = useSelector((state) => state.message);
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -35,6 +39,18 @@ const Layout = ({ heading, children }) => {
 		dispatch(setDeleteData(data));
 		dispatch(setWarningOpen(true));
 	};
+
+	const loadChat = useCallback(() => {
+		dispatch(getChat(activeChat?._id));
+	}, [dispatch, activeChat]);
+
+	const handleNotification = useCallback(() => {
+		dispatch(getLatest(activeUser?._id));
+	}, [dispatch, activeUser]);
+
+	socket.on('notification received', () => handleNotification());
+
+	socket.on('message received', () => loadChat());
 
 	return (
 		<Container id='layout' maxWidth='xl'>
