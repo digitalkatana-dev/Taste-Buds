@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
 		console.log('Pong!');
 	});
 
-	const pingInterval = setInterval(async () => {
+	const pingInterval = setInterval(() => {
 		if (activeSockets.size === 0) {
 			clearInterval(pingInterval);
 		} else {
