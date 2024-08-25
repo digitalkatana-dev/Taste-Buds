@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedProfile } from '../../redux/slices/appSlice';
 import {
 	getGenderedBuds,
-	updateMatches,
+	addOrRemoveMatch,
 	clearSuccess,
 } from '../../redux/slices/userSlice';
 import TinderCard from 'react-tinder-card';
@@ -52,12 +52,7 @@ const Dashboard = () => {
 
 		if (direction === 'right') {
 			if (!areMatched) {
-				const updatedMatches = [swippedProfileId, ...matches];
-				const data = {
-					profileId: activeUser._id,
-					matches: updatedMatches,
-				};
-				dispatch(updateMatches(data));
+				dispatch(addOrRemoveMatch(swippedProfileId));
 			} else {
 				return;
 			}
@@ -93,7 +88,7 @@ const Dashboard = () => {
 		if (success) {
 			if (success === 'Gendered retrieved successfully!') {
 				setCurrentIndex(allUsers?.length - 1);
-			} else if (success === 'Matches updated successfully!') {
+			} else if (success === 'Match removed successfully!') {
 				dispatch(setSelectedProfile(null));
 			}
 

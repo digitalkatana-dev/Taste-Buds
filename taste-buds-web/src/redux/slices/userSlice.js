@@ -86,12 +86,11 @@ export const getGenderedBuds = createAsyncThunk(
 	}
 );
 
-export const updateUserProfile = createAsyncThunk(
-	'users/update_user_profile',
-	async (updateData, { rejectWithValue }) => {
-		const { profileId, ...others } = updateData;
+export const addOrRemoveMatch = createAsyncThunk(
+	'users/add_remove_match',
+	async (data, { rejectWithValue }) => {
 		try {
-			const res = await budsApi.put(`/profiles/${profileId}/update`, others);
+			const res = await budsApi.put(`/profiles/${data}/add-remove-match`);
 			return res.data;
 		} catch (err) {
 			return rejectWithValue(err.response.data);
@@ -99,8 +98,8 @@ export const updateUserProfile = createAsyncThunk(
 	}
 );
 
-export const updateMatches = createAsyncThunk(
-	'users/update_matches',
+export const updateUserProfile = createAsyncThunk(
+	'users/update_user_profile',
 	async (updateData, { rejectWithValue }) => {
 		const { profileId, ...others } = updateData;
 		try {
@@ -530,6 +529,19 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.errors = action.payload;
 			})
+			.addCase(addOrRemoveMatch.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(addOrRemoveMatch.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload.success;
+				state.activeUser = action.payload.updatedUser;
+			})
+			.addCase(addOrRemoveMatch.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
 			.addCase(updateUserProfile.pending, (state) => {
 				state.loading = true;
 				state.errors = null;
@@ -560,19 +572,6 @@ export const userSlice = createSlice({
 				state.editFavDish = false;
 			})
 			.addCase(updateUserProfile.rejected, (state, action) => {
-				state.loading = false;
-				state.errors = action.payload;
-			})
-			.addCase(updateMatches.pending, (state) => {
-				state.loading = true;
-				state.errors = null;
-			})
-			.addCase(updateMatches.fulfilled, (state, action) => {
-				state.loading = false;
-				state.success = 'Matches updated successfully!';
-				state.activeUser = action.payload.updatedProfile;
-			})
-			.addCase(updateMatches.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})

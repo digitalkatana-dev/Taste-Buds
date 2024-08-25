@@ -8,6 +8,7 @@ const Profile = model('Profile');
 const User = model('User');
 const Chat = model('Chat');
 const Message = model('Message');
+const Notification = model('Notification');
 const router = Router();
 
 const storage = multer.memoryStorage();
@@ -196,6 +197,71 @@ router.put('/profiles/:profileId/update', requireAuth, async (req, res) => {
 		return res.status(400).json(errors);
 	}
 });
+
+// Add\Remove Match
+router.put(
+	'/profiles/:profileId/add-remove-match',
+	requireAuth,
+	async (req, res) => {
+		let errors = {};
+		const { profileId } = req?.params;
+
+		const user = await Profile.findOne({ user: req?.user?._id });
+
+		const matches = user?.matches;
+		const isMatched = matches.includes(profileId);
+		const option = isMatched ? '$pull' : '$addToSet';
+
+		try {
+			const updatedUser = await Profile.findByIdAndUpdate(
+				user?._id,
+				{
+					[option]: { matches: profileId },
+				},
+				{
+					new: true,
+				}
+			).populate('matches');
+
+			if (!updatedUser) {
+				errors.profile = 'Error, profile not found!';
+				return res.status(404).json(errors);
+			}
+
+			if (!isMatched) {
+				const newMatch = await Profile.findById(profileId);
+				const newMatchMatches = newMatch?.matches;
+				const isMutual = newMatchMatches.includes(user?._id);
+
+				if (isMutual) {
+					await Notification.insertNotification(
+						newMatch._id,
+						user._id,
+						'mutalMatch',
+						updatedUser._id
+					);
+
+					await Notification.insertNotification(
+						user._id,
+						newMatch._id,
+						'mutalMatch',
+						newMatch._id
+					);
+				}
+			}
+
+			res.json({
+				updatedUser,
+				success: `Match ${
+					option === '$addToSet' ? 'added' : option === '$pull' && 'removed'
+				} successfully!`,
+			});
+		} catch (err) {
+			errors.profile = 'Error, adding or removing match!';
+			return res.status(400).json(errors);
+		}
+	}
+);
 
 // Update Profile Pic
 router.put(
