@@ -42,10 +42,10 @@ router.post('/messages', requireAuth, async (req, res) => {
 			if (user == newMessage.sender._id.toString()) return;
 
 			await Notification.insertNotification(
-				user,
-				newMessage.sender._id,
+				user.toString(),
+				newMessage.sender._id.toString(),
 				'newMessage',
-				newMessage.chat._id
+				newMessage.chat._id.toString()
 			);
 		});
 
