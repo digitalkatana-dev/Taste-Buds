@@ -4,7 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { logout } from './userSlice';
-import { emitNotification, socket } from '../../util/socket';
+import { socket, emitNotification } from '../../util/socket';
 import budsApi from '../../api/budsApi';
 
 export const findUsers = createAsyncThunk(

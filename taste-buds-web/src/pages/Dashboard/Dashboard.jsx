@@ -13,6 +13,7 @@ import {
 	addOrRemoveMatch,
 	clearSuccess,
 } from '../../redux/slices/userSlice';
+import { emitNotification } from '../../util/socket';
 import TinderCard from 'react-tinder-card';
 import './dashboard.scss';
 import SideBar from '../../components/SideBar';
@@ -43,16 +44,19 @@ const Dashboard = () => {
 
 	const canSwipe = currentIndex >= 0;
 
-	const swiped = (direction, swippedProfileId, index) => {
+	const swiped = (direction, swippedProfile, index) => {
 		const matches = activeUser?.matches;
 		const matchCheck = () => {
-			return matches.some((match) => match._id === swippedProfileId);
+			return matches.some((match) => match._id === swippedProfile._id);
 		};
 		const areMatched = matchCheck();
-
+		const isMutual = swippedProfile.matches.some(
+			(match) => match._id === activeUser?._id
+		);
 		if (direction === 'right') {
 			if (!areMatched) {
-				dispatch(addOrRemoveMatch(swippedProfileId));
+				dispatch(addOrRemoveMatch(swippedProfile._id));
+				isMutual && emitNotification(swippedProfile._id, activeUser?._id);
 			} else {
 				return;
 			}
@@ -124,7 +128,7 @@ const Dashboard = () => {
 									ref={childRefs[index]}
 									className='swipe'
 									key={item._id}
-									onSwipe={(dir) => swiped(dir, item._id, index)}
+									onSwipe={(dir) => swiped(dir, item, index)}
 									onCardLeftScreen={() => outOfFrame(item.firstName, index)}
 									preventSwipe={['up', 'down']}
 								>

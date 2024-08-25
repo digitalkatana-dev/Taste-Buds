@@ -7,6 +7,7 @@ import {
 	setWarningOpen,
 	setDeleteData,
 } from '../redux/slices/appSlice';
+import { getProfile } from '../redux/slices/userSlice';
 import { getLatest } from '../redux/slices/notificationSlice';
 import { getChat, deleteChat } from '../redux/slices/messageSlice';
 import { socket } from '../util/socket';
@@ -18,7 +19,7 @@ import PhotoUploadDialog from '../components/PhotoUploadDialog';
 import WarningDialog from '../components/WarningDialog';
 
 const Layout = ({ heading, children }) => {
-	const { activeUser } = useSelector((state) => state.app);
+	const { activeUser } = useSelector((state) => state.user);
 	const { activeChat } = useSelector((state) => state.message);
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -40,17 +41,21 @@ const Layout = ({ heading, children }) => {
 		dispatch(setWarningOpen(true));
 	};
 
-	const loadChat = useCallback(() => {
-		dispatch(getChat(activeChat?._id));
-	}, [dispatch, activeChat]);
+	const loadChat = useCallback(
+		(id) => {
+			dispatch(getChat(id));
+		},
+		[dispatch]
+	);
 
 	const handleNotification = useCallback(() => {
 		dispatch(getLatest(activeUser?._id));
+		dispatch(getProfile(activeUser?._id));
 	}, [dispatch, activeUser]);
 
 	socket.on('notification received', () => handleNotification());
 
-	socket.on('message received', () => loadChat());
+	socket.on('message received', (id) => loadChat(id));
 
 	return (
 		<Container id='layout' maxWidth='xl'>
