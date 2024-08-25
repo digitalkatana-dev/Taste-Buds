@@ -12,6 +12,7 @@ import './chat-input.scss';
 import TextInput from '../../../../components/TextInput';
 
 const ChatInput = () => {
+	const { selectedProfile } = useSelector((state) => state.app);
 	const { activeUser } = useSelector((state) => state.user);
 	const { activeChat, message } = useSelector((state) => state.message);
 	const [lastTypingTime, setLastTypingTime] = useState(null);
@@ -34,6 +35,7 @@ const ChatInput = () => {
 			const data = {
 				chatId,
 				content: message,
+				recipient: selectedProfile?._id,
 			};
 			dispatch(sendMessage(data));
 			socket.emit('stop typing', chatId);

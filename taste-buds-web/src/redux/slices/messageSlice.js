@@ -4,7 +4,7 @@ import {
 	createSlice,
 } from '@reduxjs/toolkit';
 import { logout } from './userSlice';
-import { socket } from '../../util/socket';
+import { emitNotification, socket } from '../../util/socket';
 import budsApi from '../../api/budsApi';
 
 export const findUsers = createAsyncThunk(
@@ -79,10 +79,11 @@ export const sendMessage = createAsyncThunk(
 	async (data, { rejectWithValue, dispatch }) => {
 		try {
 			const res = await budsApi.post('/messages', data);
-			const { success } = res.data;
+			const { newMessage, success } = res.data;
 			if (success) {
 				dispatch(getChat(data.chatId));
 				dispatch(getChatList());
+				emitNotification(data.recipient, newMessage.sender._id);
 			}
 			return res.data;
 		} catch (err) {

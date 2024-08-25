@@ -38,10 +38,18 @@ const SideBar = () => {
 	};
 
 	useEffect(() => {
-		activeChat && socket.emit('join chat', activeChat?._id);
+		if (activeChat) {
+			socket.emit('join chat', activeChat?._id);
+		} else {
+			return;
+		}
 
 		return () => {
-			activeChat && socket.emit('leave chat', activeChat?._id);
+			if (activeChat) {
+				socket.emit('leave chat', activeChat?._id);
+			} else {
+				return;
+			}
 		};
 	}, [activeChat, selectedProfile]);
 
