@@ -2,7 +2,7 @@ import { Chip, Divider, Paper, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { setWarningOpen, setWarningType } from '../../redux/slices/appSlice';
-import { updateMatches, updateBlocked } from '../../redux/slices/userSlice';
+import { addOrRemoveMatch, updateBlocked } from '../../redux/slices/userSlice';
 import { capitalizeFirstLetterOfEachWord } from '../../util/helpers';
 import './user-profile.scss';
 import Button from '../Button';
@@ -30,15 +30,7 @@ const UserProfile = () => {
 		const areMatched = matchCheck();
 
 		if (areMatched) {
-			const updatedMatches = matches.filter(
-				(item) => item._id !== selectedProfile?._id
-			);
-			const data = {
-				profileId: activeUser._id,
-				matches: updatedMatches,
-			};
-
-			dispatch(updateMatches(data));
+			dispatch(addOrRemoveMatch(selectedProfile?._id));
 		} else {
 			return;
 		}

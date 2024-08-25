@@ -38,10 +38,10 @@ router.post('/messages', requireAuth, async (req, res) => {
 			.populate('sender')
 			.populate('chat');
 
-		chatUsers.forEach((user) => {
+		chatUsers.forEach(async (user) => {
 			if (user == newMessage.sender._id.toString()) return;
 
-			Notification.insertNotification(
+			await Notification.insertNotification(
 				user,
 				newMessage.sender._id,
 				'newMessage',

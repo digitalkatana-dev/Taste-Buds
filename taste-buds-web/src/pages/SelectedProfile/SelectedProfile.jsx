@@ -28,7 +28,7 @@ const SelectedProfile = () => {
 
 	const handleUnmatchSuccess = useCallback(() => {
 		if (success) {
-			if (success === 'Matches updated successfully!') {
+			if (success === 'Match removed successfully!') {
 				navigate('/matches');
 			}
 
