@@ -4,7 +4,7 @@ import './iconBtn.scss';
 
 const IconButton = ({ className, children, onClick }) => {
 	const { activeUser } = useSelector((state) => state.user);
-	const theme = activeUser.theme;
+	const theme = activeUser?.theme;
 
 	return (
 		<Frame

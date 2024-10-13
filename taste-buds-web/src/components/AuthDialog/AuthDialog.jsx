@@ -6,6 +6,7 @@ import {
 	DialogContent,
 	DialogTitle,
 	Divider,
+	IconButton,
 	InputAdornment,
 	ListItem,
 } from '@mui/material';
@@ -27,7 +28,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import './auth-dialog.scss';
 import Loading from '../Loading';
-import IconButton from '../IconButton';
 import Button from '../Button';
 import TextInput from '../TextInput';
 
