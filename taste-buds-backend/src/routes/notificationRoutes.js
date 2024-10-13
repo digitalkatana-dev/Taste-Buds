@@ -35,7 +35,7 @@ router.get('/notifications/:profileId', requireAuth, async (req, res) => {
 				.populate('userFrom');
 		} else {
 			myNotifications = await Notification.find({
-				and: [
+				$and: [
 					{ userTo: profileId },
 					{ notificationType: { $ne: 'newMessage' } },
 				],

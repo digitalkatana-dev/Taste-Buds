@@ -31,13 +31,13 @@ const BottomNav = () => {
 				<p className='noto-color-emoji-regular'>🪟</p>
 				<h6>Dashboard</h6>
 			</IconButton>
-			<IconButton
+			{/* <IconButton
 				className={currentLocation === 'search' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('search')}
 			>
 				<p className='noto-color-emoji-regular'>👀</p>
 				<h6>Search</h6>
-			</IconButton>
+			</IconButton> */}
 			<IconButton
 				className={currentLocation === 'matches' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('matches')}
