@@ -1,4 +1,4 @@
-import { IconButton, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +10,7 @@ import { socket } from '../../../../util/socket';
 import SendIcon from '@mui/icons-material/Send';
 import './chat-input.scss';
 import TextInput from '../../../../components/TextInput';
+import IconButton from '../../../IconButton';
 
 const ChatInput = () => {
 	const { selectedProfile } = useSelector((state) => state.app);

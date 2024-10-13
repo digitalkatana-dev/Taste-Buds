@@ -1,6 +1,31 @@
-.notification-item {
-	.notification-avatar {
-		margin-right: 10px;
+.full-notification {
+	padding: 15px !important;
+	justify-content: space-between !important;
+
+	.notification-info {
+		display: flex;
+		align-items: center;
+
+		.notification-avatar {
+			margin-right: 10px;
+		}
+	}
+
+	.notification-actions {
+		display: flex;
+		gap: 15px;
+
+		.mark-unread {
+			color: var(--pin);
+		}
+
+		.mark-read {
+			color: var(--highlight);
+		}
+
+		.delete-notification {
+			color: var(--error);
+		}
 	}
 
 	&.dark {

@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Matches from './pages/Matches';
 import Chats from './pages/Chats';
+import Notifications from './pages/Notifications';
 import SelectedProfile from './pages/SelectedProfile';
 import ActiveProfile from './pages/ActiveProfile';
 
@@ -113,6 +114,14 @@ const App = () => {
 										children={<Chats type='convo' />}
 									/>
 								}
+							/>
+						}
+					/>
+					<Route
+						path='/notifications'
+						element={
+							<ProtectedRoute
+								element={<Layout children={<Notifications />} />}
 							/>
 						}
 					/>
