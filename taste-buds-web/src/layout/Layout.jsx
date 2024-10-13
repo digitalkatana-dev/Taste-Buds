@@ -1,5 +1,5 @@
 import { Container, IconButton } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import {
@@ -8,7 +8,7 @@ import {
 	setDeleteData,
 } from '../redux/slices/appSlice';
 import { getProfile } from '../redux/slices/userSlice';
-import { getLatest } from '../redux/slices/notificationSlice';
+import { getLatest, getUnopened } from '../redux/slices/notificationSlice';
 import { getChat, deleteChat } from '../redux/slices/messageSlice';
 import { socket } from '../util/socket';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,6 +41,11 @@ const Layout = ({ heading, children }) => {
 		dispatch(setWarningOpen(true));
 	};
 
+	const loadNotifications = useCallback(() => {
+		const data = activeUser._id;
+		dispatch(getUnopened(data));
+	}, [activeUser, dispatch]);
+
 	const loadChat = useCallback(
 		(id) => {
 			dispatch(getChat(id));
@@ -56,6 +61,10 @@ const Layout = ({ heading, children }) => {
 	socket.on('notification received', () => handleNotification());
 
 	socket.on('message received', (id) => loadChat(id));
+
+	useEffect(() => {
+		loadNotifications();
+	}, [loadNotifications]);
 
 	return (
 		<Container id='layout' maxWidth='xl'>

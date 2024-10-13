@@ -51,12 +51,13 @@ export const getLatest = createAsyncThunk(
 export const toggleOpened = createAsyncThunk(
 	'notification/toggle_opened',
 	async (data, { rejectWithValue, dispatch }) => {
+		const { itemId, userId } = data;
 		try {
-			const res = await budsApi.put(`/notifications/${data}/toggle`);
+			const res = await budsApi.put(`/notifications/${itemId}/toggle`);
 			const { success } = res.data;
 			if (success) {
-				dispatch(retrieveNotifications());
-				dispatch(getUnopened());
+				dispatch(retrieveNotifications(userId));
+				dispatch(getUnopened(userId));
 			}
 		} catch (err) {
 			return rejectWithValue(err.response.data);
