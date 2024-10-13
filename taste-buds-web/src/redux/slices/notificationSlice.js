@@ -72,8 +72,26 @@ export const markAllOpen = createAsyncThunk(
 			const res = await budsApi.put(`/notifications/${data}/mark-all-read`);
 			const { success } = res.data;
 			if (success) {
-				dispatch(retrieveNotifications());
-				dispatch(getUnopened());
+				dispatch(retrieveNotifications(data));
+				dispatch(getUnopened(data));
+			}
+			return success;
+		} catch (err) {
+			return rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const deleteNotification = createAsyncThunk(
+	'notification/delete_notification',
+	async (data, { rejectWithValue, dispatch }) => {
+		const { itemId, userId } = data;
+		try {
+			const res = await budsApi.delete(`/notifications/${itemId}/delete`);
+			const { success } = res.data;
+			if (success) {
+				dispatch(retrieveNotifications(userId));
+				dispatch(getUnopened(userId));
 			}
 			return success;
 		} catch (err) {
@@ -166,6 +184,18 @@ export const notificatiionSlice = createSlice({
 				state.success = action.payload;
 			})
 			.addCase(markAllOpen.rejected, (state, action) => {
+				state.loading = false;
+				state.errors = action.payload;
+			})
+			.addCase(deleteNotification.pending, (state) => {
+				state.loading = true;
+				state.errors = null;
+			})
+			.addCase(deleteNotification.fulfilled, (state, action) => {
+				state.loading = false;
+				state.success = action.payload;
+			})
+			.addCase(deleteNotification.rejected, (state, action) => {
 				state.loading = false;
 				state.errors = action.payload;
 			})

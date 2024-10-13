@@ -2,7 +2,7 @@ import { Badge, IconButton, Menu } from '@mui/material';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import Notification from '../Notification';
+import MiniNotification from '../MiniNotification';
 import './notification-btn.scss';
 
 const NotificationButton = ({ className }) => {
@@ -36,7 +36,11 @@ const NotificationButton = ({ className }) => {
 					}}
 				>
 					{unopened.map((item) => (
-						<Notification key={item._id} data={item} onClick={handleClose} />
+						<MiniNotification
+							key={item._id}
+							data={item}
+							onClick={handleClose}
+						/>
 					))}
 				</Menu>
 			)}

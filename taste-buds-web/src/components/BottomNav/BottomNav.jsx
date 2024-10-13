@@ -57,6 +57,15 @@ const BottomNav = () => {
 				<h6>Chat</h6>
 			</IconButton>
 			<IconButton
+				className={
+					currentLocation === 'notifications' ? 'nav-btn active' : 'nav-btn'
+				}
+				onClick={() => handleClick('notifications')}
+			>
+				<p className='noto-color-emoji-regular'>🔔</p>
+				<h6>Notifications</h6>
+			</IconButton>
+			<IconButton
 				className={currentLocation === 'profile' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('profile')}
 			>

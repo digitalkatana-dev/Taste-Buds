@@ -105,7 +105,7 @@ router.put(
 
 		try {
 			let notifications = await Notification.find({
-				and: [
+				$and: [
 					{ userTo: profileId },
 					{ notificationType: { $ne: 'newMessage' } },
 				],
