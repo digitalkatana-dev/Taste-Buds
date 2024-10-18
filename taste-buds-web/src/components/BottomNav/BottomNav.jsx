@@ -1,6 +1,7 @@
 import { IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { isIOS, isSafari } from 'react-device-detect';
 import { getProfile } from '../../redux/slices/userSlice';
 import './btmNav.scss';
 
@@ -28,24 +29,23 @@ const BottomNav = () => {
 				}
 				onClick={() => handleClick('dashboard')}
 			>
-				<p className='noto-color-emoji-regular'>🪟</p>
+				<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+					🪟
+				</p>
 				<h6>Dashboard</h6>
 			</IconButton>
-			{/* <IconButton
-				className={currentLocation === 'search' ? 'nav-btn active' : 'nav-btn'}
-				onClick={() => handleClick('search')}
-			>
-				<p className='noto-color-emoji-regular'>👀</p>
-				<h6>Search</h6>
-			</IconButton> */}
 			<IconButton
 				className={currentLocation === 'matches' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('matches')}
 			>
 				{activeUser?.genderIdentity === 'male' ? (
-					<p className='noto-color-emoji-regular'>🍻</p>
+					<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+						🍻
+					</p>
 				) : (
-					<p className='noto-color-emoji-regular'>🥂</p>
+					<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+						🥂
+					</p>
 				)}
 				<h6>Matches</h6>
 			</IconButton>
@@ -53,7 +53,9 @@ const BottomNav = () => {
 				className={currentLocation === 'chats' ? 'nav-btn active' : 'nav-btn'}
 				onClick={() => handleClick('chats')}
 			>
-				<p className='noto-color-emoji-regular'>💬</p>
+				<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+					💬
+				</p>
 				<h6>Chat</h6>
 			</IconButton>
 			<IconButton
@@ -62,7 +64,9 @@ const BottomNav = () => {
 				}
 				onClick={() => handleClick('notifications')}
 			>
-				<p className='noto-color-emoji-regular'>🔔</p>
+				<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+					🔔
+				</p>
 				<h6>Notifications</h6>
 			</IconButton>
 			<IconButton
@@ -70,13 +74,19 @@ const BottomNav = () => {
 				onClick={() => handleClick('profile')}
 			>
 				{activeUser?.genderIdentity === 'male' && (
-					<p className='noto-color-emoji-regular'>🙋🏽‍♂️</p>
+					<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+						🙋🏽‍♂️
+					</p>
 				)}
 				{activeUser?.genderIdentity === 'female' && (
-					<p className='noto-color-emoji-regular'>🙋🏽‍♀️</p>
+					<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+						🙋🏽‍♀️
+					</p>
 				)}
 				{activeUser?.genderIdentity === 'non-binary' && (
-					<p className='noto-color-emoji-regular'>🙋🏽</p>
+					<p className={isIOS || isSafari ? '' : 'noto-color-emoji-regular'}>
+						🙋🏽
+					</p>
 				)}
 				<h6>My Profile</h6>
 			</IconButton>
